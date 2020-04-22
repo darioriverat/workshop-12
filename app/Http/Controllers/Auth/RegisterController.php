@@ -9,6 +9,8 @@ use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
+use DB;
+
 class RegisterController extends Controller
 {
     /*
@@ -65,6 +67,15 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
+        $log = [
+            'user' =>$data['email'],
+            'source'=>'RegistersUsers',
+            'type'=>'Audit',
+            'description'=>'Nuevo registro de usuario',
+
+        ];        
+        DB::table('logs')->insert($log);
+        
         return User::create([
             'name' => $data['name'],
             'email' => $data['email'],
