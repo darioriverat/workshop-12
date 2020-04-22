@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class Logs extends Migration
+class Categories extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,12 @@ class Logs extends Migration
      */
     public function up()
     {
-        Schema::create('logs', function (Blueprint $table) {
+        //
+        Schema::create('categories', function (Blueprint $table) {
             $table->id()->unique();            
-            $table->timestamp('date')->useCurrent();
-            $table->string('user');
-            $table->string('type');
-            $table->string('source');
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->useCurrent();
+            $table->string('name');
             $table->string('description');
         });
     }
@@ -31,6 +31,6 @@ class Logs extends Migration
     public function down()
     {
         //
-        Schema::dropIfExists('logs');
+        Schema::dropIfExists('categories');
     }
 }
