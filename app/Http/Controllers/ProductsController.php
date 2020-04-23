@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 
 class ProductsController extends Controller
 {
@@ -90,7 +91,8 @@ class ProductsController extends Controller
     {
         //
         $product = Products::findOrFail($id);
-        return view($this->table . '.edit', compact('product'));
+        $datos["categories"] = Categories::all();
+        return view($this->table . '.edit', $datos,compact('product'));
     }
 
     /**
@@ -106,6 +108,12 @@ class ProductsController extends Controller
         $message ='';
         $product = $request->except(['_token', '_method']);
         try {
+            if ($request->file('photo')) {
+                $oldProduct = products::findOrFail($id);
+                Storage::delete('public/' . $oldProduct->photo);
+                $product['photo'] = $request->file('photo')->store('public/uploads');
+                $product['photo'] = str_replace("public/uploads", "uploads", $product['photo']);
+            }
             $message = 'Producto ' .$product['name'] .' modificado con éxito ';
             Products::where('id', '=', $id)->update($product);
             return redirect($this->table)->with('Message', $message);
@@ -129,6 +137,9 @@ class ProductsController extends Controller
         $message ='';
         try {
             Products::destroy($id);
+            if (Storage::delete('public/' . $product->photo)) {
+                products::destroy($id);
+            }
             $message = 'Producto ' . $product->name. ' eliminada con éxito ' ;
             return redirect($this->table)->with('Message', $message);
         } catch (\Throwable $th) {

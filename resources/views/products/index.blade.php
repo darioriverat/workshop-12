@@ -20,7 +20,7 @@
                 <div class="card-header">
                     <div class="row justify-content-left">
                         <div class="col-sm-8">
-                            <h1>Producto</h1>
+                            <h1>Productos</h1>
                         </div>
                         <div class="col-sm-4">
                             <a class="btn btn-primary" href="{{route('products.create')}}">Agregar un producto</a>
