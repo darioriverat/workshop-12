@@ -11,6 +11,4 @@ class Products extends Model
  
     //Definimos los campos que se pueden llenar con asignación masiva
     protected $fillable = ['name', 'description','photo','price','currency'];
-   
-   
 }

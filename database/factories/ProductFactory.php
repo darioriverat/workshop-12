@@ -9,9 +9,9 @@ $factory->define(Products::class, function (Faker $faker) {
     return [
         'name' => $faker->name,
         'description' => $faker->text,
-        'price' => $faker->numberBetween(0,100000000),
+        'price' => $faker->numberBetween(0, 100000000),
         'photo' => $faker->imageUrl(),
-        'category'=>$faker->numberBetween(0,100),
+        'category'=>$faker->numberBetween(0, 100),
         '_token' => csrf_token()
     ];
 });

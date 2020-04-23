@@ -15,7 +15,7 @@ class Categories extends Migration
     {
         //
         Schema::create('categories', function (Blueprint $table) {
-            $table->id()->unique();            
+            $table->id()->unique();
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent();
             $table->string('name');

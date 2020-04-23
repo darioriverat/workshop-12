@@ -17,7 +17,7 @@
                         {{ session('MessageError') }}
                     </div>
                     @endif
-                <div class="card-header">Crear una categoria</div>
+                <div class="card-header">Crear un producto</div>
                 <div class="card-body">
                     @if (session('status'))
                         <div class="alert alert-success" role="alert">
@@ -25,9 +25,9 @@
                         </div>
                     @endif
 
-                    <form action="{{url('/categories')}}" method="post" enctype="multipart/form-data">
+                    <form action="{{url('/products')}}" method="post" enctype="multipart/form-data">
                         {{csrf_field()}}
-                        @include('categories.form', ['type'=>'create'])
+                        @include('products.form', ['type'=>'create'])
                     </form>
                     
                 </div>

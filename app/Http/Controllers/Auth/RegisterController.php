@@ -73,7 +73,7 @@ class RegisterController extends Controller
             'type'=>'Audit',
             'description'=>'Nuevo registro de usuario',
 
-        ];        
+        ];
         DB::table('logs')->insert($log);
         
         return User::create([

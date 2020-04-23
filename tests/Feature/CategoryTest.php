@@ -2,7 +2,6 @@
 
 namespace Tests\Feature;
 
-
 use App\Categories;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -32,13 +31,13 @@ class CategoryTest extends TestCase
     public function testUpdateCategories()
     {
         $this->withoutMiddleware();
-        $response = $this->patch($this->route.'1',['_token' => csrf_token()]);
+        $response = $this->patch($this->route.'1', ['_token' => csrf_token()]);
         $response->assertStatus(200);
     }
     public function testDestroyCategories()
     {
         $this->withoutMiddleware();
-        $response = $this->patch($this->route.'1',['_token' => csrf_token()]);
+        $response = $this->patch($this->route.'1', ['_token' => csrf_token()]);
         $response->assertStatus(200);
     }
 }

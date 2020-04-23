@@ -25,10 +25,10 @@
                         </div>
                     @endif
                     
-                    <form action="{{url('/categories/'.$category->id)}}" method="post" enctype="multipart/form-data">
+                    <form action="{{url('/products/'.$category->id)}}" method="post" enctype="multipart/form-data">
                         {{csrf_field()}}
                         {{method_field('PATCH')}}
-                        @include('categories.form', ['type'=>'editar'])
+                        @include('products.form', ['type'=>'editar'])
         
                     </form>
                     

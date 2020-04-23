@@ -20,10 +20,10 @@
                 <div class="card-header">
                     <div class="row justify-content-left">
                         <div class="col-sm-8">
-                            <h1>Categorias</h1>
+                            <h1>Producto</h1>
                         </div>
                         <div class="col-sm-4">
-                            <a class="btn btn-primary" href="{{route('categories.create')}}">Agregar una categoria</a>
+                            <a class="btn btn-primary" href="{{route('products.create')}}">Agregar un producto</a>
                         </div>
                     </div>
                 </div>
@@ -37,27 +37,35 @@
                     <table class="table table-light">
                         <thead class="thead">
                             <tr>
+                                <th>Foto</th>
                                 <th>Nombre</th>
                                 <th>Descripción</th>
+                                <th>Precio</th>
+                                <th>Moneda</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @if(count($categories)>0)
-                            @foreach($categories as $category)
+                            @if(count($products)>0)
+                            @foreach($products as $product)
                             <tr>
-                                <td>{{$category->name}}</td>
-                                <td>{{$category->description}}</td>
+                                <td>
+                                    <img src="{{ asset('storage').'/'.$product->photo}}" alt="" width="100">
+                                </td>
+                                <td>{{$product->name}}</td>
+                                <td>{{$product->description}}</td>
+                                <td>{{$product->price}}</td>
+                                <td>{{$product->currency}}</td>
                                 <td>
                                     <div class="form-group row">
-                                        <a href="{{url('categories/'.$category->id.'/edit')}}"
+                                        <a href="{{url('products/'.$product->id.'/edit')}}"
                                             class="btn btn-secondary m-2">Editar</a>
 
-                                        <form method="post" action="{{url('categories/'.$category->id)}}">
+                                        <form method="post" action="{{url('products/'.$product->id)}}">
 
                                             {{csrf_field()}}
                                             {{method_field('DELETE')}}
                                             <button class="btn btn-primary m-2" type="submit"
-                                                onclick="return confirm('Desea borrar el producto {{$category->name}}');">Borrar</button>
+                                                onclick="return confirm('Desea borrar el producto {{$product->name}}');">Borrar</button>
                                         </form>
                                     </div>
                                 </td>
