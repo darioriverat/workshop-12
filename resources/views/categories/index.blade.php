@@ -5,11 +5,18 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                @if(Session::has('Mensaje')){{
-                Session::get('Mensaje')
-            }}
+
+                @if(session('Message'))
+                <div class="alert alert-success" role="alert">
+                    {{ session('Message') }}
+                </div>
                 @endif
 
+                @if(session('MessageError'))
+                <div class="alert alert-danger" role="alert">
+                    {{ session('MessageError') }}
+                </div>
+                @endif
                 <div class="card-header">
                     <div class="row justify-content-left">
                         <div class="col-sm-8">
@@ -35,6 +42,7 @@
                             </tr>
                         </thead>
                         <tbody>
+                            @if(count($categories)>0)
                             @foreach($categories as $category)
                             <tr>
                                 <td>{{$category->name}}</td>
@@ -55,6 +63,11 @@
                                 </td>
                             </tr>
                             @endforeach
+                            @else
+                            <tr>
+                                <td colspan="2">No se han encontrado registros</td>
+                            </tr>
+                            @endif
                         </tbody>
 
                     </table>

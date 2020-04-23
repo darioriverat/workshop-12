@@ -5,6 +5,18 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
+                
+                    @if(session('Message'))
+                    <div class="alert alert-success" role="alert">
+                        {{ session('Message') }}
+                    </div>
+                    @endif
+    
+                    @if(session('MessageError'))
+                    <div class="alert alert-danger" role="alert">
+                        {{ session('MessageError') }}
+                    </div>
+                    @endif
                 <div class="card-header">Editar una categoria</div>
                 <div class="card-body">
                     @if (session('status'))

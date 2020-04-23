@@ -4,12 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Categories;
 use Illuminate\Http\Request;
-
+use PhpParser\Node\Stmt\Catch_;
+use Illuminate\Support\Facades\Auth;
+use DB;
 class CategoriesController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware('auth');        
     }
     /**
      * Display a listing of the resource.
@@ -30,6 +32,7 @@ class CategoriesController extends Controller
     public function create()
     {
         //
+        
         return view('categories.create');
     }
 
@@ -41,12 +44,17 @@ class CategoriesController extends Controller
      */
     public function store(Request $request)
     {
+        $message='';
+        $category = $request->except('_token');
         try {
-            $category = $request->except('_token');
             Categories::insert($category);
-            return redirect('categories')->with('Message', 'Producto agregado correctamente');
+            $message= 'Categoria ' .$category['name'] .' agregado correctamente' ;
+            return redirect('categories')->with('Message', $message);
         } catch (\Throwable $th) {
-            return redirect('categories/create')->with('MessageError', 'Hubo un error al crear el producto ');
+            $message= 'Hubo un error al crear ' .$category['name'] ;
+            return redirect('categories/create')->with('MessageError',$message);
+        }finally{
+            $this->logCategories($message);
         }
     }
 
@@ -69,7 +77,6 @@ class CategoriesController extends Controller
      */
     public function edit($id)
     {
-        
         $category = Categories::findOrFail($id);
         return view('categories.edit', compact('category'));
     }
@@ -84,11 +91,18 @@ class CategoriesController extends Controller
     public function update(Request $request, $id)
     {
         //
+        $message ='';
         $category = $request->except(['_token', '_method']);
-        
-        Categories::where('id', '=', $id)->update($category);
-        
-        return redirect('categories')->with('Mensaje', 'Categoria modificada con éxito');
+        try {            
+            $message = 'Categoria ' .$category['name'] .' modificada con éxito ';
+            Categories::where('id', '=', $id)->update($category);
+            return redirect('categories')->with('Message', $message);
+        } catch (\Throwable $th) {
+            $message = 'Hubo un error al modificar la categoria ' .$category['name'] ;
+            return redirect('categories/create')->with('MessageError', $message);
+        }finally{
+            $this->logCategories($message);
+        }
     }
 
     /**
@@ -97,8 +111,31 @@ class CategoriesController extends Controller
      * @param  \App\Categories  $categories
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Categories $categories)
+    public function destroy($id)
     {
-        //
+        $category = Categories::findOrFail($id);
+        $message ='';
+        try {
+            Categories::destroy($id);
+            $message = 'Categoria ' . $category->name. ' eliminada con éxito ' ;
+            return redirect('categories')->with('Message', $message);
+        } catch (\Throwable $th) {
+            $message = 'Hubo un error al eliminar el categoria ' . $category->name;
+            return redirect('categories')->with('MessageError', $message);
+        }finally{
+            $this->logCategories($message);
+        }
+    }
+
+    public function logCategories ($description){
+
+        $log = [            
+            'user' =>Auth::user()['email'],
+            'source'=>'Categories',
+            'type'=>'Audit',
+            'description'=>$description,
+        ];     
+
+        DB::table('logs')->insert($log);       
     }
 }
