@@ -2,14 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Categories;
+use App\Products;
 use Illuminate\Http\Request;
-use PhpParser\Node\Stmt\Catch_;
 use Illuminate\Support\Facades\Auth;
 use DB;
-class CategoriesController extends Controller
+class ProductsController extends Controller
 {
-    public $table = "categories";
+    public $table = "products";
 
     public function __construct()
     {
@@ -22,7 +21,8 @@ class CategoriesController extends Controller
      */
     public function index()
     {
-        $datos[$this->table] = Categories::all();
+        //
+        $datos[$this->table] = Products::all();
         return view($this->table.'.index', $datos);
     }
 
@@ -34,7 +34,6 @@ class CategoriesController extends Controller
     public function create()
     {
         //
-        
         return view($this->table.'create');
     }
 
@@ -46,27 +45,28 @@ class CategoriesController extends Controller
      */
     public function store(Request $request)
     {
+        //
         $message='';
-        $category = $request->except('_token');
+        $product = $request->except('_token');
         try {
-            Categories::insert($category);
-            $message= 'Categoria ' .$category['name'] .' agregado correctamente' ;
+            Products::insert($product);
+            $message= 'Producto ' .$product['name'] .' agregado correctamente' ;
             return redirect($this->table)->with('Message', $message);
         } catch (\Throwable $th) {
-            $message= 'Hubo un error al crear ' .$category['name'] ;
+            $message= 'Hubo un error al crear ' .$product['name'] ;
             return redirect($this->table . '/create')->with('MessageError',$message);
         }finally{
-            $this->logCategories($message);
+            $this->logProducts($message);
         }
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Categories  $categories
+     * @param  \App\Products  $products
      * @return \Illuminate\Http\Response
      */
-    public function show(Categories $categories)
+    public function show(Products $products)
     {
         //
     }
@@ -74,62 +74,63 @@ class CategoriesController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Categories  $categories
+     * @param  \App\Products  $products
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
     {
-        $category = Categories::findOrFail($id);
-        return view($this->table . '.edit', compact('category'));
+        //
+        $product = Products::findOrFail($id);
+        return view($this->table . '.edit', compact('product'));
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Categories  $categories
+     * @param  \App\Products  $products
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
     {
-        //
-        $message ='';
-        $category = $request->except(['_token', '_method']);
-        try {            
-            $message = 'Categoria ' .$category['name'] .' modificada con éxito ';
-            Categories::where('id', '=', $id)->update($category);
-            return redirect($this->table )->with('Message', $message);
-        } catch (\Throwable $th) {
-            $message = 'Hubo un error al modificar la categoria ' .$category['name'] ;
-            return redirect($this->table . '/create')->with('MessageError', $message);
-        }finally{
-            $this->logCategories($message);
-        }
+         //
+         $message ='';
+         $product = $request->except(['_token', '_method']);
+         try {            
+             $message = 'Producto ' .$product['name'] .' modificado con éxito ';
+             Products::where('id', '=', $id)->update($product);
+             return redirect($this->table )->with('Message', $message);
+         } catch (\Throwable $th) {
+             $message = 'Hubo un error al modificar el producto ' .$product['name'] ;
+             return redirect($this->table . '/create')->with('MessageError', $message);
+         }finally{
+             $this->logProducts($message);
+         }
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Categories  $categories
+     * @param  \App\Products  $products
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {
-        $category = Categories::findOrFail($id);
+        $product = Products::findOrFail($id);
         $message ='';
         try {
-            Categories::destroy($id);
-            $message = 'Categoria ' . $category->name. ' eliminada con éxito ' ;
+            Products::destroy($id);
+            $message = 'Producto ' . $product->name. ' eliminada con éxito ' ;
             return redirect($this->table )->with('Message', $message);
         } catch (\Throwable $th) {
-            $message = 'Hubo un error al eliminar el categoria ' . $category->name;
+            $message = 'Hubo un error al eliminar el producto ' . $product->name;
             return redirect($this->table )->with('MessageError', $message);
         }finally{
-            $this->logCategories($message);
+            $this->logProducts($message);
         }
     }
 
-    public function logCategories ($description){
+    public function logProducts ($description){
 
         $log = [            
             'user' =>Auth::user()['email'],
