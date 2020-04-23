@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use PhpParser\Node\Stmt\Catch_;
 use Illuminate\Support\Facades\Auth;
 use DB;
+use Illuminate\Support\Facades\Log;
 
 class CategoriesController extends Controller
 {
@@ -55,6 +56,7 @@ class CategoriesController extends Controller
             return redirect($this->table)->with('Message', $message);
         } catch (\Throwable $th) {
             $message= 'Hubo un error al crear ' .$category['name'] ;
+            Log::error('Error', ['data'=>$request ,'error' => $th]);
             return redirect($this->table . '/create')->with('MessageError', $message);
         } finally {
             $this->logCategories($message);
@@ -102,6 +104,7 @@ class CategoriesController extends Controller
             return redirect($this->table)->with('Message', $message);
         } catch (\Throwable $th) {
             $message = 'Hubo un error al modificar la categoria ' .$category['name'] ;
+            Log::error('Error', ['data'=>$request ,'error' => $th]);
             return redirect($this->table . '/create')->with('MessageError', $message);
         } finally {
             $this->logCategories($message);
@@ -124,6 +127,7 @@ class CategoriesController extends Controller
             return redirect($this->table)->with('Message', $message);
         } catch (\Throwable $th) {
             $message = 'Hubo un error al eliminar el categoria ' . $category->name;
+            Log::error('Error', ['data'=>$category ,'error' => $th]);
             return redirect($this->table)->with('MessageError', $message);
         } finally {
             $this->logCategories($message);

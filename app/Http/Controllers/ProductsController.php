@@ -7,6 +7,7 @@ use App\Products;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use DB;
+use Illuminate\Support\Facades\Log;
 
 class ProductsController extends Controller
 {
@@ -60,6 +61,7 @@ class ProductsController extends Controller
             $message= 'Producto ' .$product['name'] .' agregado correctamente' ;
             return redirect($this->table)->with('Message', $message);
         } catch (\Throwable $th) {
+            Log::error('Error', ['data'=>$product ,'error' => $th]);
             $message= 'Hubo un error al crear ' .$product['name'] ;
             return redirect($this->table . '/create')->with('MessageError', $message);
         } finally {
