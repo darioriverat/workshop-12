@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Log;
 use Tests\TestCase;
 
 
-class StoreProductTest extends TestCase
+class UpdateProductTest extends TestCase
 {
     /**
      * A basic feature test example.

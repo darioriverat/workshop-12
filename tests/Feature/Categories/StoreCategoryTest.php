@@ -5,12 +5,8 @@ namespace Tests\Feature;
 use App\Categories;
 use App\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\ValidationException;
 use Tests\TestCase;
-use Illuminate\Support\Facades\Log;
-
-
 
 class StoreCategoryTest extends TestCase
 {
@@ -22,23 +18,22 @@ class StoreCategoryTest extends TestCase
     use RefreshDatabase;
     public function testStoreCategoryWithoutAuth()
     {
-        $category = factory(Categories::class)->create();
+        $category = factory(Categories::class)->make()->toArray();
         $response = $this->post('/categories', $category);
         $response->assertStatus(302);
     }
     public function testStoreCategoryWithAuth()
     {
         $user = factory(User::class)->create();
-        $category = factory(Categories::class)->create();
-        $response = $this->actingAs($user)->post('/categories', [$category, "_token" => csrf_token()]);
-        $response->assertOk();
+        $category = factory(Categories::class)->make()->toArray();
+        $response = $this->actingAs($user)->post('/categories', $category);
+        $this->followRedirects($response)->assertOk();
     }
     public function testStoreCategoryWithAuthRemovingAttribute()
     {
         $user = factory(User::class)->create();
-        $category = factory(Categories::class)->create();
-        $category->name = '';
+        $category = ["name" => "Shoes"];
         $response = $this->actingAs($user)->post('/categories', $category);
-        // $response
+        $response->assertSessionHasErrors('description');
     }
 }

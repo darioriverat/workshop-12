@@ -55,12 +55,14 @@
                             @endforeach
                             @else
                             <tr>
-                                <td colspan="2">No se han encontrado registros</td>
+                                <td colspan="3">No se han encontrado registros</td>
                             </tr>
                             @endif
                         </tbody>
-
                     </table>
+                    <div class="form-group row  justify-content-center">
+                        {!!$categories->render()!!}
+                    </div>
                 </div>
             </div>
         </div>

@@ -43,7 +43,7 @@
                     <label for="mobile" class="col-md-4 col-form-label text-md-right">{{ __('Precio') }}</label>
     
                     <div class="col-md-6">
-                        <input id="price" type="number" class="form-control @error('price') is-invalid @enderror"
+                        <input id="price" type="float" class="form-control @error('price') is-invalid @enderror"
                             name="price" value="{{$product->price ?? ''}}" required autocomplete="price" autofocus>
     
                         @error('price')

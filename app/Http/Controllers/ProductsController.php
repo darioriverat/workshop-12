@@ -3,12 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Categories;
+use App\Http\Requests\ValidateProducts;
 use App\Products;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use DB;
+use FFI\Exception;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
+use App\Logs;
 use RealRashid\SweetAlert\Facades\Alert;
 
 class ProductsController extends Controller
@@ -27,7 +29,7 @@ class ProductsController extends Controller
     public function index()
     {
         //
-        $datos[$this->table] = Products::all();
+        $datos[$this->table] = Products::paginate(5);
         return view($this->table.'.index', $datos);
     }
 
@@ -49,25 +51,25 @@ class ProductsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store( ValidateProducts $request)
     {
         //
         $message='';
-        $product = $request->except('_token');
+        $product = $request->validated();
         try {
             if ($request->file('photo')) {
                 $product['photo'] = $request->file('photo')->store('public/uploads');
                 $product['photo'] = str_replace("public/uploads", "uploads", $product['photo']);
             }
-            Products::insert($product);
+            Products::create($product);
             $message= 'Producto ' .$product['name'] .' agregado correctamente' ;
             Alert::toast($message, 'success'); 
             return redirect($this->table);
-        } catch (\Throwable $th) {
-            Log::error('Error', ['data'=>$product ,'error' => $th]);
+        } catch (Exception $ex) {
+            Log::error('Error', ['data'=>$product ,'error' => $ex]);
             $message= 'Hubo un error al crear ' .$product['name'] ;
             Alert::toast($message, 'error'); 
-            return redirect($this->table);
+            return redirect($this->table .'/create');
         } finally {
             $this->logProducts($message);
         }
@@ -121,8 +123,9 @@ class ProductsController extends Controller
             Products::where('id', '=', $id)->update($product);
             Alert::toast($message, 'success'); 
             return redirect($this->table);
-        } catch (\Throwable $th) {
+        } catch (Exception $ex) {
             $message = 'Hubo un error al modificar el producto ' .$product['name'] ;
+            Log::error('Error', ['data'=>$product ,'error' => $ex]);
             Alert::toast($message, 'error'); 
             return redirect($this->table);
         } finally {
@@ -148,8 +151,9 @@ class ProductsController extends Controller
             $message = 'Producto ' . $product->name. ' eliminada con éxito ' ;
             Alert::toast($message, 'success'); 
             return redirect($this->table);
-        } catch (\Throwable $th) {
+        } catch (Exception $ex) {
             $message = 'Hubo un error al eliminar el producto ' . $product->name;
+            Log::error('Error', ['data'=>$product ,'error' => $ex]);
             Alert::toast($message, 'error'); 
             return redirect($this->table);
         } finally {
@@ -159,15 +163,18 @@ class ProductsController extends Controller
 
     public function logProducts($description)
     {
-        $log = [
-            'user' =>Auth::user()['email'],
-            'source'=>$this->table ,
-            'type'=>'Audit',
-            'description'=>$description,
-            'ipAddress' =>  $_SERVER['REMOTE_ADDR'],
-            'userAgent' => $_SERVER['HTTP_USER_AGENT'],
-        ];
+        try {
 
-        DB::table('logs')->insert($log);
+            $log = [
+                'user' => Auth::user()['email'],
+                'source' => $this->table,
+                'type' => 'Audit',
+                'ipAddress' =>  $_SERVER['HTTP_CLIENT_IP'] ?? '1270.0.1',
+                'userAgent' => $_SERVER['HTTP_USER_AGENT'] ?? '',
+                'description' => $description,
+            ];
+            Logs::create($log);
+        } catch (Exception $ex) {
+        }
     }
 }

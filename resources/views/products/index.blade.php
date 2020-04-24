@@ -42,7 +42,7 @@
                                 </td>
                                 <td>{{$product->name}}</td>
                                 <td>{{$product->description}}</td>
-                                <td>{{$product->price}}</td>
+                                <td>{{number_format($product->price, 2)}}</td>
                                 <td>{{$product->currency}}</td>
                                 <td>
                                     <div class="form-group row">
@@ -62,12 +62,15 @@
                             @endforeach
                             @else
                             <tr>
-                                <td colspan="2">No se han encontrado registros</td>
+                                <td colspan="6">No se han encontrado registros</td>
                             </tr>
                             @endif
                         </tbody>
-
                     </table>
+                    
+                    <div class="form-group row  justify-content-center">
+                        {!!$products->render()!!}
+                    </div>
                 </div>
             </div>
         </div>

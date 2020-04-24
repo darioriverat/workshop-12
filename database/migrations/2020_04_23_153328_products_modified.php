@@ -17,8 +17,8 @@ class ProductsModified extends Migration
             $table->id()->unique();
             $table->string('name');
             $table->string('description');
-            $table->string('photo');
-            $table->bigInteger('price');
+            $table->string('photo')->nullable();
+            $table->float('price',18,2);
             $table->string('currency');
             $table->bigInteger('category_id')->unsigned();
             $table->foreign('category_id')->references('id')->on('categories');

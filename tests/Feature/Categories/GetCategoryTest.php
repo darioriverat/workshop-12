@@ -3,10 +3,7 @@
 namespace Tests\Feature;
 
 use App\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
-use Illuminate\Support\Facades\Log;
 
 
 class GetCategoryTest extends TestCase
@@ -16,6 +13,7 @@ class GetCategoryTest extends TestCase
      *
      * @return void
      */
+    
     public function testGetListOfCategoriesWithoutAuth()
     {
         $response = $this->get('/categories');

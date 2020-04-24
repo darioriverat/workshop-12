@@ -11,7 +11,6 @@ $factory->define(Products::class, function (Faker $faker) {
         'description' => $faker->text,
         'price' => $faker->numerify("########"),
         'photo' => $faker->imageUrl(),
-        'category_id'=>$faker->numberBetween(0, 100),
         'currency' => 'COP'
     ];
 });
