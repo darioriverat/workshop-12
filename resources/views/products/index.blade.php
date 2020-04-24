@@ -5,18 +5,6 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-
-                @if(session('Message'))
-                <div class="alert alert-success" role="alert">
-                    {{ session('Message') }}
-                </div>
-                @endif
-
-                @if(session('MessageError'))
-                <div class="alert alert-danger" role="alert">
-                    {{ session('MessageError') }}
-                </div>
-                @endif
                 <div class="card-header">
                     <div class="row justify-content-left">
                         <div class="col-sm-8">
@@ -34,7 +22,7 @@
                         {{ session('status') }}
                     </div>
                     @endif
-                    <table class="table table-light">
+                    <table class="table table-striped">
                         <thead class="thead">
                             <tr>
                                 <th>Foto</th>
@@ -42,6 +30,7 @@
                                 <th>Descripción</th>
                                 <th>Precio</th>
                                 <th>Moneda</th>
+                                <th>Acciones</th>
                             </tr>
                         </thead>
                         <tbody>

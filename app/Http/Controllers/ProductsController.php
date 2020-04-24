@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class ProductsController extends Controller
 {
@@ -60,11 +61,13 @@ class ProductsController extends Controller
             }
             Products::insert($product);
             $message= 'Producto ' .$product['name'] .' agregado correctamente' ;
-            return redirect($this->table)->with('Message', $message);
+            Alert::toast($message, 'success'); 
+            return redirect($this->table);
         } catch (\Throwable $th) {
             Log::error('Error', ['data'=>$product ,'error' => $th]);
             $message= 'Hubo un error al crear ' .$product['name'] ;
-            return redirect($this->table . '/create')->with('MessageError', $message);
+            Alert::toast($message, 'error'); 
+            return redirect($this->table);
         } finally {
             $this->logProducts($message);
         }
@@ -116,10 +119,12 @@ class ProductsController extends Controller
             }
             $message = 'Producto ' .$product['name'] .' modificado con éxito ';
             Products::where('id', '=', $id)->update($product);
-            return redirect($this->table)->with('Message', $message);
+            Alert::toast($message, 'success'); 
+            return redirect($this->table);
         } catch (\Throwable $th) {
             $message = 'Hubo un error al modificar el producto ' .$product['name'] ;
-            return redirect($this->table . '/create')->with('MessageError', $message);
+            Alert::toast($message, 'error'); 
+            return redirect($this->table);
         } finally {
             $this->logProducts($message);
         }
@@ -141,10 +146,12 @@ class ProductsController extends Controller
                 products::destroy($id);
             }
             $message = 'Producto ' . $product->name. ' eliminada con éxito ' ;
-            return redirect($this->table)->with('Message', $message);
+            Alert::toast($message, 'success'); 
+            return redirect($this->table);
         } catch (\Throwable $th) {
             $message = 'Hubo un error al eliminar el producto ' . $product->name;
-            return redirect($this->table)->with('MessageError', $message);
+            Alert::toast($message, 'error'); 
+            return redirect($this->table);
         } finally {
             $this->logProducts($message);
         }
@@ -157,6 +164,8 @@ class ProductsController extends Controller
             'source'=>$this->table ,
             'type'=>'Audit',
             'description'=>$description,
+            'ipAddress' =>  $_SERVER['REMOTE_ADDR'],
+            'userAgent' => $_SERVER['HTTP_USER_AGENT'],
         ];
 
         DB::table('logs')->insert($log);

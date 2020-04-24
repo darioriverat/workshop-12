@@ -4,9 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Categories;
 use Illuminate\Http\Request;
-use PhpParser\Node\Stmt\Catch_;
 use Illuminate\Support\Facades\Auth;
 use DB;
+use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Support\Facades\Log;
 
 class CategoriesController extends Controller
@@ -36,7 +36,6 @@ class CategoriesController extends Controller
     public function create()
     {
         //
-        
         return view($this->table.'.create');
     }
 
@@ -48,16 +47,20 @@ class CategoriesController extends Controller
      */
     public function store(Request $request)
     {
+        Log::debug('debug',[$request]);
         $message='';
         $category = $request->except('_token');
+        Log::debug('debugCategory',[$request]);
         try {
             Categories::insert($category);
             $message= 'Categoria ' .$category['name'] .' agregado correctamente' ;
-            return redirect($this->table)->with('Message', $message);
+            Alert::toast($message, 'success'); 
+            return redirect($this->table);
         } catch (\Throwable $th) {
             $message= 'Hubo un error al crear ' .$category['name'] ;
             Log::error('Error', ['data'=>$request ,'error' => $th]);
-            return redirect($this->table . '/create')->with('MessageError', $message);
+            Alert::toast($message, 'error'); 
+            return redirect($this->table . '/create');
         } finally {
             $this->logCategories($message);
         }
@@ -101,11 +104,13 @@ class CategoriesController extends Controller
         try {
             $message = 'Categoria ' .$category['name'] .' modificada con éxito ';
             Categories::where('id', '=', $id)->update($category);
-            return redirect($this->table)->with('Message', $message);
+            Alert::toast($message, 'success'); 
+            return redirect($this->table);
         } catch (\Throwable $th) {
             $message = 'Hubo un error al modificar la categoria ' .$category['name'] ;
             Log::error('Error', ['data'=>$request ,'error' => $th]);
-            return redirect($this->table . '/create')->with('MessageError', $message);
+            Alert::toast($message, 'error'); 
+            return redirect($this->table . '/create');
         } finally {
             $this->logCategories($message);
         }
@@ -124,11 +129,13 @@ class CategoriesController extends Controller
         try {
             Categories::destroy($id);
             $message = 'Categoria ' . $category->name. ' eliminada con éxito ' ;
-            return redirect($this->table)->with('Message', $message);
+            Alert::toast($message, 'success'); 
+            return redirect($this->table);
         } catch (\Throwable $th) {
             $message = 'Hubo un error al eliminar el categoria ' . $category->name;
             Log::error('Error', ['data'=>$category ,'error' => $th]);
-            return redirect($this->table)->with('MessageError', $message);
+            Alert::toast($message, 'error'); 
+            return redirect($this->table);
         } finally {
             $this->logCategories($message);
         }
@@ -140,9 +147,10 @@ class CategoriesController extends Controller
             'user' =>Auth::user()['email'],
             'source'=>$this->table ,
             'type'=>'Audit',
+            'ipAddress' =>  $_SERVER['REMOTE_ADDR'],
+            'userAgent' => $_SERVER['HTTP_USER_AGENT'],
             'description'=>$description,
         ];
-
         DB::table('logs')->insert($log);
     }
 }

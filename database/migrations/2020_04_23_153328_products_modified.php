@@ -13,14 +13,12 @@ class ProductsModified extends Migration
      */
     public function up()
     {
-        //
-        Schema::dropIfExists('products');
         Schema::create('products', function (Blueprint $table) {
             $table->id()->unique();
             $table->string('name');
             $table->string('description');
             $table->string('photo');
-            $table->decimal('price');
+            $table->bigInteger('price');
             $table->string('currency');
             $table->bigInteger('category_id')->unsigned();
             $table->foreign('category_id')->references('id')->on('categories');

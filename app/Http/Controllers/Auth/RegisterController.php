@@ -54,7 +54,7 @@ class RegisterController extends Controller
         return Validator::make($data, [
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'mobile' => ['required','string','max:40'],
+            'mobile' => ['required','number','max:40'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
         ]);
     }
@@ -72,7 +72,8 @@ class RegisterController extends Controller
             'source'=>'RegistersUsers',
             'type'=>'Audit',
             'description'=>'Nuevo registro de usuario',
-
+            'ipAddress' =>  $_SERVER['REMOTE_ADDR'],
+            'userAgent' => $_SERVER['HTTP_USER_AGENT'],
         ];
         DB::table('logs')->insert($log);
         
@@ -80,6 +81,7 @@ class RegisterController extends Controller
             'name' => $data['name'],
             'email' => $data['email'],
             'mobile' => $data['mobile'],
+            
             'password' => Hash::make($data['password']),
         ]);
     }
