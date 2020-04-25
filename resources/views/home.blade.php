@@ -23,7 +23,11 @@
                             @foreach($products as $product)
                             <tr>
                                 <td>
-                                    <img src="{{ asset('storage').'/'.$product->photo}}" alt="" width="100">
+                                        @if($product->photo)
+                                        <img src="{{ asset('storage').'/'.$product->photo}}" alt="" width="100">
+                                        @else
+                                        <img  src="{{asset('img/no-image-icon.png')}}"  alt="" width="100">
+                                        @endif
                                 </td>
                                 <td>{{$product->name}}</td>
                                 <td>{{$product->description}}</td>
