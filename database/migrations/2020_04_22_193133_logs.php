@@ -19,6 +19,8 @@ class Logs extends Migration
             $table->string('user');
             $table->string('type');
             $table->string('source');
+            $table->string('ipAddress');
+            $table->string('userAgent');
             $table->string('description');
         });
     }

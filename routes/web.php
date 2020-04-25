@@ -1,5 +1,6 @@
 <?php
 
+use App\Products;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,7 +15,8 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('home');
+    $datos["products"]=Products::paginate(5);
+    return view('home',$datos);
 });
 
 Auth::routes();

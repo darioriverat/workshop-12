@@ -3,11 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Categories;
+use App\Http\Requests\ValidateCategories;
+use App\Logs ;
 use Illuminate\Http\Request;
-use PhpParser\Node\Stmt\Catch_;
 use Illuminate\Support\Facades\Auth;
-use DB;
-use Illuminate\Support\Facades\Log;
+use FFI\Exception;
+use RealRashid\SweetAlert\Facades\Alert;
+use Illuminate\Support\Facades\Log as Log;
+use PDOException;
 
 class CategoriesController extends Controller
 {
@@ -24,8 +27,8 @@ class CategoriesController extends Controller
      */
     public function index()
     {
-        $datos[$this->table] = Categories::all();
-        return view($this->table.'.index', $datos);
+        $datos[$this->table] = Categories::paginate(5);
+        return view($this->table . '.index', $datos);
     }
 
     /**
@@ -36,8 +39,7 @@ class CategoriesController extends Controller
     public function create()
     {
         //
-        
-        return view($this->table.'.create');
+        return view($this->table . '.create');
     }
 
     /**
@@ -46,20 +48,22 @@ class CategoriesController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(ValidateCategories $request)
     {
-        $message='';
-        $category = $request->except('_token');
+        $message = '';
+        $category = $request->validated();
         try {
-            Categories::insert($category);
-            $message= 'Categoria ' .$category['name'] .' agregado correctamente' ;
-            return redirect($this->table)->with('Message', $message);
-        } catch (\Throwable $th) {
-            $message= 'Hubo un error al crear ' .$category['name'] ;
-            Log::error('Error', ['data'=>$request ,'error' => $th]);
-            return redirect($this->table . '/create')->with('MessageError', $message);
+            Categories::create($category);
+            $message = 'Categoria ' . $category['name'] . ' agregado correctamente';
+            Alert::toast($message, 'success');
+            return redirect($this->table);
+        } catch (Exception $ex) {
+            $message = 'Hubo un error al crear ' . $category['name'];
+            Log::error('Error', ['data' => $request, 'error' => $ex]);
+            Alert::toast($message, 'error');
+            return redirect($this->table . '/create')->withErrors(['Error' => 'Ocurrio un error ']);
         } finally {
-            $this->logCategories($message);
+            $this->LogCategories($message);
         }
     }
 
@@ -93,19 +97,22 @@ class CategoriesController extends Controller
      * @param  \App\Categories  $categories
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(ValidateCategories $request, $id)
     {
         //
-        $message ='';
-        $category = $request->except(['_token', '_method']);
+        $oldCategory = Categories::findOrFail($id);
+        $message = '';
+        $category = $request->validated();
         try {
-            $message = 'Categoria ' .$category['name'] .' modificada con éxito ';
+            $message = 'Categoria ' . $category['name'] . ' modificada con éxito ';
             Categories::where('id', '=', $id)->update($category);
-            return redirect($this->table)->with('Message', $message);
-        } catch (\Throwable $th) {
-            $message = 'Hubo un error al modificar la categoria ' .$category['name'] ;
-            Log::error('Error', ['data'=>$request ,'error' => $th]);
-            return redirect($this->table . '/create')->with('MessageError', $message);
+            Alert::toast($message, 'success');
+            return redirect($this->table);
+        } catch (Exception $ex) {
+            $message = 'Hubo un error al modificar la categoria ' . $category['name'];
+            Log::error('Error', ['data' => $request, 'error' => $ex]);
+            Alert::toast($message, 'error');
+            return redirect($this->table  . '/' . $id . '/edit')->with(['category' => $oldCategory])->withErrors(['Error' => 'Ocurrio un error ']);
         } finally {
             $this->logCategories($message);
         }
@@ -119,16 +126,19 @@ class CategoriesController extends Controller
      */
     public function destroy($id)
     {
-        $category = Categories::findOrFail($id);
-        $message ='';
+
+        $message = '';
         try {
-            Categories::destroy($id);
-            $message = 'Categoria ' . $category->name. ' eliminada con éxito ' ;
-            return redirect($this->table)->with('Message', $message);
-        } catch (\Throwable $th) {
+            $category = Categories::findOrFail($id);
+            Categories::destroy($category->id);
+            $message = 'Categoria ' . $category->name . ' eliminada con éxito ';
+            Alert::toast($message, 'success');
+            return redirect($this->table);
+        } catch (Exception $ex) {
             $message = 'Hubo un error al eliminar el categoria ' . $category->name;
-            Log::error('Error', ['data'=>$category ,'error' => $th]);
-            return redirect($this->table)->with('MessageError', $message);
+            Log::error('Error', ['data' => $category, 'error' => $ex]);
+            Alert::toast($message, 'error');
+            return redirect($this->table)->withErrors(['Error' => 'Ocurrio un error ']);
         } finally {
             $this->logCategories($message);
         }
@@ -136,13 +146,18 @@ class CategoriesController extends Controller
 
     public function logCategories($description)
     {
-        $log = [
-            'user' =>Auth::user()['email'],
-            'source'=>$this->table ,
-            'type'=>'Audit',
-            'description'=>$description,
-        ];
+        try {
 
-        DB::table('logs')->insert($log);
+            $log = [
+                'user' => Auth::user()['email'],
+                'source' => $this->table,
+                'type' => 'Audit',
+                'ipAddress' =>  $_SERVER['HTTP_CLIENT_IP'] ?? '1270.0.1',
+                'userAgent' => $_SERVER['HTTP_USER_AGENT'] ?? '',
+                'description' => $description,
+            ];
+            Logs::create($log);
+        } catch (Exception $ex) {
+        }
     }
 }

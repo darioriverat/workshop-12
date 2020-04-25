@@ -43,7 +43,7 @@
                     <label for="mobile" class="col-md-4 col-form-label text-md-right">{{ __('Precio') }}</label>
     
                     <div class="col-md-6">
-                        <input id="price" type="number" class="form-control @error('price') is-invalid @enderror"
+                        <input id="price" type="float" class="form-control @error('price') is-invalid @enderror"
                             name="price" value="{{$product->price ?? ''}}" required autocomplete="price" autofocus>
     
                         @error('price')
@@ -57,12 +57,10 @@
                     <label for="currency" class="col-md-4 col-form-label text-md-right">{{ __('Moneda') }}</label>
     
                     <div class="col-md-6">
-                            <select name="currency" id="currency" class="form-control @error('currency') is-invalid @enderror" required autocomplete="currency" autofocus>
-                                    <option value="COP">Peso Colombiano</option>
-                                    <option value="USD">Dolar Estadounidense</option>
-                                    {{-- @foreach ($buildings as $key => $value)
-                                        <option value="{{ $key }}">{{ $value }}</option>
-                                    @endforeach --}}
+                            <select value="" name="currency" id="currency" class="form-control @error('currency') is-invalid @enderror" required autocomplete="currency" autofocus>
+                                    <option value="">-- Selecciona una opción --</option>    
+                                    <option {{$product->currency ?? '' =='COP' ? ' selected ':''}} value="COP">Peso Colombiano</option>
+                                    <option {{$product->currency ?? ''=='USD' ? ' selected ':''}} value="USD">Dolar Estadounidense</option>
                             </select>
                         @error('currency')
                         <span class="invalid-feedback" role="alert">
@@ -73,12 +71,11 @@
             </div>
             <div class="form-group row">
                     <label for="category" class="col-md-4 col-form-label text-md-right">{{ __('Categoria') }}</label>
-    
                     <div class="col-md-6">
-                            <select name="category" id="category_id" class="form-control @error('category_id') is-invalid @enderror"  required autocomplete="category_id" autofocus>
-                                    <option value="USD">-- Selecciona una opción --</option>
+                            <select value="{{$product->category ?? ''}}" name="category_id" id="category" class="form-control @error('category_id') is-invalid @enderror"  required autocomplete="category_id" autofocus>
+                                    <option value="">-- Selecciona una opción --</option>
                                     @foreach ($categories as $category)
-                                        <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                        <option {{ $product->category_id ?? ''== $category->id ? ' selected ':''}} value="{{ $category->id }}">{{ $category->name }}</option>
                                     @endforeach
                             </select>
                         @error('category_id')
@@ -97,7 +94,7 @@
                         @endif
 
                         <input id="photo" type="file" class="form-control @error('photo') is-invalid @enderror"
-                            name="photo" accept="image/png, image/jpeg" value="{{$category->photo ?? ''}}" required
+                            name="photo" accept="image/png, image/jpeg" value="{{$product->photo ?? ''}}" 
                             autocomplete="photo" autofocus>
 
                         @error('photo')

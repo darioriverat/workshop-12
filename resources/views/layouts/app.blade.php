@@ -26,6 +26,7 @@
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">
+                    <img  src="{{asset('img/shop.png')}}"  alt="" width="100">
                     {{ config('app.name', 'Tienda') }}
                 </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse"
@@ -97,6 +98,8 @@
             @yield('content')
         </main>
     </div>
+    @include('sweetalert::alert')
+
 </body>
 
 </html>

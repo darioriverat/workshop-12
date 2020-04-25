@@ -3,11 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Categories;
+use App\Http\Requests\ValidateProducts;
 use App\Products;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use DB;
+use FFI\Exception;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
+use App\Logs;
+use PDOException;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class ProductsController extends Controller
 {
@@ -25,8 +30,8 @@ class ProductsController extends Controller
     public function index()
     {
         //
-        $datos[$this->table] = Products::all();
-        return view($this->table.'.index', $datos);
+        $datos[$this->table] = Products::paginate(5);
+        return view($this->table . '.index', $datos);
     }
 
     /**
@@ -38,7 +43,7 @@ class ProductsController extends Controller
     {
         //
         $datos["categories"] = Categories::all();
-        return view($this->table.'.create', $datos);
+        return view($this->table . '.create', $datos);
     }
 
     /**
@@ -47,23 +52,30 @@ class ProductsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(ValidateProducts $request)
     {
         //
-        $message='';
-        $product = $request->except('_token');
+        $message = '';
+        $product = $request->validated();
         try {
             if ($request->file('photo')) {
                 $product['photo'] = $request->file('photo')->store('public/uploads');
                 $product['photo'] = str_replace("public/uploads", "uploads", $product['photo']);
             }
-            Products::insert($product);
-            $message= 'Producto ' .$product['name'] .' agregado correctamente' ;
-            return redirect($this->table)->with('Message', $message);
-        } catch (\Throwable $th) {
-            Log::error('Error', ['data'=>$product ,'error' => $th]);
-            $message= 'Hubo un error al crear ' .$product['name'] ;
-            return redirect($this->table . '/create')->with('MessageError', $message);
+            Products::create($product);
+            $message = 'Producto ' . $product['name'] . ' agregado correctamente';
+            Alert::toast($message, 'success');
+            return redirect($this->table);
+        } catch (PDOException $ex) {
+            $message = 'Hubo un error al modificar el producto ' . $product['name'];
+            Log::error('Error', ['data' => $product, 'error' => $ex]);
+            Alert::toast($message, 'error');
+            return redirect($this->table . '/create')->with(['product' => $product])->withErrors(['missingFields' => 'Ocurrio un error ']);
+        } catch (Exception $ex) {
+            Log::error('Error', ['data' => $product, 'error' => $ex]);
+            $message = 'Hubo un error al crear ' . $product['name'];
+            Alert::toast($message, 'error');
+            return redirect($this->table . '/create');
         } finally {
             $this->logProducts($message);
         }
@@ -90,7 +102,8 @@ class ProductsController extends Controller
     {
         //
         $product = Products::findOrFail($id);
-        return view($this->table . '.edit', compact('product'));
+        $datos["categories"] = Categories::all();
+        return view($this->table . '.edit', $datos, compact('product'));
     }
 
     /**
@@ -100,18 +113,32 @@ class ProductsController extends Controller
      * @param  \App\Products  $products
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(ValidateProducts $request, $id)
     {
         //
-        $message ='';
-        $product = $request->except(['_token', '_method']);
+        $message = '';
+        $product = $request->validated();
         try {
-            $message = 'Producto ' .$product['name'] .' modificado con éxito ';
+            if ($request->file('photo')) {
+                $oldProduct = products::findOrFail($id);
+                Storage::delete('public/' . $oldProduct->photo);
+                $product['photo'] = $request->file('photo')->store('public/uploads');
+                $product['photo'] = str_replace("public/uploads", "uploads", $product['photo']);
+            }
+            $message = 'Producto ' . $product['name'] . ' modificado con éxito ';
             Products::where('id', '=', $id)->update($product);
-            return redirect($this->table)->with('Message', $message);
-        } catch (\Throwable $th) {
-            $message = 'Hubo un error al modificar el producto ' .$product['name'] ;
-            return redirect($this->table . '/create')->with('MessageError', $message);
+            Alert::toast($message, 'success');
+            return redirect($this->table);
+        } catch (PDOException $ex) {
+            $message = 'Hubo un error al modificar el producto ' . $product['name'];
+            Log::error('Error', ['data' => $product, 'error' => $ex]);
+            Alert::toast($message, 'error');
+            return redirect($this->table  . '/' . $id . '/edit')->with(['product' => $product])->withErrors(['missingFields' => 'Ocurrio un error ']);
+        } catch (Exception $ex) {
+            $message = 'Hubo un error al modificar el producto ' . $product['name'];
+            Log::error('Error', ['data' => $product, 'error' => $ex]);
+            Alert::toast($message, 'error');
+            return redirect($this->table  . '/' . $id . '/edit')->with(['product' => $product])->withErrors(['Error' => 'Ocurrio un error ']);
         } finally {
             $this->logProducts($message);
         }
@@ -126,14 +153,20 @@ class ProductsController extends Controller
     public function destroy($id)
     {
         $product = Products::findOrFail($id);
-        $message ='';
+        $message = '';
         try {
             Products::destroy($id);
-            $message = 'Producto ' . $product->name. ' eliminada con éxito ' ;
-            return redirect($this->table)->with('Message', $message);
-        } catch (\Throwable $th) {
+            if (Storage::delete('public/' . $product->photo)) {
+                products::destroy($id);
+            }
+            $message = 'Producto ' . $product->name . ' eliminada con éxito ';
+            Alert::toast($message, 'success');
+            return redirect($this->table);
+        } catch (Exception $ex) {
             $message = 'Hubo un error al eliminar el producto ' . $product->name;
-            return redirect($this->table)->with('MessageError', $message);
+            Log::error('Error', ['data' => $product, 'error' => $ex]);
+            Alert::toast($message, 'error');
+            return redirect($this->table);
         } finally {
             $this->logProducts($message);
         }
@@ -141,13 +174,18 @@ class ProductsController extends Controller
 
     public function logProducts($description)
     {
-        $log = [
-            'user' =>Auth::user()['email'],
-            'source'=>$this->table ,
-            'type'=>'Audit',
-            'description'=>$description,
-        ];
+        try {
 
-        DB::table('logs')->insert($log);
+            $log = [
+                'user' => Auth::user()['email'],
+                'source' => $this->table,
+                'type' => 'Audit',
+                'ipAddress' =>  $_SERVER['HTTP_CLIENT_IP'] ?? '1270.0.1',
+                'userAgent' => $_SERVER['HTTP_USER_AGENT'] ?? '',
+                'description' => $description,
+            ];
+            Logs::create($log);
+        } catch (Exception $ex) {
+        }
     }
 }
