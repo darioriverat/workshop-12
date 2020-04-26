@@ -21,8 +21,8 @@
                                 <th>Usuario</th>
                                 <th>País</th>
                                 <th>Valor</th>
-                                <th>Moneda</th>
-                                <th>Acciones</th>
+                                <th>Estado</th>
+                                <th>Pago</th>
                             </tr>
                         </thead>
                         <tbody>

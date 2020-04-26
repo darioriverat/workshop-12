@@ -126,7 +126,7 @@ class ProductsController extends Controller
                 $product['photo'] = str_replace("public/uploads", "uploads", $product['photo']);
             }
             $message = 'Producto ' . $product['name'] . ' modificado con éxito ';
-            Products::findOrFail()->update($product);
+            Products::findOrFail($id)->update($product);
             Alert::toast($message, 'success');
             return redirect($this->table);
         } catch (PDOException $ex) {

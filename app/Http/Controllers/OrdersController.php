@@ -77,12 +77,12 @@ class OrdersController extends Controller
             $message = 'Ocurrio un error';
             Log::error('Error', ['data' => $order, 'error' => $ex]);
             Alert::toast($message, 'error');
-            return redirect($this->table . '/create')->with(['order' => $order])->withErrors(['missingFields' => 'Ocurrio un error ']);
+            return redirect($this->table . '/create/'.$order['product_id'])->with(['order' => $order])->withErrors(['missingFields' => 'Ocurrio un error ']);
         } catch (Exception $ex) {
             $message = 'Hubo un error al crear orden';
             Log::error('Error', ['data' => $request, 'error' => $ex]);
             Alert::toast($message, 'error');
-            return redirect($this->table . '/create')->withErrors(['Error' => 'Ocurrio un error ']);
+            return redirect($this->table . '/create/'.$order['product_id'])->withErrors(['Error' => 'Ocurrio un error ']);
         } finally {
             LoggerDataBase::insert($this->table,$message, 'Crear Orden');
         }

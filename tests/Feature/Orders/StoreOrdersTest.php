@@ -37,11 +37,10 @@ class StoreOrdersTest extends TestCase
     }
     public function testStoreOrdersWithAuthForeingsError()
     {
-        $this->withoutExceptionHandling();
         $user = factory(User::class)->create();
         $order = factory(Orders::class)->make()->toArray();
         $order["product_id"]="455";
         $response = $this->actingAs($user)->post('/orders', $order);
-        $response->assertSessionHasErrors('');
+        $response->assertStatus(404);
     }
 }
