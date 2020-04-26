@@ -39,8 +39,8 @@ class ValidateProducts extends FormRequest
             'name.required' => 'Nombre es requerido',
             'category_id.required' => 'Categoria es requerida',
             'description.required'  => 'Descripción es requerida',
-            'price.max' => 'Nombre es requerido',
-            'price.numeric'=>'Solo números utilize (.) para decimales'
+            'price.numeric'=>'Solo números utilize (.) para decimales',
+            'price.regex'=>'Máximo dos decimales'
         ];
     }
 }

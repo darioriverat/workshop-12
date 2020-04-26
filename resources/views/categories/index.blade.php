@@ -32,7 +32,6 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @if(count($categories)>0)
                             @foreach($categories as $category)
                             <tr>
                                 <td>{{$category->name}}</td>
@@ -53,9 +52,9 @@
                                 </td>
                             </tr>
                             @endforeach
-                            @else
+                            @if(count($categories)==0)
                             <tr>
-                                <td colspan="3">No se han encontrado registros</td>
+                                <td colspan="6">No se han encontrado registros</td>
                             </tr>
                             @endif
                         </tbody>

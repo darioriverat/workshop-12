@@ -105,7 +105,7 @@ class CategoriesController extends Controller
         $category = $request->validated();
         try {
             $message = 'Categoria ' . $category['name'] . ' modificada con éxito ';
-            Categories::where('id', '=', $id)->update($category);
+            Categories::findOrFail()->update($category);
             Alert::toast($message, 'success');
             return redirect($this->table);
         } catch (Exception $ex) {

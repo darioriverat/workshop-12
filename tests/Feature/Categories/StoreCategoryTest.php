@@ -32,7 +32,8 @@ class StoreCategoryTest extends TestCase
     public function testStoreCategoryWithAuthRemovingAttribute()
     {
         $user = factory(User::class)->create();
-        $category = ["name" => "Shoes"];
+        $category = factory(Categories::class)->make()->toArray();
+        $category["description"]="";
         $response = $this->actingAs($user)->post('/categories', $category);
         $response->assertSessionHasErrors('description');
     }
