@@ -27,7 +27,7 @@ class ValidateProducts extends FormRequest
         return [
             'name' => ['required', 'max:255'],
             'description' => ['required', 'max:255'],
-            'price'=>['required','numeric','digits_between:0,18'],
+            'price'=>['required','numeric','regex:/^\d+(\.\d{1,2})?$/'],
             'photo'=>['nullable'],
             'category_id'=>['required'],
             'currency'=>['required', new Currencys]
@@ -39,7 +39,8 @@ class ValidateProducts extends FormRequest
             'name.required' => 'Nombre es requerido',
             'category_id.required' => 'Categoria es requerida',
             'description.required'  => 'Descripción es requerida',
-            'price.max' => 'Nombre es requerido'
+            'price.numeric'=>'Solo números utilize (.) para decimales',
+            'price.regex'=>'Máximo dos decimales'
         ];
     }
 }

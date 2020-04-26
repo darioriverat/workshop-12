@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Categories;
 use App\Http\Requests\ValidateProducts;
 use App\Products;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use FFI\Exception;
 use Illuminate\Support\Facades\Log;
@@ -13,6 +12,7 @@ use Illuminate\Support\Facades\Storage;
 use App\Logs;
 use PDOException;
 use RealRashid\SweetAlert\Facades\Alert;
+
 
 class ProductsController extends Controller
 {
@@ -126,7 +126,7 @@ class ProductsController extends Controller
                 $product['photo'] = str_replace("public/uploads", "uploads", $product['photo']);
             }
             $message = 'Producto ' . $product['name'] . ' modificado con éxito ';
-            Products::where('id', '=', $id)->update($product);
+            Products::findOrFail($id)->update($product);
             Alert::toast($message, 'success');
             return redirect($this->table);
         } catch (PDOException $ex) {

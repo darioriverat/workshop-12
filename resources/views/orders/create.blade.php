@@ -1,3 +1,4 @@
+
 @extends('layouts.app')
 
 @section('content')
@@ -5,14 +6,12 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">Editar un producto</div>
+                <div class="card-header">Producto a comprar</div>
                 <div class="card-body">
-                    
-                    <form action="{{url('/products/'.$product->id)}}" method="post" enctype="multipart/form-data">
+
+                    <form action="{{url('/orders')}}" method="post" enctype="multipart/form-data">
                         {{csrf_field()}}
-                        {{method_field('PATCH')}}
-                        @include('products.form', ['type'=>'editar'])
-        
+                        @include('orders.form', ['type'=>'create'])
                     </form>
                     
                 </div>

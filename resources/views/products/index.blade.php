@@ -34,7 +34,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @if(count($products)>0)
+                          
                             @foreach($products as $product)
                             <tr>
                                 <td>
@@ -65,7 +65,7 @@
                                 </td>
                             </tr>
                             @endforeach
-                            @else
+                            @if(count($products)==0)
                             <tr>
                                 <td colspan="6">No se han encontrado registros</td>
                             </tr>
