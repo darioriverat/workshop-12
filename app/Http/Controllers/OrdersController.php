@@ -146,7 +146,6 @@ class OrdersController extends Controller
             $servicePlaceToplay = PlaceToPayService::createServicePlaceToPay();
             $responsePlaceToPay = $servicePlaceToplay->request($requestPlaceToPay);
             if ($responsePlaceToPay->isSuccessful()) {
-                // STORE THE $response->requestId() and $response->processUrl() on your DB associated with the payment order
                 Orders::where('id', $id)->update(array(
                     'status' => OrderStatus::PENDING,
                     'requestId' => $responsePlaceToPay->requestId(),
