@@ -176,8 +176,6 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         RealRashid\SweetAlert\SweetAlertServiceProvider::class,
-        // Dnetix\Redirection\PlacetoPay::class,
-
     ],
 
     /*
@@ -192,7 +190,7 @@ return [
     */
 
     'aliases' => [
-        // 'PlacetoPay' =>Dnetix\Redirection\PlacetoPay::class,
+
         'App' => Illuminate\Support\Facades\App::class,
         'Arr' => Illuminate\Support\Arr::class,
         'Artisan' => Illuminate\Support\Facades\Artisan::class,
