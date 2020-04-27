@@ -3,13 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Categories;
+use App\Enums\OrderStatus;
 use App\Http\Requests\ValidateOrdersStore;
-use App\Logs;
 use App\Orders;
 use App\Products;
 use App\Traits\LoggerDataBase;
+use App\Traits\PlaceToPayService;
 use PDOException;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use DB;
 use Illuminate\Support\Facades\Log;
@@ -94,7 +94,37 @@ class OrdersController extends Controller
      * @param  \App\Orders  $orders
      * @return \Illuminate\Http\Response
      */
-    public function show(Orders $orders)
+    public function show($id)
+    {
+        //
+        $order =Orders::findOrFail($id);
+        if (($order->status == OrderStatus::CREATED || $order->status == OrderStatus::PENDING ) && $order->requestId != '') {
+            $requestInformation = PlaceToPayService::requestInformation($order->requestId);
+            if ($requestInformation->status() == OrderStatus::APPROVED) {
+                Orders::findOrFail($id)->update(array(
+                    'status' => OrderStatus::PAYED 
+                ));
+            } else if ($requestInformation->status()  == "PENDING") {
+                Orders::findOrFail($id)->update(array(
+                    'status' => OrderStatus::PENDING
+                ));
+            } else {
+                Orders::findOrFail($id)->update(array(
+                    'status' => OrderStatus::REJECTED
+                ));
+            }
+        }
+            $order = $this->getOrder($id);
+            return view('orders.summary', compact('order'));
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  \App\Orders  $orders
+     * @return \Illuminate\Http\Response
+     */
+    public function edit(Orders $orders)
     {
         //
     }
@@ -106,7 +136,7 @@ class OrdersController extends Controller
      * @param  \App\Orders  $orders
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Orders $orders)
+    public function update($id)
     {
          try {   
             $order = Orders::findOrFail($id);
@@ -116,6 +146,7 @@ class OrdersController extends Controller
             $servicePlaceToplay = PlaceToPayService::createServicePlaceToPay();
             $responsePlaceToPay = $servicePlaceToplay->request($requestPlaceToPay);
             if ($responsePlaceToPay->isSuccessful()) {
+                // STORE THE $response->requestId() and $response->processUrl() on your DB associated with the payment order
                 Orders::where('id', $id)->update(array(
                     'status' => OrderStatus::PENDING,
                     'requestId' => $responsePlaceToPay->requestId(),
@@ -157,5 +188,20 @@ class OrdersController extends Controller
             ->where('orders.id', '=', $id)
             ->select('orders.*', 'products.name', 'products.description', 'products.price', 'products.photo', 'products.currency','categories.name as category_name')
             ->get()[0];
-    }      
+    }
+        /**
+     * Obtiene informacion de una transaccion en placeToPay
+     * @param requestId codigo unico de transaccion de PlaceToPay
+     */
+    public static function requestInformation($requestId)
+    {
+        $servicePlaceToplay = $this->createServicePlaceToPay();
+        $response = $servicePlaceToplay->query($requestId);
+
+        if ($response->isSuccessful()) {
+            return $response->status();
+        } else {
+            return ($response->status()->message() . "\n");
+        }
+    }
 }
