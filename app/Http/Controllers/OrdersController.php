@@ -33,11 +33,11 @@ class OrdersController extends Controller
     {
         //
         $datos["orders"] =  DB::table('orders')
-        ->join('products', function ($join) {
-            $join->on('orders.product_id', '=', 'products.id');
-        })->where('orders.user_id','=',Auth::user()->id)
-        ->select('orders.*', 'products.name', 'products.description', 'products.price', 'products.photo', 'products.currency')
-        ->paginate(5);
+            ->join('products', function ($join) {
+                $join->on('orders.product_id', '=', 'products.id');
+            })->where('orders.user_id', '=', Auth::user()->id)
+            ->select('orders.*', 'products.name', 'products.description', 'products.price', 'products.photo', 'products.currency')
+            ->paginate(5);
         return view($this->table . '.index', $datos);
     }
 
@@ -77,14 +77,14 @@ class OrdersController extends Controller
             $message = 'Ocurrio un error';
             Log::error('Error', ['data' => $order, 'error' => $ex]);
             Alert::toast($message, 'error');
-            return redirect($this->table . '/create/'.$order['product_id'])->with(['order' => $order])->withErrors(['missingFields' => 'Ocurrio un error ']);
+            return redirect($this->table . '/create/' . $order['product_id'])->with(['order' => $order])->withErrors(['missingFields' => 'Ocurrio un error ']);
         } catch (Exception $ex) {
             $message = 'Hubo un error al crear orden';
             Log::error('Error', ['data' => $request, 'error' => $ex]);
             Alert::toast($message, 'error');
-            return redirect($this->table . '/create/'.$order['product_id'])->withErrors(['Error' => 'Ocurrio un error ']);
+            return redirect($this->table . '/create/' . $order['product_id'])->withErrors(['Error' => 'Ocurrio un error ']);
         } finally {
-            LoggerDataBase::insert($this->table,$message, 'Crear Orden');
+            LoggerDataBase::insert($this->table, $message, 'Crear Orden');
         }
     }
 
@@ -97,25 +97,33 @@ class OrdersController extends Controller
     public function show($id)
     {
         //
-        $order =Orders::findOrFail($id);
-        if (($order->status == OrderStatus::CREATED || $order->status == OrderStatus::PENDING ) && $order->requestId != '') {
-            $requestInformation = PlaceToPayService::requestInformation($order->requestId);
+        $order = Orders::findOrFail($id);
+        if (($order->status == OrderStatus::CREATED || $order->status == OrderStatus::PENDING) && $order->requestId != '') {
+            $requestInformation = PlaceToPayService::requestInformation($order->requestId,$order->country);
             if ($requestInformation->status() == OrderStatus::APPROVED) {
-                Orders::findOrFail($id)->update(array(
-                    'status' => OrderStatus::PAYED 
-                ));
-            } else if ($requestInformation->status()  == "PENDING") {
-                Orders::findOrFail($id)->update(array(
-                    'status' => OrderStatus::PENDING
-                ));
+                Orders::findOrFail($id)->update(
+                    [
+                        'status' => OrderStatus::PAYED
+                    ]
+                );
+                print_r(Orders::findOrFail($id));
+            } else if ($requestInformation->status()  == OrderStatus::PENDING) {
+                Orders::findOrFail($id)->update(
+                    [
+                        'status' => OrderStatus::PENDING
+                    ]
+                );
             } else {
-                Orders::findOrFail($id)->update(array(
-                    'status' => OrderStatus::REJECTED
-                ));
+                Orders::findOrFail($id)->update(
+                    [
+                        'status' => OrderStatus::REJECTED
+                    ]
+                );
             }
         }
-            $order = $this->getOrder($id);
-            return view('orders.summary', compact('order'));
+        // print_r($order);
+        $order = $this->getOrder($id);
+        return view('orders.summary', compact('order'));
     }
 
     /**
@@ -138,16 +146,15 @@ class OrdersController extends Controller
      */
     public function update($id)
     {
-         try {   
+        try {
             $order = Orders::findOrFail($id);
-            $order["user"]=Auth::user();
-            $order["product"]=Products::findOrFail($order["product_id"]);
+            $order["user"] = Auth::user();
+            $order["product"] = Products::findOrFail($order["product_id"]);
             $requestPlaceToPay = PlaceToPayService::createRequest($order);
-            $servicePlaceToplay = PlaceToPayService::createServicePlaceToPay();
+            $servicePlaceToplay = PlaceToPayService::createServicePlaceToPay($order->country);
             $responsePlaceToPay = $servicePlaceToplay->request($requestPlaceToPay);
             if ($responsePlaceToPay->isSuccessful()) {
-                // STORE THE $response->requestId() and $response->processUrl() on your DB associated with the payment order
-                Orders::where('id', $id)->update(array(
+                Orders::findOrFail($id)->update(array(
                     'status' => OrderStatus::PENDING,
                     'requestId' => $responsePlaceToPay->requestId(),
                     'processUrl' => $responsePlaceToPay->processUrl()
@@ -172,7 +179,7 @@ class OrdersController extends Controller
     {
         //
     }
-        /**
+    /**
      * Obtiene un solo registro de orden en la base de datos
      * @param id codigo unico de la orden
      */
@@ -186,22 +193,8 @@ class OrdersController extends Controller
                 $join->on('products.category_id', '=', 'categories.id');
             })
             ->where('orders.id', '=', $id)
-            ->select('orders.*', 'products.name', 'products.description', 'products.price', 'products.photo', 'products.currency','categories.name as category_name')
+            ->select('orders.*', 'products.name', 'products.description', 'products.price', 'products.photo', 'products.currency', 'categories.name as category_name')
             ->get()[0];
     }
-        /**
-     * Obtiene informacion de una transaccion en placeToPay
-     * @param requestId codigo unico de transaccion de PlaceToPay
-     */
-    public static function requestInformation($requestId)
-    {
-        $servicePlaceToplay = $this->createServicePlaceToPay();
-        $response = $servicePlaceToplay->query($requestId);
-
-        if ($response->isSuccessful()) {
-            return $response->status();
-        } else {
-            return ($response->status()->message() . "\n");
-        }
-    }
+    
 }
