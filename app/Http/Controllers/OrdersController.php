@@ -99,7 +99,7 @@ class OrdersController extends Controller
         //
         $order = Orders::findOrFail($id);
         if (($order->status == OrderStatus::CREATED || $order->status == OrderStatus::PENDING) && $order->requestId != '') {
-            $requestInformation = PlaceToPayService::requestInformation($order->requestId,$order->country);
+            $requestInformation = PlaceToPayService::requestInformation($order->requestId, $order->country);
             if ($requestInformation->status() == OrderStatus::APPROVED) {
                 Orders::findOrFail($id)->update(
                     [
@@ -146,8 +146,8 @@ class OrdersController extends Controller
      */
     public function update($id)
     {
+        $order = Orders::findOrFail($id);
         try {
-            $order = Orders::findOrFail($id);
             $order["user"] = Auth::user();
             $order["product"] = Products::findOrFail($order["product_id"]);
             $requestPlaceToPay = PlaceToPayService::createRequest($order);
@@ -159,13 +159,20 @@ class OrdersController extends Controller
                     'requestId' => $responsePlaceToPay->requestId(),
                     'processUrl' => $responsePlaceToPay->processUrl()
                 ));
+                LoggerDataBase::insert($this->table, 'Transaccion', 'Transaccion Creada correctamente' . $responsePlaceToPay->processUrl());
+                Log::info('info', ['data' => $responsePlaceToPay, 'order' => $order]);
                 header("Location: " . $responsePlaceToPay->processUrl());
                 exit;
             } else {
-                echo $responsePlaceToPay->status()->message();
+                Log::error('error', ['data' => $responsePlaceToPay, 'order' => $order]);
+                LoggerDataBase::insert($this->table, 'Transaccion', 'Transaccion Fallida' . $responsePlaceToPay->status()->message());
+                return view('orders.summary', compact('order'));
             }
+            Log::error('error', ['data' => $responsePlaceToPay, 'order' => $order]);
         } catch (Exception $e) {
-            var_dump($e->getMessage());
+            Log::error('error', ['data' => $responsePlaceToPay, 'error'=>$e->getMessage(), 'order' => $order,'infoadd'=>$responsePlaceToPay->status()->message()]);
+            LoggerDataBase::insert($this->table, 'Transaccion', 'Transaccion Fallida' . $responsePlaceToPay->status()->message());
+            return view('orders.summary', compact('order'))->withErrors(['Error', 'Error no controlado' . $e->getMessage()]);
         }
     }
 
@@ -196,5 +203,4 @@ class OrdersController extends Controller
             ->select('orders.*', 'products.name', 'products.description', 'products.price', 'products.photo', 'products.currency', 'categories.name as category_name')
             ->get()[0];
     }
-    
 }

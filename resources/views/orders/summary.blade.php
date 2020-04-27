@@ -43,14 +43,16 @@
                                     Pagada</label>
                                 <hr>
                                 <img src="{{asset('img/PAYED.png')}}" alt="" width="100">
-                                @endif
-                                @if($order->status =='REJECTED')
+                                @elseif($order->status =='REJECTED')
                                 <label><b>Estado : </b> Rechazada</label>
                                 <hr>
                                 <img src="{{asset('img/REJECTED.png')}}" alt="" width="100">
-                                @endif
-                                @if($order->status =='PENDING')
+                                @elseif($order->status =='PENDING')
                                 <label><b>Estado : </b> Pendiente , esperando autorizacion intentalo más tarde</label>
+                                <hr>
+                                <img src="{{asset('img/PENDING.png')}}" alt="" width="100">
+                                @else
+                                <label><b>Estado : </b> Pendiente , Por favor paga tu orden</label>
                                 <hr>
                                 <img src="{{asset('img/PENDING.png')}}" alt="" width="100">
                                 @endif

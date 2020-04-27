@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
+use App\Traits\LoggerDataBase;
 use App\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
@@ -67,16 +68,8 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        $log = [
-            'user' =>$data['email'],
-            'source'=>'RegistersUsers',
-            'type'=>'Audit',
-            'description'=>'Nuevo registro de usuario',
-            'ipAddress' =>  $_SERVER['REMOTE_ADDR'],
-            'userAgent' => $_SERVER['HTTP_USER_AGENT'],
-        ];
-        DB::table('logs')->insert($log);
-        
+        LoggerDataBase::insert($this->table,'Audit', 'Nuevo registro de usuario');
+       
         return User::create([
             'name' => $data['name'],
             'email' => $data['email'],

@@ -10,6 +10,7 @@ use FFI\Exception;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use App\Logs;
+use App\Traits\LoggerDataBase;
 use PDOException;
 use RealRashid\SweetAlert\Facades\Alert;
 
@@ -77,7 +78,7 @@ class ProductsController extends Controller
             Alert::toast($message, 'error');
             return redirect($this->table . '/create');
         } finally {
-            $this->logProducts($message);
+            LoggerDataBase::insert($this->table,'Audit',$message);
         }
     }
 
@@ -140,7 +141,7 @@ class ProductsController extends Controller
             Alert::toast($message, 'error');
             return redirect($this->table  . '/' . $id . '/edit')->with(['product' => $product])->withErrors(['Error' => 'Ocurrio un error ']);
         } finally {
-            $this->logProducts($message);
+            LoggerDataBase::insert($this->table,'Audit',$message);
         }
     }
 
@@ -168,24 +169,7 @@ class ProductsController extends Controller
             Alert::toast($message, 'error');
             return redirect($this->table);
         } finally {
-            $this->logProducts($message);
-        }
-    }
-
-    public function logProducts($description)
-    {
-        try {
-
-            $log = [
-                'user' => Auth::user()['email'],
-                'source' => $this->table,
-                'type' => 'Audit',
-                'ipAddress' =>  $_SERVER['HTTP_CLIENT_IP'] ?? '1270.0.1',
-                'userAgent' => $_SERVER['HTTP_USER_AGENT'] ?? '',
-                'description' => $description,
-            ];
-            Logs::create($log);
-        } catch (Exception $ex) {
+            LoggerDataBase::insert($this->table,'Audit',$message);
         }
     }
 }

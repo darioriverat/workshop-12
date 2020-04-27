@@ -13,7 +13,7 @@ trait LoggerDataBase
                 'user' => Auth::user()['email'],
                 'source' => $table,
                 'type' => $type,
-                'ipAddress' =>  $_SERVER['HTTP_CLIENT_IP'] ?? '1270.0.1',
+                'ipAddress' =>  $_SERVER['HTTP_CLIENT_IP'] ?? '127.0.0.1',
                 'userAgent' => $_SERVER['HTTP_USER_AGENT'] ?? '',
                 'description' => $description,
             ];

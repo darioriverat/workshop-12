@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Categories;
 use App\Http\Requests\ValidateCategories;
 use App\Logs ;
+use App\Traits\LoggerDataBase;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use FFI\Exception;
@@ -63,7 +64,7 @@ class CategoriesController extends Controller
             Alert::toast($message, 'error');
             return redirect($this->table . '/create')->withErrors(['Error' => 'Ocurrio un error ']);
         } finally {
-            $this->LogCategories($message);
+            LoggerDataBase::insert($this->table,'Audit',$message);
         }
     }
 
@@ -114,7 +115,7 @@ class CategoriesController extends Controller
             Alert::toast($message, 'error');
             return redirect($this->table  . '/' . $id . '/edit')->with(['category' => $oldCategory])->withErrors(['Error' => 'Ocurrio un error ']);
         } finally {
-            $this->logCategories($message);
+            LoggerDataBase::insert($this->table,'Audit',$message);
         }
     }
 
@@ -140,24 +141,7 @@ class CategoriesController extends Controller
             Alert::toast($message, 'error');
             return redirect($this->table)->withErrors(['Error' => 'Ocurrio un error ']);
         } finally {
-            $this->logCategories($message);
-        }
-    }
-
-    public function logCategories($description)
-    {
-        try {
-
-            $log = [
-                'user' => Auth::user()['email'],
-                'source' => $this->table,
-                'type' => 'Audit',
-                'ipAddress' =>  $_SERVER['HTTP_CLIENT_IP'] ?? '1270.0.1',
-                'userAgent' => $_SERVER['HTTP_USER_AGENT'] ?? '',
-                'description' => $description,
-            ];
-            Logs::create($log);
-        } catch (Exception $ex) {
+            LoggerDataBase::insert($this->table,'Audit',$message);
         }
     }
 }
