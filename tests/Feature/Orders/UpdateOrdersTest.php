@@ -24,12 +24,15 @@ class UpdateOrdersTest extends TestCase
         $response = $this->post('/products', $product);
         $response->assertStatus(302);
     }
+    /**
+     * @runTestsInSeparateProcesses
+     */
     public function testUpdateProductWithAuth()
     {
-        $this->withoutExceptionHandling();
+        // $this->withoutExceptionHandling();
         $user = factory(User::class)->create();
         $order = factory(Orders::class)->create()->toArray();
-        $response = $this->actingAs($user)->patch('/orders/' . $order['id'], $order);
+        $response = $this->actingAs($user)->patch('/orders/' . $order['id']);
         $this->followRedirects($response)->assertOk();
     }
 }
