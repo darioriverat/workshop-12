@@ -100,17 +100,6 @@ class OrdersController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Orders  $orders
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Orders $orders)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -152,4 +141,21 @@ class OrdersController extends Controller
     {
         //
     }
+        /**
+     * Obtiene un solo registro de orden en la base de datos
+     * @param id codigo unico de la orden
+     */
+    public function getOrder($id)
+    {
+        return DB::table('orders')
+            ->join('products', function ($join) {
+                $join->on('orders.product_id', '=', 'products.id');
+            })
+            ->join('categories', function ($join) {
+                $join->on('products.category_id', '=', 'categories.id');
+            })
+            ->where('orders.id', '=', $id)
+            ->select('orders.*', 'products.name', 'products.description', 'products.price', 'products.photo', 'products.currency','categories.name as category_name')
+            ->get()[0];
+    }      
 }
