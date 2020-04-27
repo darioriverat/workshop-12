@@ -3,13 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Categories;
-use App\Enums\OrderStatus;
 use App\Http\Requests\ValidateOrdersStore;
+use App\Logs;
 use App\Orders;
 use App\Products;
 use App\Traits\LoggerDataBase;
-use App\Traits\PlaceToPayService;
 use PDOException;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use DB;
 use Illuminate\Support\Facades\Log;
@@ -94,28 +94,9 @@ class OrdersController extends Controller
      * @param  \App\Orders  $orders
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Orders $orders)
     {
         //
-        $order =Orders::findOrFail($id);
-        if (($order->status == OrderStatus::CREATED || $order->status == OrderStatus::PENDING ) && $order->requestId != '') {
-            $requestInformation = PlaceToPayService::requestInformation($order->requestId);
-            if ($requestInformation->status() == OrderStatus::APPROVED) {
-                Orders::findOrFail($id)->update(array(
-                    'status' => OrderStatus::PAYED 
-                ));
-            } else if ($requestInformation->status()  == "PENDING") {
-                Orders::findOrFail($id)->update(array(
-                    'status' => OrderStatus::PENDING
-                ));
-            } else {
-                Orders::findOrFail($id)->update(array(
-                    'status' => OrderStatus::REJECTED
-                ));
-            }
-        }
-            $order = $this->getOrder($id);
-            return view('orders.summary', compact('order'));
     }
 
     /**
@@ -136,7 +117,7 @@ class OrdersController extends Controller
      * @param  \App\Orders  $orders
      * @return \Illuminate\Http\Response
      */
-    public function update($id)
+    public function update(Request $request, Orders $orders)
     {
          try {   
             $order = Orders::findOrFail($id);
@@ -170,37 +151,5 @@ class OrdersController extends Controller
     public function destroy(Orders $orders)
     {
         //
-    }
-        /**
-     * Obtiene un solo registro de orden en la base de datos
-     * @param id codigo unico de la orden
-     */
-    public function getOrder($id)
-    {
-        return DB::table('orders')
-            ->join('products', function ($join) {
-                $join->on('orders.product_id', '=', 'products.id');
-            })
-            ->join('categories', function ($join) {
-                $join->on('products.category_id', '=', 'categories.id');
-            })
-            ->where('orders.id', '=', $id)
-            ->select('orders.*', 'products.name', 'products.description', 'products.price', 'products.photo', 'products.currency','categories.name as category_name')
-            ->get()[0];
-    }
-        /**
-     * Obtiene informacion de una transaccion en placeToPay
-     * @param requestId codigo unico de transaccion de PlaceToPay
-     */
-    public static function requestInformation($requestId)
-    {
-        $servicePlaceToplay = $this->createServicePlaceToPay();
-        $response = $servicePlaceToplay->query($requestId);
-
-        if ($response->isSuccessful()) {
-            return $response->status();
-        } else {
-            return ($response->status()->message() . "\n");
-        }
     }
 }
