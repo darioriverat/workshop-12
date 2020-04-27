@@ -119,7 +119,27 @@ class OrdersController extends Controller
      */
     public function update(Request $request, Orders $orders)
     {
-        //
+         try {   
+            $order = Orders::findOrFail($id);
+            $order["user"]=Auth::user();
+            $order["product"]=Products::findOrFail($order["product_id"]);
+            $requestPlaceToPay = PlaceToPayService::createRequest($order);
+            $servicePlaceToplay = PlaceToPayService::createServicePlaceToPay();
+            $responsePlaceToPay = $servicePlaceToplay->request($requestPlaceToPay);
+            if ($responsePlaceToPay->isSuccessful()) {
+                Orders::where('id', $id)->update(array(
+                    'status' => OrderStatus::PENDING,
+                    'requestId' => $responsePlaceToPay->requestId(),
+                    'processUrl' => $responsePlaceToPay->processUrl()
+                ));
+                header("Location: " . $responsePlaceToPay->processUrl());
+                exit;
+            } else {
+                echo $responsePlaceToPay->status()->message();
+            }
+        } catch (Exception $e) {
+            var_dump($e->getMessage());
+        }
     }
 
     /**
