@@ -187,20 +187,5 @@ class OrdersController extends Controller
             ->where('orders.id', '=', $id)
             ->select('orders.*', 'products.name', 'products.description', 'products.price', 'products.photo', 'products.currency','categories.name as category_name')
             ->get()[0];
-    }
-        /**
-     * Obtiene informacion de una transaccion en placeToPay
-     * @param requestId codigo unico de transaccion de PlaceToPay
-     */
-    public static function requestInformation($requestId)
-    {
-        $servicePlaceToplay = $this->createServicePlaceToPay();
-        $response = $servicePlaceToplay->query($requestId);
-
-        if ($response->isSuccessful()) {
-            return $response->status();
-        } else {
-            return ($response->status()->message() . "\n");
-        }
-    }
+    }      
 }
