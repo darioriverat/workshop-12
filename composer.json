@@ -27,7 +27,7 @@
     "require-dev": {
         "facade/ignition": "^2.0",
         "friendsofphp/php-cs-fixer": "^2.16",
-        "nunomaduro/collision": "^4.1",
+        "nunomaduro/collision": "^4.1"
     },
     "config": {
         "optimize-autoloader": true,
