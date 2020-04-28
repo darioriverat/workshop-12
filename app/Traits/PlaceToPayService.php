@@ -5,6 +5,7 @@ namespace App\Traits;
 
 use App\Enums\CountryOptions;
 use Dnetix\Redirection\PlacetoPay;
+use Illuminate\Support\Facades\Config;
 
 trait PlaceToPayService
 {
@@ -57,9 +58,9 @@ trait PlaceToPayService
     public static function createServicePlaceToPay($country)
     {
         $placetopay = new PlacetoPay([
-            'login' => env('SOAP_LOGIN'),
-            'tranKey' => env('SOAP_TRANKEY'),
-            'url' => env('SOAP_URL_REDIRECTION_'.strtoupper($country)),
+            'login' => Config::get('placeToPay.login'),
+            'tranKey' =>Config::get('placeToPay.tranKey'),
+            'url' =>Config::get('placeToPay.urlRedirection.'.$country),
             'rest' => [
                 'timeout' => 30, 
                 'connect_timeout' => 5, 

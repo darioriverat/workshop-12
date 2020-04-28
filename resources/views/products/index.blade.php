@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
+
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
@@ -8,10 +9,12 @@
                 <div class="card-header">
                     <div class="row justify-content-left">
                         <div class="col-sm-8">
-                            <h1>Productos</h1>
+                            <h1>@lang('products.title')</h1>
                         </div>
                         <div class="col-sm-4">
-                            <a class="btn btn-primary" href="{{route('products.create')}}">Agregar un producto</a>
+                            <a class="btn btn-primary"
+                                href="{{route('products.create')}}">@lang('actions.create.action')
+                                @lang('products.singular')</a>
                         </div>
                     </div>
                 </div>
@@ -25,23 +28,23 @@
                     <table class="table table-striped">
                         <thead class="thead">
                             <tr>
-                                <th>Foto</th>
-                                <th>Nombre</th>
-                                <th>Descripción</th>
-                                <th>Precio</th>
-                                <th>Moneda</th>
-                                <th>Acciones</th>
+                                <th>@lang('tables.photo')</th>
+                                <th>@lang('tables.name')</th>
+                                <th>@lang('tables.description')</th>
+                                <th>@lang('tables.price')</th>
+                                <th>@lang('tables.currency')</th>
+                                <th>@lang('tables.actions')</th>
                             </tr>
                         </thead>
                         <tbody>
-                          
+
                             @foreach($products as $product)
                             <tr>
                                 <td>
                                     @if($product->photo)
                                     <img src="{{ asset('storage').'/'.$product->photo}}" alt="" width="100">
                                     @else
-                                    <img  src="{{asset('img/no-image-icon.png')}}"  alt="" width="100">
+                                    <img src="{{asset('img/no-image-icon.png')}}" alt="" width="100">
                                     @endif
 
                                 </td>
@@ -52,14 +55,14 @@
                                 <td>
                                     <div class="form-group row">
                                         <a href="{{url('products/'.$product->id.'/edit')}}"
-                                            class="btn btn-secondary m-2">Editar</a>
+                                            class="btn btn-secondary m-2">@lang('actions.edit.action')</a>
 
                                         <form method="post" action="{{url('products/'.$product->id)}}">
 
                                             {{csrf_field()}}
                                             {{method_field('DELETE')}}
                                             <button class="btn btn-primary m-2" type="submit"
-                                                onclick="return confirm('Desea borrar el producto {{$product->name}}');">Borrar</button>
+                                                onclick="return confirm( '{{$product->name}}');">@lang('actions.delete.action')</button>
                                         </form>
                                     </div>
                                 </td>
@@ -67,12 +70,12 @@
                             @endforeach
                             @if(count($products)==0)
                             <tr>
-                                <td colspan="6">No se han encontrado registros</td>
+                                <td colspan="6">@lang('tables.notFound')</td>
                             </tr>
                             @endif
                         </tbody>
                     </table>
-                    
+
                     <div class="form-group row  justify-content-center">
                         {!!$products->render()!!}
                     </div>

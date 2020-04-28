@@ -2,6 +2,14 @@
 
 return [
 
+    'placeToPay'=>[
+        'login'=>'6dd490faf9cb87a9862245da41170ff2',
+        'tranKey'=>'024h1IlD',
+        'urlRedirection'=>[
+            'co'=>env('SOAP_URL_REDIRECTION_CO'),
+            'ec'=>env('SOAP_URL_REDIRECTION_EC')
+        ]
+    ],
     /*
     |--------------------------------------------------------------------------
     | Application Name
@@ -107,6 +115,7 @@ return [
     */
 
     'faker_locale' => 'en_US',
+
 
     /*
     |--------------------------------------------------------------------------

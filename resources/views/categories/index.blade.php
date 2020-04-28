@@ -9,10 +9,12 @@
                 <div class="card-header">
                     <div class="row justify-content-left">
                         <div class="col-sm-8">
-                            <h1>Categorias</h1>
+                            <h1>@lang('categories.title')</h1>
                         </div>
                         <div class="col-sm-4">
-                            <a class="btn btn-primary" href="{{route('categories.create')}}">Agregar una categoria</a>
+                            <a class="btn btn-primary"
+                                href="{{route('categories.create')}}">@lang('actions.create.action')
+                                @lang('categories.singular')</a>
                         </div>
                     </div>
                 </div>
@@ -24,11 +26,11 @@
                     </div>
                     @endif
                     <table class="table table-striped">
-                            <thead class="thead">
+                        <thead class="thead">
                             <tr>
-                                <th>Nombre</th>
-                                <th>Descripción</th>
-                                <th>Acciones</th>
+                                <th>@lang('tables.name')</th>
+                                <th>@lang('tables.description')</th>
+                                <th>@lang('tables.actions')</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -39,14 +41,14 @@
                                 <td>
                                     <div class="form-group row">
                                         <a href="{{url('categories/'.$category->id.'/edit')}}"
-                                            class="btn btn-secondary m-2">Editar</a>
+                                            class="btn btn-secondary m-2">@lang('actions.edit.action')</a>
 
                                         <form method="post" action="{{url('categories/'.$category->id)}}">
 
                                             {{csrf_field()}}
                                             {{method_field('DELETE')}}
                                             <button class="btn btn-primary m-2" type="submit"
-                                                onclick="return confirm('Desea borrar el producto {{$category->name}}');">Borrar</button>
+                                                onclick="return confirm('{{$category->name}}');">@lang('actions.delete.action')</button>
                                         </form>
                                     </div>
                                 </td>
@@ -54,7 +56,7 @@
                             @endforeach
                             @if(count($categories)==0)
                             <tr>
-                                <td colspan="6">No se han encontrado registros</td>
+                                <td colspan="6">@lang('tables.notFound')</td>
                             </tr>
                             @endif
                         </tbody>
