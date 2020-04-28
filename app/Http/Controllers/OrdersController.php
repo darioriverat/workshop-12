@@ -107,7 +107,6 @@ class OrdersController extends Controller
                         'status' => OrderStatus::PAYED
                     ]
                 );
-                print_r(Orders::findOrFail($id));
             } else if ($requestInformation->status()  == OrderStatus::PENDING) {
                 Orders::findOrFail($id)->update(
                     [
