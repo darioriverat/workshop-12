@@ -2,8 +2,8 @@
 
 namespace App\Http\Requests;
 
-use App\Rules\Currencys;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class ValidateProducts extends FormRequest
 {
@@ -30,7 +30,7 @@ class ValidateProducts extends FormRequest
             'price'=>['required','numeric','regex:/^\d+(\.\d{1,2})?$/'],
             'photo'=>['nullable'],
             'category_id'=>['required'],
-            'currency'=>['required', new Currencys]
+            'currency'=>['required', Rule::In(['COP', 'USD']),]
         ];
     }
     public function messages()

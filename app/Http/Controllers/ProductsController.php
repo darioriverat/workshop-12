@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use App\Logs;
 use App\Traits\LoggerDataBase;
+use Illuminate\Support\Facades\Lang;
 use PDOException;
 use RealRashid\SweetAlert\Facades\Alert;
 
@@ -64,17 +65,18 @@ class ProductsController extends Controller
                 $product['photo'] = str_replace("public/uploads", "uploads", $product['photo']);
             }
             Products::create($product);
-            $message = 'Producto ' . $product['name'] . ' agregado correctamente';
+            $message = Lang::get('products.singular'). ' ' . $product['name'] . Lang::get('actions.create.success.male');
+
             Alert::toast($message, 'success');
             return redirect($this->table);
         } catch (PDOException $ex) {
-            $message = 'Hubo un error al modificar el producto ' . $product['name'];
+            $message =  Lang::get('actions.create.error.male'). $product['name'];
             Log::error('Error', ['data' => $product, 'error' => $ex]);
             Alert::toast($message, 'error');
-            return redirect($this->table . '/create')->with(['product' => $product])->withErrors(['missingFields' => 'Ocurrio un error ']);
+            return redirect($this->table . '/create')->with(['product' => $product])->withErrors(['missingFields' =>  Lang::get('actions.create.error.male')]);
         } catch (Exception $ex) {
             Log::error('Error', ['data' => $product, 'error' => $ex]);
-            $message = 'Hubo un error al crear ' . $product['name'];
+            $message =  Lang::get('actions.create.error.male');
             Alert::toast($message, 'error');
             return redirect($this->table . '/create');
         } finally {
@@ -126,20 +128,21 @@ class ProductsController extends Controller
                 $product['photo'] = $request->file('photo')->store('public/uploads');
                 $product['photo'] = str_replace("public/uploads", "uploads", $product['photo']);
             }
-            $message = 'Producto ' . $product['name'] . ' modificado con éxito ';
+
+            $message = Lang::get('products.singular'). ' ' . $product['name'] . Lang::get('actions.edit.success.male');
             Products::findOrFail($id)->update($product);
             Alert::toast($message, 'success');
             return redirect($this->table);
         } catch (PDOException $ex) {
-            $message = 'Hubo un error al modificar el producto ' . $product['name'];
+            $message = Lang::get('actions.edit.error.male');
             Log::error('Error', ['data' => $product, 'error' => $ex]);
             Alert::toast($message, 'error');
-            return redirect($this->table  . '/' . $id . '/edit')->with(['product' => $product])->withErrors(['missingFields' => 'Ocurrio un error ']);
+            return redirect($this->table  . '/' . $id . '/edit')->with(['product' => $product])->withErrors(['missingFields' => Lang::get('actions.edit.error.male')]);
         } catch (Exception $ex) {
-            $message = 'Hubo un error al modificar el producto ' . $product['name'];
+            $message = Lang::get('actions.edit.error.male');
             Log::error('Error', ['data' => $product, 'error' => $ex]);
             Alert::toast($message, 'error');
-            return redirect($this->table  . '/' . $id . '/edit')->with(['product' => $product])->withErrors(['Error' => 'Ocurrio un error ']);
+            return redirect($this->table  . '/' . $id . '/edit')->with(['product' => $product])->withErrors(['Error' => Lang::get('actions.edit.error.male')]);
         } finally {
             LoggerDataBase::insert($this->table,'Audit',$message);
         }
@@ -160,11 +163,16 @@ class ProductsController extends Controller
             if (Storage::delete('public/' . $product->photo)) {
                 products::destroy($id);
             }
-            $message = 'Producto ' . $product->name . ' eliminada con éxito ';
+            $message = Lang::get('products.singular'). ' ' . $product->name .  Lang::get('actions.delete.success.male');
             Alert::toast($message, 'success');
             return redirect($this->table);
-        } catch (Exception $ex) {
-            $message = 'Hubo un error al eliminar el producto ' . $product->name;
+        } catch (PDOException $ex) {
+            $message =  Lang::get('actions.delete.error.male');
+            Log::error('Error', ['data' => $product, 'error' => $ex]);
+            Alert::toast($message, 'error');
+            return redirect($this->table)->with(['product' => $product])->withErrors(['missingFields' =>  Lang::get('actions.delete.error.male')]);
+        }catch (Exception $ex) {
+            $message = Lang::get('actions.delete.error.male');
             Log::error('Error', ['data' => $product, 'error' => $ex]);
             Alert::toast($message, 'error');
             return redirect($this->table);

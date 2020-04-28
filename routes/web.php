@@ -2,6 +2,7 @@
 
 use App\Products;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Session;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,6 +18,11 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     $datos["products"]=Products::paginate(5);
     return view('home',$datos);
+});
+
+Route::get('/locale/{locale}',function($locale){
+    Session::put('locale', $locale);
+    return redirect()->back();
 });
 
 Auth::routes();

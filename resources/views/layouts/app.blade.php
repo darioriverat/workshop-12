@@ -49,6 +49,16 @@
                         <!-- Authentication Links -->
                         @guest
                         <li class="nav-item">
+                            <a class="nav-link" href="/locale/es">
+                                Español
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/locale/en">
+                                Ingles
+                            </a>
+                        </li>
+                        <li class="nav-item">
                             <a class="nav-link" href="{{ route('login') }}">{{ __('Ingresar') }}</a>
                         </li>
                         @if (Route::has('register'))
@@ -58,17 +68,26 @@
                         @endif
                         @else
 
-                        <li class="nav-item dropdown">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/locale/es">
+                                Español
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="/locale/en">
+                                Ingles
+                            </a>
+                        </li>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Maestros
+                                @lang('config.navbar.forms')
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                                 <a class="dropdown-item" href="/products">Productos</a>
                                 <a class="dropdown-item" href="{{ route('categories.index') }}">Categorias</a>
                             </div>
-                        </li>
                         </li>
                         <li class="nav-item dropdown">
                             <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
@@ -80,7 +99,7 @@
                                 <a class="dropdown-item" href="/products">Mi perfil</a>
                                 <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
-                                    {{ __('Cerrar sesión') }}
+                                    @lang('config.navbar.forms') 
                                 </a>
 
                                 <form id="logout-form" action="{{ route('logout') }}" method="POST"
@@ -100,6 +119,9 @@
         <main class="py-4">
             @yield('content')
         </main>
+        <footer class="mastfoot mt-auto fixed">
+            <div class="footer-copyright text-center py-3"><b>@lang('config.footer.language')</b>: {{ Session::get('locale')}}</div>
+        </footer>
     </div>
     @include('sweetalert::alert')
 
