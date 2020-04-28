@@ -5,8 +5,14 @@ return [
         'spanish' => 'Spanish',
         'english' => 'English',
         'forms' => 'Forms',
-    ],
-    'footer'=>[
-        'language' =>'language in '
+        'logout' => 'Log out',
+        'login' => 'Login',
+        'signUp' => 'Registrate',
+        'orders' => 'Orders',
+        'categories' => 'Categories',
+        'products' => 'Products'
+    ],    
+    'footer' => [
+        'language' => 'language in '
     ]
 ];

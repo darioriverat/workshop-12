@@ -12,6 +12,10 @@ return [
     'country'=>'País',
     'estado'=>'Estado',
     'pay' => 'Pagar',
+    'email' => 'Correo Electrónico',
+    'password' => 'Contraseña',
+    'passwordConfirm' => 'Confirma la contraseña',
+    'mobile' => 'Teléfono',
     'notFound'=>'No se han encontrado registros'
 
 ];

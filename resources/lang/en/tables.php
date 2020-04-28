@@ -8,10 +8,13 @@ return [
     'price' => 'Price',
     'currency' => 'Currency',
     'actions' => 'Actions',
-    'user'=>'User',
-    'country'=>'Country',
-    'estado'=>'State',
-    'pay' => 'Pay',
-    'notFound'=>'No records found'
-
+    'user' => 'User',
+    'country' => 'Country',
+    'estado' => 'State',
+    'pay' => 'Pay',    
+    'email' => 'E-Mail Address',
+    'password' => 'Password',
+    'passwordConfirm' => 'Password Confirm',
+    'mobile' => 'Mobile',
+    'notFound' => 'No records found'
 ];

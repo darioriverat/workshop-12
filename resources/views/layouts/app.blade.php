@@ -39,8 +39,8 @@
 
                     <ul class="navbar-nav mr-auto">
                         <li class="nav-item">
-                            <a class="nav-link" id="navbarDropdownMenuLink" href="/orders">Mis
-                                ordenes</a>
+                            <a class="nav-link" id="navbarDropdownMenuLink" href="/orders">
+                                {{__('config.navbar.orders')}}</a>
                         </li>
                     </ul>
 
@@ -50,33 +50,34 @@
                         @guest
                         <li class="nav-item">
                             <a class="nav-link" href="/locale/es">
-                                Español
+                                {{__('config.navbar.spanish')}}
                             </a>
                         </li>
+
                         <li class="nav-item">
                             <a class="nav-link" href="/locale/en">
-                                Ingles
+                                {{__('config.navbar.english')}}
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('login') }}">{{ __('Ingresar') }}</a>
+                            <a class="nav-link" href="{{ route('login') }}">{{ __('config.navbar.login') }}</a>
                         </li>
                         @if (Route::has('register'))
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('register') }}">{{ __('Registrar') }}</a>
+                            <a class="nav-link" href="{{ route('register') }}">{{__('config.navbar.signUp')}}</a>
                         </li>
                         @endif
                         @else
 
                         <li class="nav-item">
                             <a class="nav-link" href="/locale/es">
-                                Español
+                                {{__('config.navbar.spanish')}}
                             </a>
                         </li>
 
                         <li class="nav-item">
                             <a class="nav-link" href="/locale/en">
-                                Ingles
+                                {{__('config.navbar.english')}}
                             </a>
                         </li>
                         <li class="nav-item dropdown">
@@ -85,8 +86,10 @@
                                 @lang('config.navbar.forms')
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                <a class="dropdown-item" href="/products">Productos</a>
-                                <a class="dropdown-item" href="{{ route('categories.index') }}">Categorias</a>
+                                <a class="dropdown-item" href="{{ route('products.index') }}">
+                                    {{__('config.navbar.products')}}</a>
+                                <a class="dropdown-item" href="{{ route('categories.index') }}">
+                                    {{__('config.navbar.categories')}}</a>
                             </div>
                         </li>
                         <li class="nav-item dropdown">
@@ -96,10 +99,9 @@
                             </a>
 
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" href="/products">Mi perfil</a>
                                 <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
-                                    @lang('config.navbar.forms') 
+                                    @lang('config.navbar.forms')
                                 </a>
 
                                 <form id="logout-form" action="{{ route('logout') }}" method="POST"
@@ -120,7 +122,8 @@
             @yield('content')
         </main>
         <footer class="mastfoot mt-auto fixed">
-            <div class="footer-copyright text-center py-3"><b>@lang('config.footer.language')</b>: {{ Session::get('locale')}}</div>
+            <div class="footer-copyright text-center py-3"><b>@lang('config.footer.language')</b>:
+                {{ Session::get('locale')}}</div>
         </footer>
     </div>
     @include('sweetalert::alert')

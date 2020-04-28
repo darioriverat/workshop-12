@@ -2,7 +2,7 @@
 
     <div>
         <div class="form-group row">
-            <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Nombre') }}</label>
+            <label for="name" class="col-md-4 col-form-label text-md-right">@lang('tables.name')</label>
 
             <div class="col-md-6">
                 <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name"
@@ -17,7 +17,7 @@
         </div>
 
         <div class="form-group row">
-            <label for="description" class="col-md-4 col-form-label text-md-right">{{ __('Descripción') }}</label>
+            <label for="description" class="col-md-4 col-form-label text-md-right">@lang('tables.description')</label>
 
             <div class="col-md-6">
                 <input id="description" type="text" class="form-control @error('description') is-invalid @enderror"
@@ -32,14 +32,14 @@
             </div>
 
 
-            <div class="form-group row mb-0">
-                <div class="col-md-6 offset-md-4">
-                    <button type="submit" class="btn btn-primary">
-                        {{$type=='create'? 'Agregar': 'Modificar'}}
-                    </button>
-                </div>
+
+        </div>
+        <div class="form-group row mb-0">
+            <div class="col-md-6 offset-md-4">
+                <button type="submit" class="btn btn-primary">
+                    {{$type=='create'? __('actions.create.action'): __('actions.edit.action')}}
+                </button>
             </div>
         </div>
-
     </div>
 </div>
