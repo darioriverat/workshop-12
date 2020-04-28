@@ -10,7 +10,7 @@ trait LoggerDataBase
     public static function insert($table,$type,$description){
         try {
             $log = [
-                'user' => Auth::user()['email'],
+                'user' => Auth::user()['email'] ?? 'Admin',
                 'source' => $table,
                 'type' => $type,
                 'ipAddress' =>  $_SERVER['HTTP_CLIENT_IP'] ?? '127.0.0.1',
