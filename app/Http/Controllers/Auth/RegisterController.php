@@ -68,7 +68,8 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        LoggerDataBase::insert($this->table,'Audit', 'Nuevo registro de usuario');
+        LoggerDataBase::insert('users','Audit', 'Nuevo registro de usuario');
+    
        
         return User::create([
             'name' => $data['name'],
