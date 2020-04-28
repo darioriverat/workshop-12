@@ -5,8 +5,19 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">@lang('home.title')</div>
+                <div class="card-header">@lang('home.title') <div class="dropdown text-right py-2">
+                        {{__('actions.search.title')}} :
+                        <button class="btn btn-primary dropdown-toggle " type="button"
+                            data-toggle="dropdown">{{__('categories.singular')}}<span class="caret"></span></button>
+                        <ul class="dropdown-menu">
+                            @foreach($categories as $category)
+                            <li><a href="/?category_id={{$category->id}}">{{$category->name}}</a></li>
+                            @endforeach
+                        </ul>
+                    </div>
+                </div>
                 <div class="card-body">
+
                     <table class="table table-striped">
                         <thead class="thead">
                             <tr>

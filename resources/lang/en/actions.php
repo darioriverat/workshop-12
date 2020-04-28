@@ -4,6 +4,9 @@ return [
     'summary'=>[
         'action'=>'Summary'
     ],
+    'search' => [
+        'title'=>'Filter'
+    ],
     'options' => [
         'combobox' => [
             'default'=>'Select an option'

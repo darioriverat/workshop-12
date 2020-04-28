@@ -3,6 +3,9 @@ return [
     'summary'=>[
         'action'=>'Ver Resumen'
     ],
+    'search' => [
+        'title'=>'Filtrar'
+    ],
     'options' => [
         'combobox' => [
             'default'=>'Selecciona una opción'

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Categories;
 use App\Products;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -25,7 +26,12 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $datos["products"] = Products::paginate(10);
+        if (request()->has('category_id')) {
+            $datos["products"] = Products::where('category_id',request('category_id'))->paginate(5);
+        } else {
+            $datos["products"] = Products::paginate(5);
+        }
+        $datos["categories"] = Categories::all();
         return view('home',$datos);
     }
 
