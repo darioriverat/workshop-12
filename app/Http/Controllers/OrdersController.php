@@ -122,7 +122,6 @@ class OrdersController extends Controller
                 );
             }
         }
-        // print_r($order);
         $order = $this->getOrder($id);
         return view('orders.summary', compact('order'));
     }
@@ -162,8 +161,7 @@ class OrdersController extends Controller
                 ));
                 LoggerDataBase::insert($this->table, 'Transaccion', 'Transaccion Creada correctamente' . $responsePlaceToPay->processUrl());
                 Log::info('info', ['data' => $responsePlaceToPay, 'order' => $order]);
-                header("Location: " . $responsePlaceToPay->processUrl());
-                exit;
+                return redirect()->to($responsePlaceToPay->processUrl());
             } else {
                 Log::error('error', ['data' => $responsePlaceToPay, 'order' => $order]);
                 LoggerDataBase::insert($this->table, 'Transaccion', 'Transaccion Fallida' . $responsePlaceToPay->status()->message());

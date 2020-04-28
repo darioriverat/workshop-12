@@ -18,7 +18,7 @@ class UpdateOrdersTest extends TestCase
      */
     use RefreshDatabase;
 
-    public function testUpdateProductWithoutAuth()
+    public function testUpdateOrdersWithoutAuth()
     {
         $product = factory(Orders::class)->make()->toArray();
         $response = $this->post('/products', $product);
@@ -27,12 +27,11 @@ class UpdateOrdersTest extends TestCase
     /**
      * @runTestsInSeparateProcesses
      */
-    public function testUpdateProductWithAuth()
+    public function testUpdateOrdersWithAuth()
     {
-        // $this->withoutExceptionHandling();
         $user = factory(User::class)->create();
         $order = factory(Orders::class)->create()->toArray();
         $response = $this->actingAs($user)->patch('/orders/' . $order['id']);
-        $this->followRedirects($response)->assertOk();
+        $this->followRedirects($response)->assertStatus(404);
     }
 }
