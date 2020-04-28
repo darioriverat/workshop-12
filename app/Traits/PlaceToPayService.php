@@ -42,8 +42,8 @@ trait PlaceToPayService
                 ]
             ],
             'expiration' => date('c', strtotime('+1 days')),
-            'returnUrl' => env('APP_URL') . "orders/" . $order->id,
-            'cancelUrl' => env('APP_URL') . 'orders/' . $order->id,
+            'returnUrl' => config('app.url') . "orders/" . $order->id,
+            'cancelUrl' => config('app.url') . 'orders/' . $order->id,
             'ipAddress' => $_SERVER['HTTP_CLIENT_IP'] ?? '127.0.0.1',
             'userAgent' => $_SERVER['HTTP_USER_AGENT'] ?? 'Chrome'
         ];
@@ -57,10 +57,12 @@ trait PlaceToPayService
      */
     public static function createServicePlaceToPay($country)
     {
+        echo  config('placeToPay.login')  ;
+
         $placetopay = new PlacetoPay([
-            'login' => Config::get('placeToPay.login'),
-            'tranKey' =>Config::get('placeToPay.tranKey'),
-            'url' =>Config::get('placeToPay.urlRedirection.'.$country),
+            'login' => config('app.placeToPay.login'),
+            'tranKey' =>config('app.placeToPay.tranKey'),
+            'url' =>config('app.placeToPay.urlRedirection.'.$country),
             'rest' => [
                 'timeout' => 30, 
                 'connect_timeout' => 5, 

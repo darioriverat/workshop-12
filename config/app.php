@@ -3,14 +3,14 @@
 return [
 
     'placeToPay'=>[
-        'login'=>'6dd490faf9cb87a9862245da41170ff2',
-        'tranKey'=>'024h1IlD',
+        'login'=>env('SOAP_LOGIN'),
+        'tranKey'=>env('SOAP_TRANKEY'),
         'urlRedirection'=>[
             'co'=>env('SOAP_URL_REDIRECTION_CO'),
             'ec'=>env('SOAP_URL_REDIRECTION_EC')
         ]
     ],
-    /*
+    /* 
     |--------------------------------------------------------------------------
     | Application Name
     |--------------------------------------------------------------------------
@@ -60,7 +60,7 @@ return [
     |
     */
 
-    'url' => env('APP_URL', 'http://localhost:8000'),
+    'url' => env('APP_URL', 'http://localhost:8000/'),
 
     'asset_url' => env('ASSET_URL', null),
 
