@@ -10,13 +10,14 @@ return [
     'actions' => 'Actions',
     'user' => 'User',
     'country' => 'Country',
-    'estado' => 'State',
+    'state' => 'State',
     'pay' => 'Pay',    
     'email' => 'E-Mail Address',
     'password' => 'Password',
     'passwordConfirm' => 'Password Confirm',
     'mobile' => 'Mobile',
     'category'=>'Category',
-
+    'paymentAmount'=>'Amount',
+    'paymentCountry'=>'Payment country',
     'notFound' => 'No records found'
 ];

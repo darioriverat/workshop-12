@@ -12,6 +12,7 @@ use App\Traits\PlaceToPayService;
 use PDOException;
 use Illuminate\Support\Facades\Auth;
 use DB;
+use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Facades\Log;
 use RealRashid\SweetAlert\Facades\Alert;
 
@@ -70,19 +71,19 @@ class OrdersController extends Controller
         // echo $order;
         try {
             Orders::create($order);
-            $message = 'Orden agregada correctamente';
-            Alert::toast($message, 'success');
+            $message = Lang::get('orders.singular').  Lang::get('actions.create.success.female');
+           Alert::toast($message, 'success');
             return redirect($this->table);
         } catch (PDOException $ex) {
-            $message = 'Ocurrio un error';
+            $message =  Lang::get('actions.create.error.female');
             Log::error('Error', ['data' => $order, 'error' => $ex]);
             Alert::toast($message, 'error');
-            return redirect($this->table . '/create/' . $order['product_id'])->with(['order' => $order])->withErrors(['missingFields' => 'Ocurrio un error ']);
+            return redirect($this->table . '/create/' . $order['product_id'])->with(['order' => $order])->withErrors(['missingFields' =>  $message]);
         } catch (Exception $ex) {
-            $message = 'Hubo un error al crear orden';
+            $message =  Lang::get('actions.create.error.female');
             Log::error('Error', ['data' => $request, 'error' => $ex]);
             Alert::toast($message, 'error');
-            return redirect($this->table . '/create/' . $order['product_id'])->withErrors(['Error' => 'Ocurrio un error ']);
+            return redirect($this->table . '/create/' . $order['product_id'])->withErrors(['Error' => $message]);
         } finally {
             LoggerDataBase::insert($this->table, $message, 'Crear Orden');
         }

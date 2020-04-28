@@ -1,8 +1,17 @@
 <?php
 return [
+    
+    'summary'=>[
+        'action'=>'Summary'
+    ],
     'options' => [
         'combobox' => [
             'default'=>'Select an option'
+        ],
+        'button'=>[
+            'return' =>'Return',
+            'retry' =>'Retry',
+            'pay' =>'Pay',
         ]
     ],
     'delete' => [

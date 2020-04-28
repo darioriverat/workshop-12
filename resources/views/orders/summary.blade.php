@@ -10,7 +10,7 @@
                     <form action="{{url('/orders/'.$order->id)}}" method="post" enctype="multipart/form-data">
                         {{csrf_field()}}
                         {{method_field('PATCH')}}
-                        <h4 class="text-center py-3"> Resumen de Compra</h4>
+                        <h4 class="text-center py-3">{{__('orders.summaryTitle')}}</h4>
                         <div class="form-group row">
                             <div class="col-md-6">
                                 <div class="card" style="width: 15rem;">
@@ -24,13 +24,15 @@
                                         <h5 class="card-title">{{$order->name}}</h5>
                                         <div class="row">
                                             <div class="col-sm-6">
-                                                <p class="card-text"><b>Categoria</b> : {{$order->category_name}}</p>
+                                                <p class="card-text"><b>@lang('tables.category')</b> :
+                                                    {{$order->category_name}}</p>
                                             </div>
                                             <div class="col-sm-6">
-                                                <p class="card-text"><b>Descripción</b> : {{$order->description}}</p>
+                                                <p class="card-text"><b>@lang('tables.description')</b> :
+                                                    {{$order->description}}</p>
                                             </div>
                                             <div class="col-sm-12">
-                                                <p class="card-text"><b>Precio</b> :
+                                                <p class="card-text"><b>@lang('tables.price')</b> :
                                                     {{number_format($order->price, 2).' ' .$order->currency}}</p>
                                             </div>
                                         </div>
@@ -39,20 +41,23 @@
                             </div>
                             <div class="col-md-6">
                                 @if($order->status =='PAYED')
-                                <label id="product_description" id="product_description"> <b>Estado : </b>
-                                    Pagada</label>
+                                <label id="product_description" id="product_description"> <b>@lang('tables.state') :
+                                    </b>
+                                    @lang('states.payed')</label>
                                 <hr>
                                 <img src="{{asset('img/PAYED.png')}}" alt="" width="100">
                                 @elseif($order->status =='REJECTED')
-                                <label><b>Estado : </b> Rechazada</label>
+                                <label><b>@lang('tables.state') : </b> @lang('states.rejected')</label>
                                 <hr>
                                 <img src="{{asset('img/REJECTED.png')}}" alt="" width="100">
                                 @elseif($order->status =='PENDING')
-                                <label><b>Estado : </b> Pendiente , esperando autorizacion intentalo más tarde</label>
+                                <label><b>@lang('tables.state') : </b>
+                                    @lang('states.pending')</label>
                                 <hr>
                                 <img src="{{asset('img/PENDING.png')}}" alt="" width="100">
                                 @else
-                                <label><b>Estado : </b> Pendiente , Por favor paga tu orden</label>
+                                <label><b>@lang('tables.state') : </b>
+                                    @lang('states.created')</label>
                                 <hr>
                                 <img src="{{asset('img/PENDING.png')}}" alt="" width="100">
                                 @endif
@@ -62,12 +67,15 @@
 
                         <div class="form-group justify-content-center row">
                             <div class="center">
-                                <a class="btn btn-secondary" href="{{url('/orders')}}">Regresar</a>
+                                <a class="btn btn-secondary"
+                                    href="{{url('/orders')}}">{{__('actions.options.button.return')}}</a>
                                 @if($order->status =='CREATED')
-                                <input class="btn btn-primary" type="submit" value="Pagar"></button>
+                                <input class="btn btn-primary" type="submit"
+                                    value="{{__('actions.options.button.pay')}}"></button>
                                 @endif
                                 @if($order->status =='REJECTED')
-                                <input class="btn btn-primary" type="submit" value="Reintentar"></button>
+                                <input class="btn btn-primary" type="submit"
+                                    value="{{__('actions.options.button.retry')}}"></button>
                                 @endif
                                 @if($order->status =='PENDING')
                                 @endif

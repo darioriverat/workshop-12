@@ -1,8 +1,16 @@
 <?php
 return [
+    'summary'=>[
+        'action'=>'Ver Resumen'
+    ],
     'options' => [
         'combobox' => [
             'default'=>'Selecciona una opción'
+        ],
+        'button'=>[
+            'return' =>'Regresar',
+            'retry' =>'Reintentar',
+            'pay' =>'Pagar',
         ]
     ],
     'delete' => [

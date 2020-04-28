@@ -66,7 +66,6 @@ class ProductsController extends Controller
             }
             Products::create($product);
             $message = Lang::get('products.singular'). ' ' . $product['name'] . Lang::get('actions.create.success.male');
-
             Alert::toast($message, 'success');
             return redirect($this->table);
         } catch (PDOException $ex) {
