@@ -1,5 +1,6 @@
 <?php
 
+use App\Categories;
 use App\Products;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
@@ -16,11 +17,18 @@ use Illuminate\Support\Facades\Session;
 */
 
 Route::get('/', function () {
-    $datos["products"]=Products::paginate(5);
-    return view('home',$datos);
+   
+    if (request()->has('category_id')) {
+        $datos["products"] = Products::where('category_id',request('category_id'))->paginate(5);
+    } else {
+        $datos["products"] = Products::paginate(5);
+    }
+    $datos["categories"] = Categories::all();
+ 
+    return view('home', $datos);
 });
 
-Route::get('/locale/{locale}',function($locale){
+Route::get('/locale/{locale}', function ($locale) {
     Session::put('locale', $locale);
     return redirect()->back();
 });
