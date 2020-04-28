@@ -1,5 +1,10 @@
 <?php
 return [
+    'options' => [
+        'combobox' => [
+            'default'=>'Select an option'
+        ]
+    ],
     'delete' => [
         'action' => 'Delete',
         'success' => [

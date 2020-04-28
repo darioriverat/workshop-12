@@ -16,6 +16,7 @@ return [
     'password' => 'Contraseña',
     'passwordConfirm' => 'Confirma la contraseña',
     'mobile' => 'Teléfono',
+    'category'=>'Categoria',
     'notFound'=>'No se han encontrado registros'
 
 ];
