@@ -16,25 +16,45 @@ class StoreCategoryTest extends TestCase
      * @return void
      */
     use RefreshDatabase;
+
     public function testStoreCategoryWithoutAuth()
     {
         $category = factory(Categories::class)->make()->toArray();
         $response = $this->post('/categories', $category);
-        $response->assertStatus(302);
+
+        $response->assertRedirect(route('login'));
     }
+
     public function testStoreCategoryWithAuth()
     {
         $user = factory(User::class)->create();
         $category = factory(Categories::class)->make()->toArray();
+
         $response = $this->actingAs($user)->post('/categories', $category);
+
+        $this->assertDatabaseHas('categories', $category);
         $this->followRedirects($response)->assertOk();
     }
-    public function testStoreCategoryWithAuthRemovingAttribute()
+
+    public function testStoreCategoryWithAuthRemovingDescriptionAttribute()
     {
         $user = factory(User::class)->create();
         $category = factory(Categories::class)->make()->toArray();
         $category["description"]="";
+
         $response = $this->actingAs($user)->post('/categories', $category);
+
         $response->assertSessionHasErrors('description');
+    }
+
+    public function testStoreCategoryWithAuthRemovingNameAttribute()
+    {
+        $user = factory(User::class)->create();
+        $category = factory(Categories::class)->make()->toArray();
+        $category["name"]="";
+
+        $response = $this->actingAs($user)->post('/categories', $category);
+
+        $response->assertSessionHasErrors('name');
     }
 }

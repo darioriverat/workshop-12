@@ -17,14 +17,14 @@ use Illuminate\Support\Facades\Session;
 */
 
 Route::get('/', function () {
-   
+
     if (request()->has('category_id')) {
         $datos["products"] = Products::where('category_id',request('category_id'))->paginate(5);
     } else {
         $datos["products"] = Products::paginate(5);
     }
     $datos["categories"] = Categories::all();
- 
+
     return view('home', $datos);
 });
 
@@ -35,7 +35,9 @@ Route::get('/locale/{locale}', function ($locale) {
 
 Auth::routes();
 
-Route::resource('categories', 'CategoriesController');
+Route::resource('categories', 'CategoriesController')
+    ->middleware('auth');
+
 Route::resource('products', 'ProductsController');
 Route::resource('orders', 'OrdersController');
 Route::get('orders/create/{id?}', 'OrdersController@create');

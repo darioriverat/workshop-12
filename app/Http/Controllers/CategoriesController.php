@@ -3,25 +3,19 @@
 namespace App\Http\Controllers;
 
 use App\Categories;
+use App\Events\EntityCreated;
+use App\Events\ModelError;
 use App\Http\Requests\ValidateCategories;
-use App\Logs ;
+use App\Listeners\LogModelError;
 use App\Traits\LoggerDataBase;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use FFI\Exception;
+use Exception;
 use Illuminate\Support\Facades\Lang;
 use RealRashid\SweetAlert\Facades\Alert;
-use Illuminate\Support\Facades\Log as Log;
+use Illuminate\Support\Facades\Log;
 use PDOException;
 
 class CategoriesController extends Controller
 {
-    public $table = "categories";
-
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
     /**
      * Display a listing of the resource.
      *
@@ -29,8 +23,8 @@ class CategoriesController extends Controller
      */
     public function index()
     {
-        $datos[$this->table] = Categories::paginate(5);
-        return view($this->table . '.index', $datos);
+        $datos['categories'] = Categories::paginate(5);
+        return view('categories.index', $datos);
     }
 
     /**
@@ -40,8 +34,7 @@ class CategoriesController extends Controller
      */
     public function create()
     {
-        //
-        return view($this->table . '.create');
+        return view('categories.create');
     }
 
     /**
@@ -52,21 +45,10 @@ class CategoriesController extends Controller
      */
     public function store(ValidateCategories $request)
     {
-        $message = '';
         $category = $request->validated();
-        try {
-            Categories::create($category);
-            $message = Lang::get('categories.singular'). ' ' . $category['name'] . Lang::get('actions.create.success.female');
-            Alert::toast($message, 'success');
-            return redirect($this->table);
-        } catch (Exception $ex) {
-            $message =  Lang::get('actions.create.error.female'). $category['name'];
-            Log::error('Error', ['data' => $request, 'error' => $ex]);
-            Alert::toast($message, 'error');
-            return redirect($this->table . '/create')->withErrors(['Error' => Lang::get('actions.create.error.female')]);
-        } finally {
-            LoggerDataBase::insert($this->table,'Audit',$message);
-        }
+        Categories::create($category);
+
+        return redirect()->route('categories.index');
     }
 
     /**

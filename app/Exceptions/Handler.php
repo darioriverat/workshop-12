@@ -2,6 +2,8 @@
 
 namespace App\Exceptions;
 
+use App\Events\ModelError;
+use Illuminate\Database\Eloquent\MassAssignmentException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Throwable;
 
@@ -50,6 +52,10 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Throwable $exception)
     {
+        if ($exception instanceof MassAssignmentException) {
+            event(new ModelError($request->toArray(), $exception->getMessage()));
+        }
+
         return parent::render($request, $exception);
     }
 }
