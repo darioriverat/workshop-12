@@ -49,4 +49,8 @@ return [
             'female' => 'Ha ocurrio un error'
         ]
     ],
+    'message' => [
+        'success' => 'registro creado satisfactoriamente',
+        'error' => 'error al crear registro',
+    ]
 ];

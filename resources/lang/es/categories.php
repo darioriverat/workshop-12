@@ -1,9 +1,6 @@
 <?php
 
-
-
 return [
-    'singular'=>'categoria',
-    'plural' =>'categorias',
-    'title' => 'Categorias'
+    'name'=>'categorias|categoria',
+    'title' => 'Categorias',
 ];
