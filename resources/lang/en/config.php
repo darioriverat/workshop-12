@@ -2,6 +2,7 @@
 
 return [
     'navbar' => [
+        'language' => 'Language',
         'spanish' => 'Spanish',
         'english' => 'English',
         'forms' => 'Forms',
@@ -10,9 +11,9 @@ return [
         'signUp' => 'Registrate',
         'orders' => 'Orders',
         'categories' => 'Categories',
-        'products' => 'Products'
-    ],    
+        'products' => 'Product',
+    ],
     'footer' => [
-        'language' => 'language in '
-    ]
+        'language' => 'language in ',
+    ],
 ];

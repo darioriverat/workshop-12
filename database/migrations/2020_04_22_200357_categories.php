@@ -15,8 +15,9 @@ class Categories extends Migration
     {
         //
         Schema::create('categories', function (Blueprint $table) {
-            $table->id()->unique();
-            $table->string('name');
+            $table->softDeletes();
+            $table->id();
+            $table->string('name',25);
             $table->string('description');
             $table->timestamps();
         });

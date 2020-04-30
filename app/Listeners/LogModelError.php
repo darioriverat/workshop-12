@@ -4,6 +4,7 @@ namespace App\Listeners;
 
 use App\Events\EntityCreated;
 use App\Events\ModelError;
+use App\Traits\LoggerDataBase;
 use Illuminate\Support\Facades\Log;
 use RealRashid\SweetAlert\Facades\Alert;
 
@@ -31,7 +32,12 @@ class LogModelError
             'model' => $event->model->toArray(),
             'errorDescription' => $event->errorDescription,
         ]);
-
-        Alert::toast(trans('actions.message.error'), 'error');
+        LoggerDataBase::insert(
+            $event->model->getTable(),
+            'Error',
+            trans('actions.messages.error'),
+            $event->model,
+        );
+        Alert::toast(trans('act'), 'error');
     }
 }

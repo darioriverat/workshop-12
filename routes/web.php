@@ -1,7 +1,7 @@
 <?php
 
-use App\Categories;
-use App\Products;
+use App\Category;
+use App\Product;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
 
@@ -19,11 +19,11 @@ use Illuminate\Support\Facades\Session;
 Route::get('/', function () {
 
     if (request()->has('category_id')) {
-        $datos["products"] = Products::where('category_id',request('category_id'))->paginate(5);
+        $datos["products"] = Product::where('category_id',request('category_id'))->paginate(5);
     } else {
-        $datos["products"] = Products::paginate(5);
+        $datos["products"] = Product::paginate(5);
     }
-    $datos["categories"] = Categories::all();
+    $datos["categories"] = Category::all();
 
     return view('home', $datos);
 });

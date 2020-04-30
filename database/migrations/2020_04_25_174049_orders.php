@@ -17,7 +17,7 @@ class Orders extends Migration
     {
         //
         Schema::create('orders', function (Blueprint $table) {
-            $table->id()->unique();
+            $table->id();
             $table->bigInteger('user_id')->unsigned();
             $table->foreign('user_id')->references('id')->on('users');
             $table->bigInteger('product_id')->unsigned();
@@ -29,6 +29,7 @@ class Orders extends Migration
             $table->string('country')->default(CountryOptions::COLOMBIA);
             $table->string('status')->default(OrderStatus::CREATED);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

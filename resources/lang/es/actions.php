@@ -1,56 +1,40 @@
 <?php
 return [
-    'summary'=>[
-        'action'=>'Ver Resumen'
+    'messages'=>[
+        'error' => 'Ha ocurrido un error',
+    ],
+    'summary' => [
+        'action' => 'Ver Resumen'
     ],
     'search' => [
-        'title'=>'Filtrar'
+        'title' => 'Filtrar'
     ],
     'options' => [
         'combobox' => [
-            'default'=>'Selecciona una opción'
+            'default' => 'Selecciona una opción'
         ],
-        'button'=>[
-            'return' =>'Regresar',
-            'retry' =>'Reintentar',
-            'pay' =>'Pagar',
+        'button' => [
+            'return' => 'Regresar',
+            'retry' => 'Reintentar',
+            'pay' => 'Pagar',
         ]
     ],
     'delete' => [
         'action' => 'Eliminar',
-        'success' => [
-            'male' => ' eliminado correctamente',
-            'female' => ' eliminada correctamente'
+        'message' => [
+            'success' => 'registro eliminado satisfactoriamente',
         ],
-        'error' => [
-            'male' => 'Ha ocurrio un error',
-            'female' => 'Ha ocurrio un error'
-        ]
     ],
     'edit' => [
         'action' => 'Editar',
-        'success' => [
-            'male' => ' editado satisfactoriamente',
-            'female' => ' editada satisfactoriamente',
+        'message' => [
+            'success' => 'registro editado satisfactoriamente',
         ],
-        'error' => [
-            'male' => 'Ha ocurrio un error',
-            'female' => 'Ha ocurrio un error'
-        ]
     ],
     'create' => [
         'action' => 'Crear',
-        'success' => [
-            'male' => ' creado satisfactoriamente',
-            'female' => ' creada satisfactoriamente'
-        ],
-        'error' => [
-            'male' => 'Ha ocurrio un error',
-            'female' => 'Ha ocurrio un error'
+        'message' => [
+            'success' => 'registro creado satisfactoriamente',
         ]
     ],
-    'message' => [
-        'success' => 'registro creado satisfactoriamente',
-        'error' => 'error al crear registro',
-    ]
 ];

@@ -24,17 +24,8 @@ class ValidateCategories extends FormRequest
     public function rules()
     {
         return [
-            'name' => ['required', 'max:255'],
+            'name' => ['required', 'max:25'],
             'description' => ['required', 'max:255'],
-        ];
-    }
-    public function messages()
-    {
-        return [
-            'name.required' => 'Nombre es requerido',
-            'description.required'  => 'Descripción es requerida',
-            'name.max' => 'Nombre es requerido',
-            'description.max'  => 'Descripción es requerida',
         ];
     }
 }

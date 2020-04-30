@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Categories;
+use App\Category;
 use App\Enums\OrderStatus;
 use App\Http\Requests\ValidateOrdersStore;
-use App\Orders;
-use App\Products;
+use App\Order;
+use App\Product;
 use App\Traits\LoggerDataBase;
 use App\Traits\PlaceToPayService;
 use PDOException;
@@ -32,7 +32,6 @@ class OrdersController extends Controller
      */
     public function index()
     {
-        //
         $datos["orders"] =  DB::table('orders')
             ->join('products', function ($join) {
                 $join->on('orders.product_id', '=', 'products.id');
@@ -49,10 +48,8 @@ class OrdersController extends Controller
      */
     public function create($id = "")
     {
-        //
-
-        $product = Products::findOrFail($id);
-        $product->category = Categories::findOrFail($product->category_id);
+        $product = Product::findOrFail($id);
+        $product->category = Category::findOrFail($product->category_id);
         return view($this->table . '.create', compact('product'));
     }
 
@@ -67,10 +64,10 @@ class OrdersController extends Controller
         $message = '';
         $order = $request->validated();
         $order["user_id"] =  Auth::user()['id'];
-        $order["paymentAmount"] = $order["quantity"] * Products::findOrFail($order['product_id'])->price;
+        $order["paymentAmount"] = $order["quantity"] * Product::findOrFail($order['product_id'])->price;
         // echo $order;
         try {
-            Orders::create($order);
+            Order::create($order);
             $message = Lang::get('orders.singular').  Lang::get('actions.create.success.female');
            Alert::toast($message, 'success');
             return redirect($this->table);
@@ -92,29 +89,28 @@ class OrdersController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Orders  $orders
+     * @param  \App\Order  $orders
      * @return \Illuminate\Http\Response
      */
     public function show($id)
     {
-        //
-        $order = Orders::findOrFail($id);
+        $order = Order::findOrFail($id);
         if (($order->status == OrderStatus::CREATED || $order->status == OrderStatus::PENDING) && $order->requestId != '') {
             $requestInformation = PlaceToPayService::requestInformation($order->requestId, $order->country);
             if ($requestInformation->status() == OrderStatus::APPROVED) {
-                Orders::findOrFail($id)->update(
+                Order::findOrFail($id)->update(
                     [
                         'status' => OrderStatus::PAYED
                     ]
                 );
             } else if ($requestInformation->status()  == OrderStatus::PENDING) {
-                Orders::findOrFail($id)->update(
+                Order::findOrFail($id)->update(
                     [
                         'status' => OrderStatus::PENDING
                     ]
                 );
             } else {
-                Orders::findOrFail($id)->update(
+                Order::findOrFail($id)->update(
                     [
                         'status' => OrderStatus::REJECTED
                     ]
@@ -128,10 +124,10 @@ class OrdersController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Orders  $orders
+     * @param  \App\Order  $orders
      * @return \Illuminate\Http\Response
      */
-    public function edit(Orders $orders)
+    public function edit(Order $orders)
     {
         //
     }
@@ -140,20 +136,20 @@ class OrdersController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Orders  $orders
+     * @param  \App\Order  $orders
      * @return \Illuminate\Http\Response
      */
     public function update($id)
     {
-        $order = Orders::findOrFail($id);
+        $order = Order::findOrFail($id);
         try {
             $order["user"] = Auth::user();
-            $order["product"] = Products::findOrFail($order["product_id"]);
+            $order["product"] = Product::findOrFail($order["product_id"]);
             $requestPlaceToPay = PlaceToPayService::createRequest($order);
             $servicePlaceToplay = PlaceToPayService::createServicePlaceToPay($order->country);
             $responsePlaceToPay = $servicePlaceToplay->request($requestPlaceToPay);
             if ($responsePlaceToPay->isSuccessful()) {
-                Orders::findOrFail($id)->update(array(
+                Order::findOrFail($id)->update(array(
                     'status' => OrderStatus::PENDING,
                     'requestId' => $responsePlaceToPay->requestId(),
                     'processUrl' => $responsePlaceToPay->processUrl()
@@ -177,10 +173,10 @@ class OrdersController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Orders  $orders
+     * @param  \App\Order  $orders
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Orders $orders)
+    public function destroy(Order $orders)
     {
         //
     }

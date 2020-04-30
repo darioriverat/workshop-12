@@ -1,6 +1,8 @@
 <?php
 return [
-    
+    'messages'=>[
+        'error' => 'An error has ocurred',
+    ],
     'summary'=>[
         'action'=>'Summary'
     ],
@@ -19,35 +21,20 @@ return [
     ],
     'delete' => [
         'action' => 'Delete',
-        'success' => [
-            'male' => ' successfully removed',
-            'female' => ' successfully removed'
+        'message' => [
+            'success' => 'successfully removed',
         ],
-        'error' => [
-            'male' => 'An error has occurred',
-            'female' => 'An error has occurred'
-        ]
     ],
     'edit' => [
         'action' => 'Edit',
-        'success' => [
-            'male' => ' successfully edited',
-            'female' => ' successfully edited'
+        'message' => [
+            'success' => 'successfully edited',
         ],
-        'error' => [
-            'male' => 'An error has occurred',
-            'female' => 'An error has occurred'
-        ]
     ],
     'create' => [
         'action' => 'Create',
-        'success' => [
-            'male' => ' successfully created',
-            'female' => ' successfully created'
+        'message' => [
+            'success' => 'successfully created',
         ],
-        'error' => [
-            'male' => 'An error has occurred',
-            'female' => 'An error has occurred'
-        ]
     ],
 ];

@@ -25,6 +25,7 @@
         "phpunit/phpunit": "^8.5"
     },
     "require-dev": {
+        "barryvdh/laravel-debugbar": "^3.3",
         "facade/ignition": "^2.0",
         "friendsofphp/php-cs-fixer": "^2.16",
         "nunomaduro/collision": "^4.1"

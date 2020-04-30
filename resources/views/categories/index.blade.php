@@ -1,72 +1,67 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-
-                <div class="card-header">
-                    <div class="row justify-content-left">
-                        <div class="col-sm-8">
-                            <h1>@lang('categories.title')</h1>
-                        </div>
-                        <div class="col-sm-4">
-                            <a class="btn btn-primary"
-                                href="{{route('categories.create')}}">@lang('actions.create.action')
-                                @lang('categories.singular')</a>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="row">
+                            <div class="col-sm-8">
+                                <h1>@lang('categories.title')</h1>
+                            </div>
+                            <div class="col-sm-4 pt-2 text-right">
+                                <a class="btn btn-primary"
+                                   href="{{route('categories.create')}}"> @lang('actions.create.action') {{trans_choice('categories.name',2)}}</a>
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="card-body">
-                    @if (session('status'))
-                    <div class="alert alert-success" role="alert">
-                        {{ session('status') }}
-                    </div>
-                    @endif
-                    <table class="table table-striped">
-                        <thead class="thead">
+                    <div class="card-body">
+                        <table class="table table-striped">
+                            <thead class="thead">
                             <tr>
-                                <th>@lang('tables.name')</th>
-                                <th>@lang('tables.description')</th>
-                                <th>@lang('tables.actions')</th>
+                                <th>@lang('categories.columns.name')</th>
+                                <th>@lang('categories.columns.description')</th>
+                                <th>@lang('categories.columns.actions')</th>
                             </tr>
-                        </thead>
-                        <tbody>
+                            </thead>
+                            <tbody>
                             @foreach($categories as $category)
-                            <tr>
-                                <td>{{$category->name}}</td>
-                                <td>{{$category->description}}</td>
-                                <td>
-                                    <div class="form-group row">
-                                        <a href="{{url('categories/'.$category->id.'/edit')}}"
-                                            class="btn btn-secondary m-2">@lang('actions.edit.action')</a>
-
-                                        <form method="post" action="{{url('categories/'.$category->id)}}">
-
-                                            {{csrf_field()}}
-                                            {{method_field('DELETE')}}
-                                            <button class="btn btn-primary m-2" type="submit"
-                                                onclick="return confirm('{{$category->name}}');">@lang('actions.delete.action')</button>
-                                        </form>
-                                    </div>
-                                </td>
-                            </tr>
+                                <tr>
+                                    <td>{{$category->name}}</td>
+                                    <td>{{$category->description}}</td>
+                                    <td>
+                                        <div class="form-group row">
+                                            <div class="col-sm-6">
+                                                <a href="{{url('categories/'.$category->id.'/edit')}}"
+                                                   class="btn btn-secondary m-1">@lang('actions.edit.action')</a>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <form method="post" action="{{ route('categories.index').'/'.  $category->id}}">
+                                                    {{csrf_field()}}
+                                                    {{method_field('DELETE')}}
+                                                    <button class="btn btn-primary m-1" type="submit"
+                                                            onclick="return confirm('{{$category->name}}');">@lang('actions.delete.action')</button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
                             @endforeach
                             @if(count($categories)==0)
-                            <tr>
-                                <td colspan="6">@lang('tables.notFound')</td>
-                            </tr>
+                                <tr>
+                                    <td colspan="6">@lang('categories.columns.notFound')</td>
+                                </tr>
                             @endif
-                        </tbody>
-                    </table>
-                    <div class="form-group row  justify-content-center">
-                        {!!$categories->render()!!}
+                            </tbody>
+                        </table>
+                        <div class="form-group row  justify-content-center">
+                            {!!$categories->render()!!}
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 @endsection

@@ -5,5 +5,5 @@
 return [
     'singular'=>'product',
     'plural' =>'products',
-    'title' => 'Products'
+    'title' => 'Product'
 ];

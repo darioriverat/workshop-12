@@ -38,8 +38,8 @@ class CreateCategoryTest extends TestCase
         $response = $this->actingAs($user)
             ->get(route('categories.create'));
 
-        $response->assertSeeText(trans('tables.name'));
-        $response->assertSeeText(trans('tables.description'));
+        $response->assertSeeText(trans('categories.columns.name'));
+        $response->assertSeeText(trans('categories.columns.description'));
         $response->assertSeeText(trans('actions.create.action'));
     }
 }

@@ -13,8 +13,8 @@ use BenSampo\Enum\Enum;
  */
 final class OrderStatus extends Enum
 {
-    const CREATED =  'CREATED';
-    const PAYED =   'PAYED';
+    const CREATED = 'CREATED';
+    const PAYED = 'PAYED';
     const PENDING = 'PENDING';
     const REJECTED = 'REJECTED';
     const APPROVED = 'APPROVED';

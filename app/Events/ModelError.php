@@ -4,7 +4,6 @@ namespace App\Events;
 
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PrivateChannel;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
@@ -12,8 +11,8 @@ class ModelError
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $model;
-    public $errorDescription;
+    public Model $model;
+    public string $errorDescription;
 
     /**
      * Create a new event instance.
@@ -26,6 +25,7 @@ class ModelError
         $this->model = $model;
         $this->errorDescription = $errorDescription;
     }
+
     /**
      * Get the channels the event should broadcast on.
      *

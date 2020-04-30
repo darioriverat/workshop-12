@@ -3,7 +3,11 @@
 
 
 return [
-    'singular'=>'category',
-    'plural' =>'categories',
-    'title' => 'Categories'
+    'name' => 'categories|category',
+    'title' => 'Categories',
+    'columns' => ['actions' => 'Actions',
+        'name' => 'Name',
+        'description' => 'Description',
+        'notFound' => 'No records found',
+    ],
 ];

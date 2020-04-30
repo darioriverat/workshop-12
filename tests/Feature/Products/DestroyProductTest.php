@@ -2,7 +2,7 @@
 
 namespace Tests\Feature;
 
-use App\Products;
+use App\Product;
 use App\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -15,20 +15,23 @@ class DestroyProductTest extends TestCase
      * @return void
      */
     use RefreshDatabase;
+
     public function testDestroyProductsWithoutAuth()
     {
-        $product = factory(Products::class)->create();
+        $product = factory(Product::class)->create();
         $response = $this->delete('/products/' . $product['id']);
         $response->assertStatus(302);
     }
+
     public function testDestroyProductsWithAuth()
     {
         $this->withoutExceptionHandling();
         $user = factory(User::class)->create();
-        $product = factory(Products::class)->create();
+        $product = factory(Product::class)->create();
         $response = $this->actingAs($user)->delete('/products/' . $product->id);
         $this->followRedirects($response)->assertOk();
     }
+
     public function testDestroyProductsWithAuthErrorId()
     {
         $user = factory(User::class)->create();

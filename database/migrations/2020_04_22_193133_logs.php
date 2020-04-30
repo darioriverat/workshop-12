@@ -14,7 +14,7 @@ class Logs extends Migration
     public function up()
     {
         Schema::create('logs', function (Blueprint $table) {
-            $table->id()->unique();
+            $table->id();
             $table->timestamp('date')->useCurrent();
             $table->string('user');
             $table->string('type');
@@ -22,6 +22,7 @@ class Logs extends Migration
             $table->string('ipAddress');
             $table->string('userAgent');
             $table->string('description');
+            $table->json('model');
         });
     }
 
