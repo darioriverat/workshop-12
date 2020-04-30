@@ -10,6 +10,5 @@ class Log extends Model
 
     protected $table = 'logs';
 
-    protected $fillable = ['user','date','description','ipAddress','userAgent','type','source','model'];
-
+    protected $fillable = ['user', 'date', 'description', 'ipAddress', 'userAgent', 'type', 'source', 'model'];
 }

@@ -1,23 +1,24 @@
 <?php
+
 return [
-    'messages'=>[
+    'messages' => [
         'error' => 'Ha ocurrido un error',
     ],
     'summary' => [
-        'action' => 'Ver Resumen'
+        'action' => 'Ver Resumen',
     ],
     'search' => [
-        'title' => 'Filtrar'
+        'title' => 'Filtrar',
     ],
     'options' => [
         'combobox' => [
-            'default' => 'Selecciona una opción'
+            'default' => 'Selecciona una opción',
         ],
         'button' => [
             'return' => 'Regresar',
             'retry' => 'Reintentar',
             'pay' => 'Pagar',
-        ]
+        ],
     ],
     'delete' => [
         'action' => 'Eliminar',
@@ -35,6 +36,6 @@ return [
         'action' => 'Crear',
         'message' => [
             'success' => 'registro creado satisfactoriamente',
-        ]
+        ],
     ],
 ];

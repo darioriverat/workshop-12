@@ -16,11 +16,11 @@ class ProductsModified extends Migration
         Schema::create('products', function (Blueprint $table) {
             $table->softDeletes();
             $table->id();
-            $table->string('name');
+            $table->string('name', 25);
             $table->string('description');
             $table->string('photo')->nullable();
-            $table->float('price',18,2);
-            $table->string('currency');
+            $table->float('price', 18, 2);
+            $table->string('currency', 3);
             $table->bigInteger('category_id')->unsigned();
             $table->foreign('category_id')->references('id')->on('categories');
             $table->timestamp('created_at')->useCurrent();

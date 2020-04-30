@@ -18,4 +18,3 @@ return [
         'paymentCountry' => 'Pais de pago',
     ],
 ];
-

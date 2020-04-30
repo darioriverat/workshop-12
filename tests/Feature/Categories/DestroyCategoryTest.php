@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests\Feature\Categories;
 
 use App\Category;
 use App\User;
@@ -18,7 +18,7 @@ class DestroyCategoryTest extends TestCase
 
     public function testDestroyCategoryWithoutAuth()
     {
-        $category = ["name" => "Shoes", "description" => "Tenis de salir"];
+        $category = ['name' => 'Shoes', 'description' => 'Tenis de salir'];
         $category = Category::create($category);
         $response = $this->delete('/categories/' . $category['id']);
         $response->assertStatus(302);

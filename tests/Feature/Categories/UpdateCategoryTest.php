@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests\Feature\Categories;
 
 use App\Category;
 use App\User;
@@ -9,7 +9,6 @@ use Tests\TestCase;
 
 class UpdateCategoryTest extends TestCase
 {
-
     use RefreshDatabase;
 
     /*** @test */
@@ -28,7 +27,7 @@ class UpdateCategoryTest extends TestCase
         $this->withoutExceptionHandling();
         $user = factory(User::class)->create();
         $category = factory(Category::class)->create()->toArray();
-        $category["description"] = "cambio";
+        $category['description'] = 'cambio';
 
         $response = $this->actingAs($user)->put(route('categories.update', $category['id']), $category);
 
@@ -41,7 +40,7 @@ class UpdateCategoryTest extends TestCase
     {
         $user = factory(User::class)->create();
         $category = factory(Category::class)->create()->toArray();
-        $category["description"] = "";
+        $category['description'] = '';
 
         $response = $this->actingAs($user)->put(route('categories.update', $category['id']), $category);
 
@@ -53,7 +52,7 @@ class UpdateCategoryTest extends TestCase
     {
         $user = factory(User::class)->create();
         $category = factory(Category::class)->create()->toArray();
-        $category["name"] = "";
+        $category['name'] = '';
 
         $response = $this->actingAs($user)->put(route('categories.update', $category['id']), $category);
 

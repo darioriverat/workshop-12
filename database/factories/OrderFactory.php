@@ -18,8 +18,8 @@ $factory->define(Order::class, function (Faker $faker) {
             return factory(Product::class)->create()->id;
         },
         'status' => OrderStatus::CREATED,
-        'quantity' => $faker->numerify("##"),
-        'paymentAmount' => $faker->numerify("########"),
-        'country' => CountryOptions::COLOMBIA
+        'quantity' => $faker->numerify('##'),
+        'paymentAmount' => $faker->numerify('########'),
+        'country' => CountryOptions::COLOMBIA,
     ];
 });

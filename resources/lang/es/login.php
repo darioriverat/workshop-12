@@ -1,7 +1,10 @@
 <?php
 
 return [
-    'title'=>'Ingresar',
-    'action' =>'Ingresar'
-
+    'title' => 'Ingresar',
+    'columns' => [
+        'email' => 'Correo Electrónico',
+        'password' => 'Contraseña',
+    ],
+    'action' => 'Ingresar',
 ];

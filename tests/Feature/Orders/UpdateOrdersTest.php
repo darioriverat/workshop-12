@@ -2,11 +2,9 @@
 
 namespace Tests\Feature;
 
-use App\Enums\OrderStatus;
 use App\Order;
 use App\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
 class UpdateOrdersTest extends TestCase
@@ -24,6 +22,7 @@ class UpdateOrdersTest extends TestCase
         $response = $this->post('/products', $product);
         $response->assertStatus(302);
     }
+
     /**
      * @runTestsInSeparateProcesses
      */

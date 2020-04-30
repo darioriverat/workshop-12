@@ -1,23 +1,24 @@
 <?php
+
 return [
-    'messages'=>[
+    'messages' => [
         'error' => 'An error has ocurred',
     ],
-    'summary'=>[
-        'action'=>'Summary'
+    'summary' => [
+        'action' => 'Summary',
     ],
     'search' => [
-        'title'=>'Filter'
+        'title' => 'Filter',
     ],
     'options' => [
         'combobox' => [
-            'default'=>'Select an option'
+            'default' => 'Select an option',
         ],
-        'button'=>[
-            'return' =>'Return',
-            'retry' =>'Retry',
-            'pay' =>'Pay',
-        ]
+        'button' => [
+            'return' => 'Return',
+            'retry' => 'Retry',
+            'pay' => 'Pay',
+        ],
     ],
     'delete' => [
         'action' => 'Delete',

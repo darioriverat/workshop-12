@@ -1,16 +1,15 @@
 <?php
 
 return [
-
-    'placeToPay'=>[
-        'login'=>env('SOAP_LOGIN'),
-        'tranKey'=>env('SOAP_TRANKEY'),
-        'urlRedirection'=>[
-            'co'=>env('SOAP_URL_REDIRECTION_CO'),
-            'ec'=>env('SOAP_URL_REDIRECTION_EC')
-        ]
+    'placeToPay' => [
+        'login' => env('SOAP_LOGIN'),
+        'tranKey' => env('SOAP_TRANKEY'),
+        'urlRedirection' => [
+            'co' => env('SOAP_URL_REDIRECTION_CO'),
+            'ec' => env('SOAP_URL_REDIRECTION_EC'),
+        ],
     ],
-    /* 
+    /*
     |--------------------------------------------------------------------------
     | Application Name
     |--------------------------------------------------------------------------
@@ -20,9 +19,7 @@ return [
     | any other location as required by the application or its packages.
     |
     */
-
     'name' => env('APP_NAME', 'Mi Tienda'),
-
     /*
     |--------------------------------------------------------------------------
     | Application Environment
@@ -47,7 +44,7 @@ return [
     |
     */
 
-    'debug' => (bool) env('APP_DEBUG', false),
+    'debug' => (bool)env('APP_DEBUG', false),
 
     /*
     |--------------------------------------------------------------------------
@@ -115,7 +112,6 @@ return [
     */
 
     'faker_locale' => 'en_US',
-
 
     /*
     |--------------------------------------------------------------------------
@@ -185,8 +181,6 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         RealRashid\SweetAlert\SweetAlertServiceProvider::class,
-        // Dnetix\Redirection\PlacetoPay::class,
-
     ],
 
     /*
@@ -239,7 +233,6 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
         'Alert' => RealRashid\SweetAlert\Facades\Alert::class,
-
     ],
 
 ];

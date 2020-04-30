@@ -2,7 +2,6 @@
 
 namespace App\Listeners;
 
-use App\Events\EntityCreated;
 use App\Events\ModelError;
 use App\Traits\LoggerDataBase;
 use Illuminate\Support\Facades\Log;
@@ -17,7 +16,6 @@ class LogModelError
      */
     public function __construct()
     {
-        //
     }
 
     /**
@@ -36,7 +34,7 @@ class LogModelError
             $event->model->getTable(),
             'Error',
             trans('actions.messages.error'),
-            $event->model,
+            $event->model
         );
         Alert::toast(trans('act'), 'error');
     }

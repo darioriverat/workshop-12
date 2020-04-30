@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests\Feature\Categories;
 
 use App\Category;
 use App\User;
@@ -9,7 +9,6 @@ use Tests\TestCase;
 
 class StoreCategoryTest extends TestCase
 {
-
     use RefreshDatabase;
 
     /** @test */
@@ -39,7 +38,7 @@ class StoreCategoryTest extends TestCase
     {
         $user = factory(User::class)->create();
         $category = factory(Category::class)->make()->toArray();
-        $category["description"] = "";
+        $category['description'] = '';
 
         $response = $this->actingAs($user)->post(route('categories.store'), $category);
 
@@ -51,7 +50,7 @@ class StoreCategoryTest extends TestCase
     {
         $user = factory(User::class)->create();
         $category = factory(Category::class)->make()->toArray();
-        $category["name"] = "";
+        $category['name'] = '';
 
         $response = $this->actingAs($user)->post(route('categories.store'), $category);
 

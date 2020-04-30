@@ -13,13 +13,11 @@ class UsersSeeder extends Seeder
      */
     public function run()
     {
-        //
         User::create([
             'name' => 'Admin',
             'email' => 'admin@admin.co',
             'mobile' => '1234567899',
             'password' => Hash::make('admin'),
         ]);
-
     }
 }

@@ -3,8 +3,8 @@
 namespace App\Http\Requests;
 
 use App\Enums\CountryOptions;
-use Illuminate\Foundation\Http\FormRequest;
 use BenSampo\Enum\Rules\EnumValue;
+use Illuminate\Foundation\Http\FormRequest;
 
 class ValidateOrdersStore extends FormRequest
 {
@@ -27,16 +27,8 @@ class ValidateOrdersStore extends FormRequest
     {
         return [
             'quantity' => ['required', 'numeric'],
-            'product_id'=>['required','numeric'],
-            'country'=>['required',new EnumValue(CountryOptions::class)],
-        ];
-    }
-    public function messages()
-    {
-        return [
-            'quantity.required'=>'Cantidad es requerida',
-            'product_id.required' => 'Producto es requerida',
-            'country.required'  => 'País es requerida',
+            'product_id' => ['required', 'numeric'],
+            'country' => ['required', new EnumValue(CountryOptions::class)],
         ];
     }
 }

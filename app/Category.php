@@ -26,4 +26,14 @@ class Category extends Model
         'updating' => EntityUpdating::class,
         'deleted' => EntityDeleted::class,
     ];
+
+    /**
+     * Return products of category.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function products()
+    {
+        return $this->hasMany(Product::class);
+    }
 }

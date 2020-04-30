@@ -1,6 +1,6 @@
 <?php
 
 return [
-    'usd'=>'EE.UU Dolar',
-    'cop' =>'Colombian peso'
+    'usd' => 'EE.UU Dolar',
+    'cop' => 'Colombian peso',
 ];

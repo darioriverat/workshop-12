@@ -1,10 +1,8 @@
 <?php
 
-
-
 return [
-    'singular'=>'order',
-    'plural' =>'orders',
+    'singular' => 'order',
+    'plural' => 'orders',
     'title' => 'Orders',
-    'summaryTitle'=>'Purchase summary'
+    'summaryTitle' => 'Purchase summary',
 ];

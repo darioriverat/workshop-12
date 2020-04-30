@@ -1,3 +1,6 @@
 <?php
 
-return ['title' => 'Select a product to buy', 'action' => 'Buy'];
+return [
+    'title' => 'Select a product to buy',
+    'action' => 'Buy',
+];

@@ -15,7 +15,6 @@ class AuditEntityDeleted
      */
     public function __construct()
     {
-
     }
 
     /**

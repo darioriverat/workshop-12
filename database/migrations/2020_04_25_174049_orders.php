@@ -15,14 +15,13 @@ class Orders extends Migration
      */
     public function up()
     {
-        //
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('user_id')->unsigned();
             $table->foreign('user_id')->references('id')->on('users');
             $table->bigInteger('product_id')->unsigned();
             $table->foreign('product_id')->references('id')->on('products');
-            $table->float('paymentAmount',18,2);
+            $table->float('paymentAmount', 18, 2);
             $table->integer('quantity')->default(1);
             $table->integer('requestId')->nullable();
             $table->string('processUrl')->nullable();
@@ -40,8 +39,6 @@ class Orders extends Migration
      */
     public function down()
     {
-        //
         Schema::dropIfExists('orders');
-
     }
 }

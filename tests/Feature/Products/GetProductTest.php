@@ -7,20 +7,21 @@ use Tests\TestCase;
 
 class GetProductTest extends TestCase
 {
-    /**
-     * A basic feature test example.
-     *
-     * @return void
-     */
+    /** @test */
     public function testGetListOfProductsWithoutAuth()
     {
-        $response = $this->get('/products');
-        $response->assertStatus(302);
+        $response = $this->get(route('products.index'));
+
+        $response->assertRedirect(route('login'));
     }
+
+    /** @test */
     public function testGetListOfProductsWithAuth()
     {
         $user = factory(User::class)->create();
-        $response = $this->actingAs($user)->get('/products');
+
+        $response = $this->actingAs($user)->get(route('products.index'));
+
         $response->assertOk();
     }
 }

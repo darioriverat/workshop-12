@@ -1,10 +1,9 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests\Feature\Categories;
 
 use App\User;
 use Tests\TestCase;
-
 
 class GetCategoryTest extends TestCase
 {

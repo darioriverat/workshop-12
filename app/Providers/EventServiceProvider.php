@@ -10,7 +10,6 @@ use App\Listeners\AuditEntityCreation;
 use App\Listeners\AuditEntityDeleted;
 use App\Listeners\AuditEntityUpdating;
 use App\Listeners\LogModelError;
-use App\Listeners\ResourceCreated;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -37,7 +36,7 @@ class EventServiceProvider extends ServiceProvider
         ],
         ModelError::class => [
             LogModelError::class,
-        ]
+        ],
     ];
 
     /**
@@ -48,7 +47,5 @@ class EventServiceProvider extends ServiceProvider
     public function boot()
     {
         parent::boot();
-
-        //
     }
 }

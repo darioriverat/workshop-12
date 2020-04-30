@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests\Feature\Products;
 
 use App\Product;
 use App\User;
@@ -9,18 +9,15 @@ use Tests\TestCase;
 
 class DestroyProductTest extends TestCase
 {
-    /**
-     * A basic feature test example.
-     *
-     * @return void
-     */
     use RefreshDatabase;
 
     public function testDestroyProductsWithoutAuth()
     {
         $product = factory(Product::class)->create();
-        $response = $this->delete('/products/' . $product['id']);
-        $response->assertStatus(302);
+
+        $response = $this->delete(route('products.destroy', $product->id));
+
+        $response->assertRedirect(route('login'));
     }
 
     public function testDestroyProductsWithAuth()
@@ -28,14 +25,19 @@ class DestroyProductTest extends TestCase
         $this->withoutExceptionHandling();
         $user = factory(User::class)->create();
         $product = factory(Product::class)->create();
-        $response = $this->actingAs($user)->delete('/products/' . $product->id);
+
+        $response = $this->actingAs($user)->delete(route('products.destroy', $product->id));
+
+        $this->assertSoftDeleted('products', $product->toArray());
         $this->followRedirects($response)->assertOk();
     }
 
     public function testDestroyProductsWithAuthErrorId()
     {
         $user = factory(User::class)->create();
-        $response = $this->actingAs($user)->delete('/products/' . 10000000);
-        $response->assertStatus(404);
+
+        $response = $this->actingAs($user)->delete(route('products.destroy', 100000));
+
+        $response->assertNotFound();
     }
 }

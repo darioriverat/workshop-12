@@ -15,7 +15,6 @@ class AuditEntityUpdating
      */
     public function __construct()
     {
-
     }
 
     /**
