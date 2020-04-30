@@ -1,7 +1,5 @@
 <?php
 
-use App\Category;
-use App\Product;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
 
@@ -17,7 +15,7 @@ use Illuminate\Support\Facades\Session;
 */
 
 Route::get('/', function () {
-    return redirect()->route('home');
+    return redirect()->route('home', ['category_id' => request('category_id')]);
 });
 
 Route::get('/locale/{locale}', function ($locale) {

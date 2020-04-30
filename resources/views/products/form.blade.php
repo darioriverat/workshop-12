@@ -106,6 +106,8 @@
 
         <div class="form-group row mb-0">
             <div class="col-md-6 offset-md-4">
+                <a class="btn btn-secondary"
+                   href="{{route('products.index')}}">{{__('actions.options.button.return')}}</a>
                 <button type="submit" class="btn btn-primary">
                     {{$type=='create'? __('actions.create.action'): __('actions.edit.action')}}
                 </button>

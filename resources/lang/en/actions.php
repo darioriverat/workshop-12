@@ -9,6 +9,7 @@ return [
     ],
     'search' => [
         'title' => 'Filter',
+        'all' => 'All',
     ],
     'options' => [
         'combobox' => [

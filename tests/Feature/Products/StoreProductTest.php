@@ -24,7 +24,6 @@ class StoreProductTest extends TestCase
     /** @test */
     public function testStoreProductWithAuth()
     {
-        $this->withoutExceptionHandling();
         $user = factory(User::class)->create();
         $product = factory(Product::class)->make()->toArray();
 

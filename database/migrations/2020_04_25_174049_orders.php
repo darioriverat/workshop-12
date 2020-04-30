@@ -25,8 +25,8 @@ class Orders extends Migration
             $table->integer('quantity')->default(1);
             $table->integer('requestId')->nullable();
             $table->string('processUrl')->nullable();
-            $table->string('country')->default(CountryOptions::COLOMBIA);
-            $table->string('status')->default(OrderStatus::CREATED);
+            $table->string('country', 2)->default(CountryOptions::COLOMBIA);
+            $table->string('status', 25)->default(OrderStatus::CREATED);
             $table->timestamps();
             $table->softDeletes();
         });
