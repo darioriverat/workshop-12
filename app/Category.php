@@ -3,13 +3,17 @@
 namespace App;
 
 use App\Events\EntityCreated;
+use App\Events\EntityDeleted;
+use App\Events\EntityUpdating;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Categories extends Model
+class Category extends Model
 {
+    use SoftDeletes;
+
     protected $table = 'categories';
 
-    //Definimos los campos que se pueden llenar con asignación masiva
     protected $fillable = ['name', 'description'];
 
     /**
@@ -19,5 +23,7 @@ class Categories extends Model
      */
     protected $dispatchesEvents = [
         'created' => EntityCreated::class,
+        'updating' => EntityUpdating::class,
+        'deleted' => EntityDeleted::class,
     ];
 }
