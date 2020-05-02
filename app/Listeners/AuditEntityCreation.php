@@ -31,7 +31,7 @@ class AuditEntityCreation
             $event->model->getTable(),
             'Audit',
             trans('actions.create.message.success'),
-            $event->model,
+            $event->model
         );
     }
 }

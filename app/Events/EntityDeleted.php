@@ -12,7 +12,7 @@ class EntityDeleted
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public Model $model;
+    public $model;
 
     /**
      * Create a new event instance.

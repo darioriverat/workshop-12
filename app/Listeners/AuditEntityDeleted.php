@@ -31,7 +31,7 @@ class AuditEntityDeleted
             $event->model->getTable(),
             'Audit',
             trans('actions.delete.message.success'),
-            $event->model,
+            $event->model
         );
     }
 }
