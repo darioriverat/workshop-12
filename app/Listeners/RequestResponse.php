@@ -27,11 +27,7 @@ class RequestResponse
     {
         if ($event->model->process_url) {
             $service = (new PaymentGateway($event->model))->create('PaymentPlaceToPay')->response();
-            if ($service === OrderStatus::PAYED) {
-                $event->model->update(['status' => OrderStatus::PAYED]);
-            } else {
-                $event->model->update(['status' => OrderStatus::REJECTED]);
-            }
+            $event->model->update(['status' => $service]);
         }
     }
 }

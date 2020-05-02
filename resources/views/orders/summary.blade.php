@@ -4,7 +4,7 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-8">
-                <div class="card">
+                <div class="card" style="width: -webkit-fill-available;">
                     <div class="card-body">
                         <form action="{{url('/orders/'.$order->id)}}" method="post" enctype="multipart/form-data">
                             {{csrf_field()}}
@@ -13,7 +13,7 @@
                             <div class="form-group row">
                                 <div class="card">
                                     @if($order->photo)
-                                        <img class="card-img-top "style="width: 35%; align-self: center;" src="{{ asset('storage').'/'.$order->photo}}" alt="">
+                                        <img class="card-img-top "style="width: 35%; align-self: center;" src="{{ asset('storage').'/'.$order->product->photo}}" alt="">
                                     @else
                                         <img class="card-img-top "style="width: 35%; align-self: center;" src="{{asset('img/no-image-icon.png')}}" alt=""
                                              width="50">
@@ -36,6 +36,10 @@
                                             <div class="col-sm-6">
                                                 <p class="card-text"><b>@lang('orders.columns.quantity')</b> :
                                                     {{$order->quantity}}</p>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <p class="card-text"><b>@lang('orders.columns.date')</b> :
+                                                    {{$order->created_at}}</p>
                                             </div>
                                         </div>
                                     </div>
@@ -72,7 +76,7 @@
                                 <div class="center">
                                     <a class="btn btn-secondary"
                                        href="{{url('/orders')}}">{{__('actions.options.button.return')}}</a>
-                                    @if($order->status =='CREATED')
+                                    @if($order->status =='CREATED' or $order->status =='PENDING' )
                                         <input class="btn btn-primary" type="submit"
                                                value="{{__('actions.options.button.pay')}}"></button>
                                     @endif

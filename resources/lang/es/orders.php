@@ -10,6 +10,7 @@ return [
         'quantity' => 'Cantidad',
         'category' => 'Categoria',
         'country' => 'País',
+        'date' => 'Fecha',
         'paymentAmount' => 'Valor Orden',
         'status' => 'Estado',
         'photo' => 'Foto',

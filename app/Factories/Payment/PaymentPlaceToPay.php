@@ -57,8 +57,12 @@ class PaymentPlaceToPay implements PaymentInterface
     public function response()
     {
         $response = $this->service->query($this->order->request_id);
-        if ($response->status()->isApproved()) {
-            return OrderStatus::PAYED;
+        if ($response->isSuccessful()) {
+            if ($response->status()->isApproved()) {
+                return OrderStatus::PAYED;
+            } else {
+                return OrderStatus::PENDING;
+            }
         } else {
             return OrderStatus::REJECTED;
         }

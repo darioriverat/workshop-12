@@ -10,6 +10,7 @@ return [
         'quantity' => 'Quantity',
         'category' => 'Category',
         'country' => 'Country',
+        'date' => 'Date',
         'paymentAmount' => 'Payment Amount',
         'status' => 'Status',
         'photo' => 'Photo',
