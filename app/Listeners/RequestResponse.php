@@ -2,7 +2,6 @@
 
 namespace App\Listeners;
 
-use App\Enums\OrderStatus;
 use App\Events\GetResponsePayment;
 use App\Factories\Payment\PaymentGateway;
 

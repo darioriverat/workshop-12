@@ -17,7 +17,7 @@ return [
         ],
         'button' => [
             'return' => 'Return',
-            'retry' => 'Retry',
+            'view' => 'View',
             'pay' => 'Pay',
         ],
     ],
