@@ -76,13 +76,13 @@
                                 <div class="center">
                                     <a class="btn btn-secondary"
                                        href="{{url('/orders')}}">{{__('actions.options.button.return')}}</a>
-                                    @if($order->status =='CREATED' or $order->status =='PENDING' )
+                                    @if($order->status =='CREATED' )
                                         <input class="btn btn-primary" type="submit"
                                                value="{{__('actions.options.button.pay')}}"></button>
                                     @endif
-                                    @if($order->status =='REJECTED')
+                                    @if($order->status =='REJECTED' or $order->status =='PENDING')
                                         <input class="btn btn-primary" type="submit"
-                                               value="{{__('actions.options.button.retry')}}"></button>
+                                               value="{{__('actions.options.button.view')}}"></button>
                                     @endif
                                     @if($order->status =='PENDING')
                                     @endif

@@ -60,6 +60,8 @@ class PaymentPlaceToPay implements PaymentInterface
         if ($response->isSuccessful()) {
             if ($response->status()->isApproved()) {
                 return OrderStatus::PAYED;
+            } elseif ($response->status()->isRejected()) {
+                return OrderStatus::REJECTED;
             } else {
                 return OrderStatus::PENDING;
             }
