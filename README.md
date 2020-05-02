@@ -18,6 +18,7 @@ $ grant all on initial_project.* to admin@'%' identified by "admin";
 Configuracion de entorno .env
 ```sh
 $ cp .env.develop .env
+hp artisan key:generate
 $ php artisan storage:link
 ```
 Para el siguiente comando debes de tener instalado composer [Composer](https://getcomposer.org/doc/00-intro.md), tambien debes de tener habilitada la extensión de soap en el php.ini 
@@ -26,8 +27,7 @@ $ composer install
 ```
 Realizar las migraciones de la base de datos 
 ```sh
-$ php artisan migrate
-$ php artisan db:seed
+$ php artisan migrate:refresh --seed
 ```
 Instalacion de las dependencias de [NodeJs](https://nodejs.org/es/)
 
@@ -46,5 +46,5 @@ $ phpunit
 ```
 ó
 ```sh
-$ ./vendor/bin/phpunit.bat 
+$ vendor/bin/php-cs-fixer fix --config=.php_cs -v --dry-run
 ```
