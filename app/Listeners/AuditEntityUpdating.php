@@ -31,7 +31,7 @@ class AuditEntityUpdating
             $event->model->getTable(),
             'Audit',
             trans('actions.edit.message.success'),
-            $event->model,
+            $event->model
         );
     }
 }

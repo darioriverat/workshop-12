@@ -11,8 +11,8 @@ class ModelError
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public Model $model;
-    public string $errorDescription;
+    public $model;
+    public $errorDescription;
 
     /**
      * Create a new event instance.
