@@ -5,7 +5,7 @@
     <div class="container">
         <div class="row justify-content-center">
 
-            <div class="card">
+            <div class="card"  style="width: -webkit-fill-available;">
                 <div class="card-header">
                     <div class="row justify-content-left">
                         <div class="col-sm-8">

@@ -17,6 +17,7 @@
                             <tr>
                                 <th>@lang('orders.columns.photo')</th>
                                 <th>@lang('orders.columns.name')</th>
+                                <th>@lang('orders.columns.date')</th>
                                 <th>@lang('orders.columns.paymentAmount')</th>
                                 <th>@lang('orders.columns.status')</th>
                                 <th>@lang('orders.columns.pay')</th>
@@ -27,14 +28,15 @@
                                 <tr>
                                     <td>
                                         @if($order->photo)
-                                            <img src="{{ asset('storage').'/'.$order->photo}}" alt="" width="100">
+                                            <img src="{{ asset('storage').'/'.$order->product->photo}}" alt="" width="100">
                                         @else
                                             <img src="{{asset('img/no-image-icon.png')}}" alt="" width="100">
                                         @endif
 
                                     </td>
                                     <td>{{$order->product->name}}</td>
-                                    <td>{{number_format($order->paymentAmount, 2)}} {{$order->product->currency}}</td>
+                                    <td>{{$order->created_at}}</td>
+                                    <td>{{number_format($order->payment_amount, 2)}} {{$order->product->currency}}</td>
                                     <td>
                                         @if($order->status =='CREATED')@lang('status.created')
                                         @elseif($order->status =='REJECTED')@lang('status.rejected')
