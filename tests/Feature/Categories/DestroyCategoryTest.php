@@ -20,8 +20,8 @@ class DestroyCategoryTest extends TestCase
     {
         $category = ['name' => 'Shoes', 'description' => 'Tenis de salir'];
         $category = Category::create($category);
-        $response = $this->delete('/categories/' . $category['id']);
-        $response->assertStatus(302);
+        $response = $this->delete(route('categories.destroy', $category['id']));
+        $response->assertRedirect(route('login'));
     }
 
     public function testDestroyCategoryWithAuth()

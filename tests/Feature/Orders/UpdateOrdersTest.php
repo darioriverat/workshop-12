@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Enums\OrderStatus;
 use App\Order;
 use App\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -35,6 +36,8 @@ class UpdateOrdersTest extends TestCase
 
         $response = $this->actingAs($user)->put(route('orders.update', $order['id']));
 
-        $this->followRedirects($response)->assertOk();
+        $order = Order::find($order['id']);
+
+        $this->assertEquals(OrderStatus::PENDING, $order->status, true);
     }
 }

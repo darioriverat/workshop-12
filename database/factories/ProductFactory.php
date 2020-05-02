@@ -8,7 +8,7 @@ use Faker\Generator as Faker;
 
 $factory->define(Product::class, function (Faker $faker) {
     return [
-        'name' => $faker->name,
+        'name' => substr($faker->name, 0, 25),
         'description' => $faker->text,
         'price' => $faker->numerify('########'),
         'currency' => (['COP', 'USD'][array_rand(['COP', 'USD'], 1)]),

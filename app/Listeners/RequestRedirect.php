@@ -33,10 +33,10 @@ class RequestRedirect
             $service = (new PaymentGateway($event->model))->create('PaymentPlaceToPay')->request();
             if ($service['status']) {
                 Order::findOrFail($event->model->id)->update(['status' => OrderStatus::PENDING,
-                    'request_id' => $service['response']->request_id,
-                    'process_url' => $service['response']->process_url,
+                    'request_id' => $service['response']['request_id'],
+                    'process_url' => $service['response']['process_url'],
                 ]);
-                return $service->status;
+                return $service['status'];
             } else {
                 Alert::toast($service['message'], 'error');
                 return false;

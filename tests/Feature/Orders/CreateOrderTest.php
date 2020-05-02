@@ -44,10 +44,8 @@ class CreateOrderTest extends TestCase
         $response = $this->actingAs($user)
             ->get('orders/create/' . $product['id']);
 
-        $response->assertSeeText(trans('orders.columns.name'));
         $response->assertSeeText(trans('orders.columns.description'));
-        $response->assertSeeText(trans('orders.columns.currency'));
         $response->assertSeeText(trans('orders.columns.price'));
-        $response->assertSeeText(trans('actions.create.action'));
+        $response->assertSeeText(trans('orders.columns.paymentCountry'));
     }
 }

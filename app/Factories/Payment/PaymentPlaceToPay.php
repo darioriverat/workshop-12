@@ -77,7 +77,7 @@ class PaymentPlaceToPay implements PaymentInterface
                 'description' => 'Pago de ' . $order->product->name . ' (' . $order->product->description . ' )',
                 'amount' => [
                     'currency' => $order->product->currency,
-                    'total' => 'jshjhs' . $order->payment_amount,
+                    'total' => $order->payment_amount,
                 ],
                 'buyer' => [
                     'name' => $order->user->name,
