@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Enums\OrderStatus;
+use App\Events\GetResponsePayment;
+use App\Events\PayOrder;
 use App\Http\Requests\ValidateOrdersStore;
 use App\Order;
 use App\Product;
-use App\Traits\PlaceToPayService;
 use Illuminate\Support\Facades\Auth;
 
 class OrdersController extends Controller
@@ -24,7 +24,7 @@ class OrdersController extends Controller
 
     /**
      * Show the form for creating a new resource.
-     *
+     * @param $id
      * @return \Illuminate\Http\Response
      */
     public function create($id = '')
@@ -36,14 +36,14 @@ class OrdersController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param ValidateOrdersStore $request
      * @return \Illuminate\Http\Response
      */
     public function store(ValidateOrdersStore $request)
     {
         $order = $request->validated();
         $order['user_id'] = Auth::user()['id'];
-        $order['paymentAmount'] = $order['quantity'] * Product::findOrFail($order['product_id'])->price;
+        $order['payment_amount'] = $order['quantity'] * Product::findOrFail($order['product_id'])->price;
 
         Order::create($order);
 
@@ -53,23 +53,12 @@ class OrdersController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param \App\Order $orders
+     * @param $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
     {
-        $order = Order::findOrFail($id);
-
-        if (($order->status == OrderStatus::CREATED || $order->status == OrderStatus::PENDING) && $order->requestId != '') {
-            $requestInformation = PlaceToPayService::requestInformation($order->requestId, $order->country);
-            if ($requestInformation->status() == OrderStatus::APPROVED) {
-                Order::findOrFail($id)->update(['status' => OrderStatus::PAYED]);
-            } elseif ($requestInformation->status() == OrderStatus::PENDING) {
-                Order::findOrFail($id)->update(['status' => OrderStatus::PENDING]);
-            } else {
-                Order::findOrFail($id)->update(['status' => OrderStatus::REJECTED]);
-            }
-        }
+        event(new GetResponsePayment(Order::findOrFail($id)));
 
         $order = Order::findOrFail($id);
 
@@ -79,27 +68,22 @@ class OrdersController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param \App\Order $orders
+     * @param $id
      * @return \Illuminate\Http\Response
      */
     public function update($id)
     {
-        $order = Order::findOrFail($id);
-        $order['user'] = Auth::user();
-        $order['product'] = Product::findOrFail($order['product_id']);
+        $order = Order::find($id);
+        $order->product = $order->product()->get()->first();
+        $order->user = Auth::user();
 
-        $requestPlaceToPay = PlaceToPayService::createRequest($order);
-        $servicePlaceToPay = PlaceToPayService::createServicePlaceToPay($order->country);
-        $responsePlaceToPay = $servicePlaceToPay->request($requestPlaceToPay);
+        $pay = event(new PayOrder($order));
 
-        if ($responsePlaceToPay->isSuccessful()) {
-            Order::findOrFail($id)->update([
-                'status' => OrderStatus::PENDING,
-                'requestId' => $responsePlaceToPay->requestId(),
-                'processUrl' => $responsePlaceToPay->processUrl(),
-            ]);
-            return redirect()->to($responsePlaceToPay->processUrl());
+        if ($pay) {
+            return redirect()->to(Order::findOrFail($id)->process_url);
+        } else {
+            $order = Order::findOrFail($id);
+            return view('orders.summary', compact('order'));
         }
     }
 }

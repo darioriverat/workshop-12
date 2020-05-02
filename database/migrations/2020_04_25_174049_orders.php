@@ -21,10 +21,10 @@ class Orders extends Migration
             $table->foreign('user_id')->references('id')->on('users');
             $table->bigInteger('product_id')->unsigned();
             $table->foreign('product_id')->references('id')->on('products');
-            $table->float('paymentAmount', 18, 2);
+            $table->float('payment_amount', 18, 2);
             $table->integer('quantity')->default(1);
-            $table->integer('requestId')->nullable();
-            $table->string('processUrl')->nullable();
+            $table->integer('request_id')->nullable();
+            $table->string('process_url')->nullable();
             $table->string('country', 2)->default(CountryOptions::COLOMBIA);
             $table->string('status', 25)->default(OrderStatus::CREATED);
             $table->timestamps();

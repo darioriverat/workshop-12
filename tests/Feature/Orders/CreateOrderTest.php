@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Products;
 
+use App\Product;
 use App\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -13,10 +14,12 @@ class CreateOrderTest extends TestCase
     /** @test */
     public function anAuthorizedUserCanAccessToTheCreationView()
     {
+        $this->withoutExceptionHandling();
         $user = factory(User::class)->create();
+        $product = factory(Product::class)->create()->toArray();
 
         $response = $this->actingAs($user)
-            ->get(route('orders.create'));
+            ->get('orders/create/' . $product['id']);
 
         $response->assertOk();
     }
@@ -24,8 +27,10 @@ class CreateOrderTest extends TestCase
     /** @test */
     public function anUnauthorizedUserCannotAccessToTheCreationView()
     {
+        $product = factory(Product::class)->create()->toArray();
+
         $response = $this
-            ->get(route('orders.create'));
+            ->get('orders/create/' . $product['id']);
 
         $response->assertRedirect(route('login'));
     }
@@ -34,9 +39,10 @@ class CreateOrderTest extends TestCase
     public function entryFormHasEntryFieldsAndSubmitButton()
     {
         $user = factory(User::class)->create();
+        $product = factory(Product::class)->create()->toArray();
 
         $response = $this->actingAs($user)
-            ->get(route('orders.create'));
+            ->get('orders/create/' . $product['id']);
 
         $response->assertSeeText(trans('orders.columns.name'));
         $response->assertSeeText(trans('orders.columns.description'));

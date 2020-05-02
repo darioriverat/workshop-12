@@ -36,6 +36,6 @@ class LogModelError
             trans('actions.messages.error'),
             $event->model
         );
-        Alert::toast(trans('act'), 'error');
+        Alert::toast(trans('actions.messages.error'), 'error');
     }
 }

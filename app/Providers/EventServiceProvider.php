@@ -5,11 +5,15 @@ namespace App\Providers;
 use App\Events\EntityCreated;
 use App\Events\EntityDeleted;
 use App\Events\EntityUpdating;
+use App\Events\GetResponsePayment;
 use App\Events\ModelError;
+use App\Events\PayOrder;
 use App\Listeners\AuditEntityCreation;
 use App\Listeners\AuditEntityDeleted;
 use App\Listeners\AuditEntityUpdating;
 use App\Listeners\LogModelError;
+use App\Listeners\RequestRedirect;
+use App\Listeners\RequestResponse;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -36,6 +40,12 @@ class EventServiceProvider extends ServiceProvider
         ],
         ModelError::class => [
             LogModelError::class,
+        ],
+        PayOrder::class => [
+            RequestRedirect::class,
+        ],
+        GetResponsePayment::class => [
+            RequestResponse::class,
         ],
     ];
 

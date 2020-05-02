@@ -3,6 +3,7 @@
 return [
     'name' => 'orders|order',
     'title' => 'Orders',
+    'summaryTitle' => 'Order Summary',
     'columns' => [
         'paymentCountry' => 'Payment Country',
         'name' => 'Product Name',

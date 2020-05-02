@@ -19,7 +19,7 @@ $factory->define(Order::class, function (Faker $faker) {
         },
         'status' => OrderStatus::CREATED,
         'quantity' => $faker->numerify('##'),
-        'paymentAmount' => $faker->numerify('########'),
+        'payment_amount' => $faker->numerify('########'),
         'country' => CountryOptions::COLOMBIA,
     ];
 });
