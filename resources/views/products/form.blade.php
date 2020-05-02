@@ -2,7 +2,7 @@
 
     <div>
         <div class="form-group row">
-            <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('tables.name') }}</label>
+            <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('products.columns.name') }}</label>
 
             <div class="col-md-6">
                 <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name"
@@ -18,7 +18,7 @@
 
         <div class="form-group row">
             <label for="description"
-                class="col-md-4 col-form-label text-md-right">{{ __('tables.description') }}</label>
+                class="col-md-4 col-form-label text-md-right">{{ __('products.columns.description') }}</label>
 
             <div class="col-md-6">
                 <input id="description" type="text" class="form-control @error('description') is-invalid @enderror"
@@ -33,7 +33,7 @@
             </div>
         </div>
         <div class="form-group row">
-            <label for="mobile" class="col-md-4 col-form-label text-md-right">{{ __('tables.price') }}</label>
+            <label for="mobile" class="col-md-4 col-form-label text-md-right">{{ __('products.columns.price') }}</label>
 
             <div class="col-md-6">
                 <input id="price" type="float" class="form-control @error('price') is-invalid @enderror" name="price"
@@ -47,10 +47,10 @@
             </div>
         </div>
         <div class="form-group row">
-            <label for="currency" class="col-md-4 col-form-label text-md-right">{{ __('tables.currency') }}</label>
+            <label for="currency" class="col-md-4 col-form-label text-md-right">{{ __('products.columns.currency') }}</label>
 
             <div class="col-md-6">
-                <select value="" name="currency" id="currency"
+                <select value="{{$product->currency ?? ''}}" name="currency" id="currency"
                     class="form-control @error('currency') is-invalid @enderror" required autocomplete="currency"
                     autofocus>
                     <option value="">-- @lang('actions.options.combobox.default') --</option>
@@ -67,7 +67,7 @@
             </div>
         </div>
         <div class="form-group row">
-            <label for="category" class="col-md-4 col-form-label text-md-right">{{ __('tables.category') }}</label>
+            <label for="category" class="col-md-4 col-form-label text-md-right">{{ __('products.columns.category') }}</label>
             <div class="col-md-6">
                 <select value="{{$product->category ?? ''}}" name="category_id" id="category"
                     class="form-control @error('category_id') is-invalid @enderror" required autocomplete="category_id"
@@ -86,7 +86,7 @@
             </div>
         </div>
         <div class="form-group row">
-            <label for="photo" class="col-md-4 col-form-label text-md-right">{{ __('tables.photo') }}</label>
+            <label for="photo" class="col-md-4 col-form-label text-md-right">{{ __('products.columns.photo') }}</label>
 
             <div class="col-md-6">
                 @if(isset($product->photo))
@@ -106,6 +106,8 @@
 
         <div class="form-group row mb-0">
             <div class="col-md-6 offset-md-4">
+                <a class="btn btn-secondary"
+                   href="{{route('products.index')}}">{{__('actions.options.button.return')}}</a>
                 <button type="submit" class="btn btn-primary">
                     {{$type=='create'? __('actions.create.action'): __('actions.edit.action')}}
                 </button>

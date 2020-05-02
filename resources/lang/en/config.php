@@ -2,17 +2,19 @@
 
 return [
     'navbar' => [
+        'language' => 'Language',
         'spanish' => 'Spanish',
         'english' => 'English',
         'forms' => 'Forms',
         'logout' => 'Log out',
         'login' => 'Login',
-        'signUp' => 'Registrate',
+        'signUp' => 'Sign Up',
+        'signOut' => 'Sign Out',
         'orders' => 'Orders',
         'categories' => 'Categories',
-        'products' => 'Products'
-    ],    
+        'products' => 'Product',
+    ],
     'footer' => [
-        'language' => 'language in '
-    ]
+        'language' => 'language in ',
+    ],
 ];

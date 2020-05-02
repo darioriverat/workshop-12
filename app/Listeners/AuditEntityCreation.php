@@ -4,8 +4,7 @@ namespace App\Listeners;
 
 use App\Events\EntityCreated;
 use App\Traits\LoggerDataBase;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Queue\InteractsWithQueue;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class AuditEntityCreation
 {
@@ -16,7 +15,6 @@ class AuditEntityCreation
      */
     public function __construct()
     {
-        //
     }
 
     /**
@@ -27,10 +25,13 @@ class AuditEntityCreation
      */
     public function handle(EntityCreated $event)
     {
+        Alert::toast(trans('actions.create.message.success'), 'success');
+
         LoggerDataBase::insert(
             $event->model->getTable(),
             'Audit',
-            trans('categories.message.error', $event->model->toArray())
+            trans('actions.create.message.success'),
+            $event->model,
         );
     }
 }

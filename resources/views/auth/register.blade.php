@@ -13,7 +13,7 @@
 
                         <div class="form-group row">
                             <label for="name"
-                                class="col-md-4 col-form-label text-md-right">{{ __('tables.name') }}</label>
+                                class="col-md-4 col-form-label text-md-right">{{ __('register.columns.name') }}</label>
 
                             <div class="col-md-6">
                                 <input id="name" type="text" class="form-control @error('name') is-invalid @enderror"
@@ -29,7 +29,7 @@
 
                         <div class="form-group row">
                             <label for="mobile"
-                                class="col-md-4 col-form-label text-md-right">{{ __('tables.mobile') }}</label>
+                                class="col-md-4 col-form-label text-md-right">{{ __('register.columns.mobile') }}</label>
 
                             <div class="col-md-6">
                                 <input id="mobile" type="text"
@@ -46,7 +46,7 @@
 
                         <div class="form-group row">
                             <label for="email"
-                                class="col-md-4 col-form-label text-md-right">{{ __('tables.email') }}</label>
+                                class="col-md-4 col-form-label text-md-right">{{ __('register.columns.email') }}</label>
 
                             <div class="col-md-6">
                                 <input id="email" type="email" class="form-control @error('email') is-invalid @enderror"
@@ -62,7 +62,7 @@
 
                         <div class="form-group row">
                             <label for="password"
-                                class="col-md-4 col-form-label text-md-right">{{ __('tables.password') }}</label>
+                                class="col-md-4 col-form-label text-md-right">{{ __('register.columns.password') }}</label>
 
                             <div class="col-md-6">
                                 <input id="password" type="password"
@@ -79,7 +79,7 @@
 
                         <div class="form-group row">
                             <label for="password-confirm"
-                                class="col-md-4 col-form-label text-md-right">{{ __('tables.passwordConfirm') }}</label>
+                                class="col-md-4 col-form-label text-md-right">{{ __('register.columns.passwordConfirm') }}</label>
 
                             <div class="col-md-6">
                                 <input id="password-confirm" type="password" class="form-control"

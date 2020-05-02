@@ -1,8 +1,10 @@
 <?php
 
-
 return [
-    'title'=>'Login',
-    'action' =>'Sign in'
-
+    'title' => 'Login',
+    'columns' => [
+        'email' => 'Email',
+        'password' => 'Password',
+    ],
+    'action' => 'Sign in',
 ];

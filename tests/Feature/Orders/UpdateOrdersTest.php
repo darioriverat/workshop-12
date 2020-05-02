@@ -3,10 +3,9 @@
 namespace Tests\Feature;
 
 use App\Enums\OrderStatus;
-use App\Orders;
+use App\Order;
 use App\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
 class UpdateOrdersTest extends TestCase
@@ -18,20 +17,27 @@ class UpdateOrdersTest extends TestCase
      */
     use RefreshDatabase;
 
+    /** @test */
     public function testUpdateOrdersWithoutAuth()
     {
-        $product = factory(Orders::class)->make()->toArray();
+        $product = factory(Order::class)->make()->toArray();
+
         $response = $this->post('/products', $product);
+
         $response->assertStatus(302);
     }
-    /**
-     * @runTestsInSeparateProcesses
-     */
+
+    /** @test */
     public function testUpdateOrdersWithAuth()
     {
+        $this->withoutExceptionHandling();
         $user = factory(User::class)->create();
-        $order = factory(Orders::class)->create()->toArray();
-        $response = $this->actingAs($user)->patch('/orders/' . $order['id']);
-        $this->followRedirects($response)->assertStatus(404);
+        $order = factory(Order::class)->create()->toArray();
+
+        $response = $this->actingAs($user)->put(route('orders.update', $order['id']));
+
+        $order = Order::find($order['id']);
+
+        $this->assertEquals(OrderStatus::PENDING, $order->status, true);
     }
 }

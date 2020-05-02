@@ -2,23 +2,29 @@
 
 namespace App\Traits;
 
-use App\Logs;
+use App\Log;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 
 trait LoggerDataBase
 {
-    public static function insert($table,$type,$description){
-        try {
-            $log = [
-                'user' => Auth::user()['email'] ?? 'Admin',
-                'source' => $table,
-                'type' => $type,
-                'ipAddress' =>  $_SERVER['HTTP_CLIENT_IP'] ?? '127.0.0.1',
-                'userAgent' => $_SERVER['HTTP_USER_AGENT'] ?? '',
-                'description' => $description,
-            ];
-            Logs::create($log);
-        } catch (Exception $ex) {
-        }
+    /**
+     * @param string $table
+     * @param string $type
+     * @param string $description
+     * @param Model $model
+     */
+    public static function insert(string $table, string $type, string $description, Model $model)
+    {
+        $log = [
+            'user' => Auth::user()['email'] ?? 'Admin',
+            'source' => $table,
+            'type' => $type,
+            'ipAddress' => $_SERVER['HTTP_CLIENT_IP'] ?? '127.0.0.1',
+            'userAgent' => $_SERVER['HTTP_USER_AGENT'] ?? '',
+            'description' => $description,
+            'model' => $model,
+        ];
+        Log::create($log);
     }
 }

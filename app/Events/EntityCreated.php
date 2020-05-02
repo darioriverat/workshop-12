@@ -12,7 +12,7 @@ class EntityCreated
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $model;
+    public Model $model;
 
     /**
      * Create a new event instance.

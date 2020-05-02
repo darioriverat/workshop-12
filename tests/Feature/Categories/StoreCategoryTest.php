@@ -1,59 +1,58 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests\Feature\Categories;
 
-use App\Categories;
+use App\Category;
 use App\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Validation\ValidationException;
 use Tests\TestCase;
 
 class StoreCategoryTest extends TestCase
 {
-    /**
-     * A basic feature test example.
-     *
-     * @return void
-     */
     use RefreshDatabase;
 
+    /** @test */
     public function testStoreCategoryWithoutAuth()
     {
-        $category = factory(Categories::class)->make()->toArray();
-        $response = $this->post('/categories', $category);
+        $category = factory(Category::class)->make()->toArray();
+
+        $response = $this->post(route('categories.store'), $category);
 
         $response->assertRedirect(route('login'));
     }
 
+    /** @test */
     public function testStoreCategoryWithAuth()
     {
         $user = factory(User::class)->create();
-        $category = factory(Categories::class)->make()->toArray();
+        $category = factory(Category::class)->make()->toArray();
 
-        $response = $this->actingAs($user)->post('/categories', $category);
+        $response = $this->actingAs($user)->post(route('categories.store'), $category);
 
         $this->assertDatabaseHas('categories', $category);
         $this->followRedirects($response)->assertOk();
     }
 
+    /** @test */
     public function testStoreCategoryWithAuthRemovingDescriptionAttribute()
     {
         $user = factory(User::class)->create();
-        $category = factory(Categories::class)->make()->toArray();
-        $category["description"]="";
+        $category = factory(Category::class)->make()->toArray();
+        $category['description'] = '';
 
-        $response = $this->actingAs($user)->post('/categories', $category);
+        $response = $this->actingAs($user)->post(route('categories.store'), $category);
 
         $response->assertSessionHasErrors('description');
     }
 
+    /** @test */
     public function testStoreCategoryWithAuthRemovingNameAttribute()
     {
         $user = factory(User::class)->create();
-        $category = factory(Categories::class)->make()->toArray();
-        $category["name"]="";
+        $category = factory(Category::class)->make()->toArray();
+        $category['name'] = '';
 
-        $response = $this->actingAs($user)->post('/categories', $category);
+        $response = $this->actingAs($user)->post(route('categories.store'), $category);
 
         $response->assertSessionHasErrors('name');
     }

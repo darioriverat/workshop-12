@@ -1,53 +1,42 @@
 <?php
+
 return [
-    
-    'summary'=>[
-        'action'=>'Summary'
+    'messages' => [
+        'error' => 'An error has ocurred',
+    ],
+    'summary' => [
+        'action' => 'Summary',
     ],
     'search' => [
-        'title'=>'Filter'
+        'title' => 'Filter',
+        'all' => 'All',
     ],
     'options' => [
         'combobox' => [
-            'default'=>'Select an option'
+            'default' => 'Select an option',
         ],
-        'button'=>[
-            'return' =>'Return',
-            'retry' =>'Retry',
-            'pay' =>'Pay',
-        ]
+        'button' => [
+            'return' => 'Return',
+            'retry' => 'Retry',
+            'pay' => 'Pay',
+        ],
     ],
     'delete' => [
         'action' => 'Delete',
-        'success' => [
-            'male' => ' successfully removed',
-            'female' => ' successfully removed'
+        'message' => [
+            'success' => 'successfully removed',
         ],
-        'error' => [
-            'male' => 'An error has occurred',
-            'female' => 'An error has occurred'
-        ]
     ],
     'edit' => [
         'action' => 'Edit',
-        'success' => [
-            'male' => ' successfully edited',
-            'female' => ' successfully edited'
+        'message' => [
+            'success' => 'successfully edited',
         ],
-        'error' => [
-            'male' => 'An error has occurred',
-            'female' => 'An error has occurred'
-        ]
     ],
     'create' => [
         'action' => 'Create',
-        'success' => [
-            'male' => ' successfully created',
-            'female' => ' successfully created'
+        'message' => [
+            'success' => 'successfully created',
         ],
-        'error' => [
-            'male' => 'An error has occurred',
-            'female' => 'An error has occurred'
-        ]
     ],
 ];

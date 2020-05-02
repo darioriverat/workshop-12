@@ -1,91 +1,94 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <!-- <div class="card-header">Resumen de la Orden</div> -->
-                <div class="card-body">
-                    <form action="{{url('/orders/'.$order->id)}}" method="post" enctype="multipart/form-data">
-                        {{csrf_field()}}
-                        {{method_field('PATCH')}}
-                        <h4 class="text-center py-3">{{__('orders.summaryTitle')}}</h4>
-                        <div class="form-group row">
-                            <div class="col-md-6">
-                                <div class="card" style="width: 15rem;">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-body">
+                        <form action="{{url('/orders/'.$order->id)}}" method="post" enctype="multipart/form-data">
+                            {{csrf_field()}}
+                            {{method_field('PATCH')}}
+                            <h4 class="text-center py-3">{{__('orders.summaryTitle')}}</h4>
+                            <div class="form-group row">
+                                <div class="card">
                                     @if($order->photo)
-                                    <img class="card-img-top " src="{{ asset('storage').'/'.$order->photo}}" alt="">
+                                        <img class="card-img-top "style="width: 35%; align-self: center;" src="{{ asset('storage').'/'.$order->photo}}" alt="">
                                     @else
-                                    <img class="card-img-top " src="{{asset('img/no-image-icon.png')}}" alt=""
-                                        width="50">
+                                        <img class="card-img-top "style="width: 35%; align-self: center;" src="{{asset('img/no-image-icon.png')}}" alt=""
+                                             width="50">
                                     @endif
                                     <div class="card-body">
-                                        <h5 class="card-title">{{$order->name}}</h5>
+                                        <h5 class="card-title">{{$order->product->name}}</h5>
                                         <div class="row">
                                             <div class="col-sm-6">
-                                                <p class="card-text"><b>@lang('tables.category')</b> :
-                                                    {{$order->category_name}}</p>
+                                                <p class="card-text"><b>@lang('orders.columns.category')</b> :
+                                                    {{$order->product->category->name}}</p>
                                             </div>
                                             <div class="col-sm-6">
-                                                <p class="card-text"><b>@lang('tables.description')</b> :
-                                                    {{$order->description}}</p>
+                                                <p class="card-text"><b>@lang('orders.columns.description')</b> :
+                                                    {{$order->product->description}}</p>
                                             </div>
-                                            <div class="col-sm-12">
-                                                <p class="card-text"><b>@lang('tables.price')</b> :
-                                                    {{number_format($order->price, 2).' ' .$order->currency}}</p>
+                                            <div class="col-sm-6">
+                                                <p class="card-text"><b>@lang('orders.columns.price')</b> :
+                                                    {{number_format($order->payment_amount, 2).' ' .$order->currency}}</p>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <p class="card-text"><b>@lang('orders.columns.quantity')</b> :
+                                                    {{$order->quantity}}</p>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-6">
-                                @if($order->status =='PAYED')
-                                <label id="product_description" id="product_description"> <b>@lang('tables.state') :
-                                    </b>
-                                    @lang('states.payed')</label>
-                                <hr>
-                                <img src="{{asset('img/PAYED.png')}}" alt="" width="100">
-                                @elseif($order->status =='REJECTED')
-                                <label><b>@lang('tables.state') : </b> @lang('states.rejected')</label>
-                                <hr>
-                                <img src="{{asset('img/REJECTED.png')}}" alt="" width="100">
-                                @elseif($order->status =='PENDING')
-                                <label><b>@lang('tables.state') : </b>
-                                    @lang('states.pending')</label>
-                                <hr>
-                                <img src="{{asset('img/PENDING.png')}}" alt="" width="100">
-                                @else
-                                <label><b>@lang('tables.state') : </b>
-                                    @lang('states.created')</label>
-                                <hr>
-                                <img src="{{asset('img/PENDING.png')}}" alt="" width="100">
-                                @endif
-
+                            <div class="form-group row">
+                                <div class="card" style="width: -webkit-fill-available;">
+                                    @if($order->status =='PAYED')
+                                        <label class="pt-3">
+                                            <b>@lang('orders.columns.status') :
+                                            </b>
+                                            @lang('status.payed')</label>
+                                        <hr>
+                                        <img style="align-self: center;" src="{{asset('img/PAYED.png')}}" alt="" width="100">
+                                    @elseif($order->status =='REJECTED')
+                                        <label class="pt-3"><b>@lang('orders.columns.status') : </b> @lang('status.rejected')</label>
+                                        <hr>
+                                        <img style="align-self: center;"  src="{{asset('img/REJECTED.png')}}" alt="" width="100">
+                                    @elseif($order->status =='PENDING')
+                                        <label class="pt-3"><b>@lang('orders.columns.status') : </b>
+                                            @lang('status.pending')</label>
+                                        <hr>
+                                        <img style="align-self: center;"  src="{{asset('img/PENDING.png')}}" alt="" width="100">
+                                    @else
+                                        <label class="pt-3"><b>@lang('orders.columns.status') : </b>
+                                            @lang('status.created')</label>
+                                        <hr>
+                                        <img style="align-self: center;"  src="{{asset('img/PENDING.png')}}" alt="" width="100">
+                                    @endif
+                                </div>
                             </div>
-                        </div>
 
-                        <div class="form-group justify-content-center row">
-                            <div class="center">
-                                <a class="btn btn-secondary"
-                                    href="{{url('/orders')}}">{{__('actions.options.button.return')}}</a>
-                                @if($order->status =='CREATED')
-                                <input class="btn btn-primary" type="submit"
-                                    value="{{__('actions.options.button.pay')}}"></button>
-                                @endif
-                                @if($order->status =='REJECTED')
-                                <input class="btn btn-primary" type="submit"
-                                    value="{{__('actions.options.button.retry')}}"></button>
-                                @endif
-                                @if($order->status =='PENDING')
-                                @endif
+                            <div class="form-group justify-content-center row">
+                                <div class="center">
+                                    <a class="btn btn-secondary"
+                                       href="{{url('/orders')}}">{{__('actions.options.button.return')}}</a>
+                                    @if($order->status =='CREATED')
+                                        <input class="btn btn-primary" type="submit"
+                                               value="{{__('actions.options.button.pay')}}"></button>
+                                    @endif
+                                    @if($order->status =='REJECTED')
+                                        <input class="btn btn-primary" type="submit"
+                                               value="{{__('actions.options.button.retry')}}"></button>
+                                    @endif
+                                    @if($order->status =='PENDING')
+                                    @endif
+                                </div>
                             </div>
-                        </div>
-                    </form>
+                        </form>
 
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 @endsection

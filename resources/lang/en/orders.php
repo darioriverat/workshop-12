@@ -1,10 +1,22 @@
 <?php
 
-
-
 return [
-    'singular'=>'order',
-    'plural' =>'orders',
+    'name' => 'orders|order',
     'title' => 'Orders',
-    'summaryTitle'=>'Purchase summary'
+    'summaryTitle' => 'Order Summary',
+    'columns' => [
+        'paymentCountry' => 'Payment Country',
+        'name' => 'Product Name',
+        'quantity' => 'Quantity',
+        'category' => 'Category',
+        'country' => 'Country',
+        'paymentAmount' => 'Payment Amount',
+        'status' => 'Status',
+        'photo' => 'Photo',
+        'pay' => 'Pay',
+        'description' => 'Description',
+        'price' => 'Price',
+        'notFound' => 'No records found',
+    ],
+    'action' => 'Order',
 ];

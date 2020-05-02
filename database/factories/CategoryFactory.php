@@ -2,13 +2,12 @@
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 
-use App\Categories;
-use Carbon\Traits\Timestamp;
+use App\Category;
 use Faker\Generator as Faker;
 
-$factory->define(Categories::class, function (Faker $faker) {
+$factory->define(Category::class, function (Faker $faker) {
     return [
-        'name' => $faker->name,
-        'description' => $faker->text
+        'name' => substr($faker->name, 0, 25),
+        'description' => $faker->text,
     ];
 });

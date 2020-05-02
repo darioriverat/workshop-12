@@ -1,9 +1,15 @@
 <?php
 
-
-
 return [
-    'singular'=>'product',
-    'plural' =>'products',
-    'title' => 'Products'
+    'name' => 'products|product',
+    'title' => 'Products',
+    'columns' => [
+        'actions' => 'Actions',
+        'name' => 'Name',
+        'description' => 'Description',
+        'photo' => 'Photo',
+        'currency' => 'Currency',
+        'price' => 'Price',
+        'notFound' => 'No records found',
+    ],
 ];

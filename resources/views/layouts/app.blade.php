@@ -22,67 +22,51 @@
 </head>
 
 <body>
-    <div id="app">
-        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
-            <div class="container">
-                <a class="navbar-brand" href="{{ url('/') }}">
-                    <img src="{{asset('img/shop.png')}}" alt="" width="100">
-                </a>
+<div id="app">
+    <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
+        <div class="container">
+            <a class="navbar-brand" href="{{ url('/') }}">
+                <img src="{{asset('img/shop.png')}}" alt="" width="100">
+            </a>
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" role="button"
+                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        {{__('config.navbar.language')}}
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                        <a class="dropdown-item" href="{{'/locale/es'}}">
+                            {{__('config.navbar.spanish')}}</a>
+                        <a class="dropdown-item" href="{{'/locale/en'}}">
+                            {{__('config.navbar.english')}}</a>
+                    </div>
+                </li>
+            </ul>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <!-- Right Side Of Navbar -->
 
-                <button class="navbar-toggler" type="button" data-toggle="collapse"
-                    data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
-                    aria-label="{{ __('Toggle navigation') }}">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
+                <ul class="navbar-nav ml-auto">
+                    <!-- Authentication Links -->
+                    @guest
 
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-
-                    <ul class="navbar-nav mr-auto">
-                        <li class="nav-item">
-                            <a class="nav-link" id="navbarDropdownMenuLink" href="/orders">
-                                {{__('config.navbar.orders')}}</a>
-                        </li>
-                    </ul>
-
-                    <!-- Right Side Of Navbar -->
-                    <ul class="navbar-nav ml-auto">
-                        <!-- Authentication Links -->
-                        @guest
-                        <li class="nav-item">
-                            <a class="nav-link" href="/locale/es">
-                                {{__('config.navbar.spanish')}}
-                            </a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a class="nav-link" href="/locale/en">
-                                {{__('config.navbar.english')}}
-                            </a>
-                        </li>
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('login') }}">{{ __('config.navbar.login') }}</a>
                         </li>
                         @if (Route::has('register'))
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('register') }}">{{__('config.navbar.signUp')}}</a>
-                        </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('register') }}">{{__('config.navbar.signUp')}}</a>
+                            </li>
                         @endif
-                        @else
-
-                        <li class="nav-item">
-                            <a class="nav-link" href="/locale/es">
-                                {{__('config.navbar.spanish')}}
-                            </a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a class="nav-link" href="/locale/en">
-                                {{__('config.navbar.english')}}
-                            </a>
-                        </li>
+                    @else
+                        <ul class="navbar-nav mr-auto">
+                            <li class="nav-item">
+                                <a class="nav-link" id="navbarDropdownMenuLink" href="/orders">
+                                    {{__('config.navbar.orders')}}</a>
+                            </li>
+                        </ul>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" role="button"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 @lang('config.navbar.forms')
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
@@ -94,7 +78,7 @@
                         </li>
                         <li class="nav-item dropdown">
                             <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                 {{ Auth::user()->name }} <span class="caret"></span>
                             </a>
 
@@ -105,28 +89,31 @@
                                 </a>
 
                                 <form id="logout-form" action="{{ route('logout') }}" method="POST"
-                                    style="display: none;">
+                                      style="display: none;">
                                     @csrf
                                 </form>
-
-
                             </div>
                         </li>
-                        @endguest
-                    </ul>
-                </div>
+                    @endguest
+                </ul>
             </div>
-        </nav>
+        </div>
+    </nav>
 
-        <main class="py-4">
-            @yield('content')
-        </main>
-        <footer class="mastfoot mt-auto fixed">
-            <div class="footer-copyright text-center py-3"><b>@lang('config.footer.language')</b>:
-                {{ Session::get('locale')}}</div>
-        </footer>
-    </div>
-    @include('sweetalert::alert')
+    <main class="py-4">
+        @yield('content')
+    </main>
+    <footer class="mastfoot mt-auto fixed">
+        <div class="footer-copyright text-center py-3"><b>@lang('config.footer.language')</b>:
+            @if(App::getLocale() ==='es')
+                {{__('config.navbar.spanish')}}
+            @else
+                {{__('config.navbar.english')}}
+            @endif
+        </div>
+    </footer>
+</div>
+@include('sweetalert::alert')
 
 </body>
 

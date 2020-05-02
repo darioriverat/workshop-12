@@ -13,7 +13,7 @@
 
                         <div class="form-group row">
                             <label for="email"
-                                class="col-md-4 col-form-label text-md-right">{{ __('tables.email') }}</label>
+                                class="col-md-4 col-form-label text-md-right">{{ __('login.columns.email') }}</label>
 
                             <div class="col-md-6">
                                 <input id="email" type="email" class="form-control @error('email') is-invalid @enderror"
@@ -29,7 +29,7 @@
 
                         <div class="form-group row">
                             <label for="password"
-                                class="col-md-4 col-form-label text-md-right">{{ __('tables.password') }}</label>
+                                class="col-md-4 col-form-label text-md-right">{{ __('login.columns.password') }}</label>
 
                             <div class="col-md-6">
                                 <input id="password" type="password"
