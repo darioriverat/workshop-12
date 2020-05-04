@@ -9,6 +9,7 @@ return [
         'description' => 'Description',
         'photo' => 'Photo',
         'currency' => 'Currency',
+        'category' => 'Category',
         'price' => 'Price',
         'notFound' => 'No records found',
     ],
