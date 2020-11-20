@@ -60,8 +60,11 @@ class ProductsController extends Controller
      */
     public function edit($id)
     {
-        $product = Product::findOrFail($id);
-        $datos['categories'] = Category::all();
+        $product = Product::with('category')->findOrFail(
+            $id,
+            ['id', 'name', 'description', 'price', 'currency', 'category_id']
+        );
+        $datos['categories'] = Category::getCachedCategories();
 
         return view('products.edit', $datos, compact('product'));
     }
