@@ -18,7 +18,7 @@ class OrdersController extends Controller
      */
     public function index()
     {
-        $datos['orders'] = Order::paginate(5);
+        $datos['orders'] = Order::with('product')->paginate(5);
         return view('orders.index', $datos);
     }
 
