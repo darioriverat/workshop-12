@@ -27,7 +27,8 @@ class ProductsController extends Controller
      */
     public function create()
     {
-        $datos['categories'] = Category::all();
+        $datos['categories'] = Category::getCachedCategories();
+
         return view('products.create', $datos);
     }
 
