@@ -20,9 +20,9 @@ class ProductsModified extends Migration
             $table->string('description');
             $table->string('photo')->nullable();
             $table->float('price', 18, 2);
-            $table->string('currency', 3);
-            $table->bigInteger('category_id')->unsigned();
-            $table->foreign('category_id')->references('id')->on('categories');
+            $table->foreignId('currency_id')->constrained();
+            $table->foreignId('category_id')->constrained();
+            $table->foreignId('created_by')->constrained('users');
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent();
         });
