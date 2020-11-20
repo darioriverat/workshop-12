@@ -15,11 +15,13 @@ class HomeController extends Controller
     public function index()
     {
         if (request('category_id')) {
-            $datos['products'] = Product::where('category_id', request('category_id'))->paginate(5);
+            $datos['products'] = Product::with('category')
+                ->where('category_id', request('category_id'))
+                ->paginate(5);
         } else {
-            $datos['products'] = Product::paginate(5);
+            $datos['products'] = Product::with('category')->paginate(5);
         }
-        $datos['categories'] = Category::all();
+        $datos['categories'] = Category::getCachedCategories();
         return view('home', $datos);
     }
 }
