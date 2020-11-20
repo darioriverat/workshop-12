@@ -58,9 +58,8 @@ class OrdersController extends Controller
      */
     public function show($id)
     {
-        event(new GetResponsePayment(Order::findOrFail($id)));
-
         $order = Order::findOrFail($id);
+        event(new GetResponsePayment($order));
 
         return view('orders.summary', compact('order'));
     }
