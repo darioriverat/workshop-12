@@ -11,7 +11,16 @@ class Order extends Model
 {
     protected $table = 'orders';
 
-    protected $fillable = ['quantity', 'payment_amount', 'user_id', 'product_id', 'country', 'process_url', 'request_id', 'status'];
+    protected $fillable = [
+        'quantity',
+        'payment_amount',
+        'user_id',
+        'product_id',
+        'country',
+        'process_url',
+        'request_id',
+        'status'
+    ];
 
     protected $dispatchesEvents = [
         'created' => EntityCreated::class,

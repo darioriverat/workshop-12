@@ -11,7 +11,7 @@ class Currency extends Model
 
     public static function getCachedCurrencies()
     {
-        return Cache::rememberForever('currencies', function() {
+        return Cache::rememberForever('currencies', function () {
             return Currency::all();
         });
     }

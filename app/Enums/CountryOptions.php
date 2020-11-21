@@ -10,6 +10,6 @@ use BenSampo\Enum\Enum;
  */
 final class CountryOptions extends Enum
 {
-    const COLOMBIA = 'co';
-    const ECUADOR = 'ec';
+    public const COLOMBIA = 'co';
+    public const ECUADOR = 'ec';
 }

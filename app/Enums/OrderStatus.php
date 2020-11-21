@@ -13,9 +13,9 @@ use BenSampo\Enum\Enum;
  */
 final class OrderStatus extends Enum
 {
-    const CREATED = 'CREATED';
-    const PAYED = 'PAYED';
-    const PENDING = 'PENDING';
-    const REJECTED = 'REJECTED';
-    const APPROVED = 'APPROVED';
+    public const CREATED = 'CREATED';
+    public const PAYED = 'PAYED';
+    public const PENDING = 'PENDING';
+    public const REJECTED = 'REJECTED';
+    public const APPROVED = 'APPROVED';
 }
