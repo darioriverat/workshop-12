@@ -6,6 +6,7 @@ use App\Category;
 use App\Currency;
 use App\Http\Requests\ValidateProducts;
 use App\Product;
+use App\User;
 use Illuminate\Support\Facades\Storage;
 
 class ProductsController extends Controller
@@ -13,18 +14,20 @@ class ProductsController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Http\Response|\Illuminate\View\View
      */
     public function index()
     {
-        $datos['products'] = Product::paginate();
+        $datos['products'] = Product::query()
+            ->forIndex()
+            ->paginate();
         return view('products.index', $datos);
     }
 
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Http\Response|\Illuminate\View\View
      */
     public function create()
     {
@@ -36,11 +39,21 @@ class ProductsController extends Controller
         ]);
     }
 
+    public function show($productId)
+    {
+
+        $product = Product::query()
+            ->forShow()
+            ->findOrFail($productId);
+
+        return view('products.show', compact('product'));
+    }
+
     /**
      * Store a newly created resource in storage.
      *
      * @param ValidateProducts $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function store(ValidateProducts $request)
     {
@@ -60,7 +73,7 @@ class ProductsController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Http\Response|\Illuminate\View\View
      */
     public function edit($id)
     {
@@ -75,7 +88,7 @@ class ProductsController extends Controller
      *
      * @param ValidateProducts $request
      * @param $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function update(ValidateProducts $request, $id)
     {
@@ -97,7 +110,7 @@ class ProductsController extends Controller
      * Remove the specified resource from storage.
      *
      * @param $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy($id)
     {
