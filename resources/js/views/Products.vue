@@ -175,7 +175,7 @@ export default {
           .put(url, data, options)
           .then(async res => {
             const data = res
-            if (data.status == 200) {
+            if (data.status === 200) {
               this.dialogCreate = false
               this.typeMessage = 'info'
               this.messageInfo = 'Se guardo correctamente'
@@ -184,7 +184,7 @@ export default {
               this.loadData()
             }
           })
-          .catch(err => {
+          .catch(() => {
             this.typeMessage = 'error'
             this.messageInfo = 'Hubo un error al guardar'
           })
@@ -198,7 +198,7 @@ export default {
           .post(url, data, options)
           .then(async res => {
             const data = res
-            if (data.status == 200) {
+            if (data.status === 200) {
               this.dialogCreate = false
               this.typeMessage = 'info'
               this.messageInfo = 'Se guardo correctamente'
@@ -208,7 +208,7 @@ export default {
               this.loadData()
             }
           })
-          .catch(err => {
+          .catch(() => {
             this.typeMessage = 'error'
             this.messageInfo = 'Hubo un error al guardar'
           })
@@ -245,14 +245,14 @@ export default {
         .delete(url, options)
         .then(async res => {
           const data = res
-          if (data.status == 200) {
+          if (data.status === 200) {
             this.dialogDelete = false
             this.dialogInfo = true
             this.messageInfo = 'Eliminado Correctamente'
             this.loadData()
           }
         })
-        .catch(err => {
+        .catch(() => {
           this.dialogDelete = false
           this.dialogInfo = true
           this.messageInfo = 'Revisa que el usuario no este en algún grupo o equipo'
@@ -264,7 +264,7 @@ export default {
     },
     async loadData () {
       const data = await this.getAllData()
-      if (data.status == 200) {
+      if (data.status === 200) {
         this.items = data.data
       }
     },
