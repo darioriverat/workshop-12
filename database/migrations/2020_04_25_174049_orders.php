@@ -17,16 +17,15 @@ class Orders extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('user_id')->unsigned();
-            $table->foreign('user_id')->references('id')->on('users');
-            $table->bigInteger('product_id')->unsigned();
-            $table->foreign('product_id')->references('id')->on('products');
+            $table->foreignId('user_id')->constrained();
+            $table->foreignId('product_id')->constrained();
             $table->float('payment_amount', 18, 2);
             $table->integer('quantity')->default(1);
             $table->integer('request_id')->nullable();
             $table->string('process_url')->nullable();
-            $table->string('country', 2)->default(CountryOptions::COLOMBIA);
+            $table->foreignId('country_id')->constrained();
             $table->string('status', 25)->default(OrderStatus::CREATED);
+            $table->foreignId('created_by')->constrained('users');
             $table->timestamps();
             $table->softDeletes();
         });
