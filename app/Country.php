@@ -15,7 +15,7 @@ class Country extends Model
 
     public static function getCachedCountries()
     {
-        return Cache::rememberForever('country', function() {
+        return Cache::rememberForever('country', function () {
             return Country::all();
         });
     }

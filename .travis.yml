@@ -1,0 +1,23 @@
+language: php
+
+php:
+  - 7.4
+
+services:
+  - mysql
+
+cache:
+  directories:
+    - node_modules
+    - vendor
+
+before_script:
+  - cp .env.testing .env
+  - sudo mysql -e 'CREATE DATABASE `test`;'
+  - composer install --no-interaction
+  - npm install
+
+script:
+  - composer phpcs-auto-check-project
+  - npm run lint-check
+  - composer phpunit

@@ -40,7 +40,7 @@ class Category extends Model
 
     public static function getCachedCategories()
     {
-        return Cache::rememberForever('categories', function() {
+        return Cache::rememberForever('categories', function () {
             return Category::select('id', 'name', 'description')->orderBy('name')->get();
         });
     }

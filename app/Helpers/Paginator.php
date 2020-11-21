@@ -13,7 +13,10 @@ class Paginator
         $page = $request->input('page', 1);
 
         return new LengthAwarePaginator(
-            $collection->forPage($page, $perPage), $collection->count(), $perPage, $page
+            $collection->forPage($page, $perPage),
+            $collection->count(),
+            $perPage,
+            $page
         );
     }
 }

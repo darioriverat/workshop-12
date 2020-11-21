@@ -109,175 +109,175 @@
 
 <script>
 
-    export default {
-        data() {
-            return {
-                nameRules: [v => !!v || 'Campo requerido'],
-                valid: true,
-                path:'usuarios/',
-                dialogView: false,
-                messageInfo: '',
-                dialogInfo: false,
-                config: {},
-                dialogDelete: false,
-                tipos:[{nombre:'PROFESOR'},{nombre:'ESTUDIANTE'} ,{nombre:'ADMINISTRADOR'},{nombre:'JEFE'}],
-                headers: [
-                    { text: 'Correo', value: 'correo' },
-                    { text: 'Nombre', value: 'nombre' },
-                    { text: 'Tipo', value: 'tipo' },
-                    { text: 'Acciones', value: 'action', sortable: false }
-                ],
-                items: [],
-                currentData: {},
-                loading: false,
-                toDelete: undefined,
-                toPreview: undefined,
-                dialogCreate: false,
-                dialogPost:false,
-                editing: true,
-                fileToImport:undefined,
-                rules: {
-                    email: value => {
-                        const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-                        return pattern.test(value) || 'Correo Inválido'
-                    }
-                }
-            }
-        },
-        beforeMount() {
-            console.log(process.env)
-            this.loadData()
-        },
-        methods: {
-            cancelArchivo(){
-                this.dialogPost=false;
-                this.toUpload={}
-            },
-            dialogCreateOpen() {
-                this.currentData = {}
-                this.editing = false
-                this.dialogCreate = true
-            },
-            editItem(item) {
-                this.currentData = Object.assign({}, item)
-                this.dialogCreate = true
-                this.editing = true
-            },
-            saveData(data) {
-                let url = this.path
-                var options = {
-                    headers: { token: "" }
-                }
-                this.loading = true
-                if (this.editing) {
-                    url += data.correo
-                    this.$axios
-                        .put(url, data, options)
-                        .then(async res => {
-                            let data = res
-                            if (data.status == 200) {
-                                this.dialogCreate = false
-                                this.typeMessage = 'info'
-                                this.messageInfo = 'Se guardo correctamente'
-                                this.currentData = {}
-                                this.dialogInfo = true
-                                this.loadData()
-                            }
-                        })
-                        .catch(err => {
-                            this.typeMessage = 'error'
-                            this.messageInfo = 'Hubo un error al guardar'
-                        })
-                        .finally(() => {
-                            this.loading = false
-                        })
-                    this.loading = false
-                } else {
-                    data.contrasena = data.correo
-                    this.$axios
-                        .post(url, data, options)
-                        .then(async res => {
-                            let data = res
-                            if (data.status == 200) {
-                                this.dialogCreate = false
-                                this.typeMessage = 'info'
-                                this.messageInfo = 'Se guardo correctamente'
-                                this.currentData = {}
-                                this.dialogInfo = true
-                                this.editing = false
-                                this.loadData()
-                            }
-                        })
-                        .catch(err => {
-                            this.typeMessage = 'error'
-                            this.messageInfo = 'Hubo un error al guardar'
-                        })
-                        .finally(() => {
-                            this.loading = false
-                        })
-                    this.loading = false
-                }
-            },
-            create() {
-                if (this.$refs.formData.validate()) {
-                    this.saveData(this.currentData)
-                } else {
-                    this.messageInfo = 'Error por favor revisa los campos'
-                    this.dialogInfo = true
-                    this.typeMessage = 'error'
-                }
-            },
-            cancelCreate() {
-                this.dialogCreate = false
-            },
-            deleteItem(item) {
-                this.dialogDelete = true
-                this.toDelete = item
-            },
-            confirmDelete() {
-                let url = this.path + this.toDelete.correo
-
-                var options = {
-                    headers: { token: "" }
-                }
-                this.loading = true
-                this.$axios
-                    .delete(url, options)
-                    .then(async res => {
-                        let data = res
-                        if (data.status == 200) {
-                            this.dialogDelete = false
-                            this.dialogInfo = true
-                            this.messageInfo = 'Eliminado Correctamente'
-                            this.loadData()
-                        }
-                    })
-                    .catch(err => {
-                        this.dialogDelete = false
-                        this.dialogInfo = true
-                        this.messageInfo = 'Revisa que el usuario no este en algún grupo o equipo'
-                    })
-                    .finally(() => {
-                        this.loading = false
-                    })
-                this.loading = false
-            },
-            async loadData() {
-                let data = await this.getAllData()
-                if (data.status == 200) {
-                    this.items = data.data
-                }
-            },
-            async getAllData() {
-                let url = this.path
-                var options = {
-                    headers: { token: "token" }
-                }
-                this.loading = true
-                let response = await this.$axios.get(url, options)
-                this.loading = false
-                return response
-            }
+export default {
+  data () {
+    return {
+      nameRules: [v => !!v || 'Campo requerido'],
+      valid: true,
+      path: 'usuarios/',
+      dialogView: false,
+      messageInfo: '',
+      dialogInfo: false,
+      config: {},
+      dialogDelete: false,
+      tipos: [{ nombre: 'PROFESOR' }, { nombre: 'ESTUDIANTE' }, { nombre: 'ADMINISTRADOR' }, { nombre: 'JEFE' }],
+      headers: [
+        { text: 'Correo', value: 'correo' },
+        { text: 'Nombre', value: 'nombre' },
+        { text: 'Tipo', value: 'tipo' },
+        { text: 'Acciones', value: 'action', sortable: false }
+      ],
+      items: [],
+      currentData: {},
+      loading: false,
+      toDelete: undefined,
+      toPreview: undefined,
+      dialogCreate: false,
+      dialogPost: false,
+      editing: true,
+      fileToImport: undefined,
+      rules: {
+        email: value => {
+          const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+          return pattern.test(value) || 'Correo Inválido'
         }
+      }
     }
+  },
+  beforeMount () {
+    console.log(process.env)
+    this.loadData()
+  },
+  methods: {
+    cancelArchivo () {
+      this.dialogPost = false
+      this.toUpload = {}
+    },
+    dialogCreateOpen () {
+      this.currentData = {}
+      this.editing = false
+      this.dialogCreate = true
+    },
+    editItem (item) {
+      this.currentData = Object.assign({}, item)
+      this.dialogCreate = true
+      this.editing = true
+    },
+    saveData (data) {
+      let url = this.path
+      var options = {
+        headers: { token: '' }
+      }
+      this.loading = true
+      if (this.editing) {
+        url += data.correo
+        this.$axios
+          .put(url, data, options)
+          .then(async res => {
+            const data = res
+            if (data.status === 200) {
+              this.dialogCreate = false
+              this.typeMessage = 'info'
+              this.messageInfo = 'Se guardo correctamente'
+              this.currentData = {}
+              this.dialogInfo = true
+              this.loadData()
+            }
+          })
+          .catch(() => {
+            this.typeMessage = 'error'
+            this.messageInfo = 'Hubo un error al guardar'
+          })
+          .finally(() => {
+            this.loading = false
+          })
+        this.loading = false
+      } else {
+        data.contrasena = data.correo
+        this.$axios
+          .post(url, data, options)
+          .then(async res => {
+            const data = res
+            if (data.status === 200) {
+              this.dialogCreate = false
+              this.typeMessage = 'info'
+              this.messageInfo = 'Se guardo correctamente'
+              this.currentData = {}
+              this.dialogInfo = true
+              this.editing = false
+              this.loadData()
+            }
+          })
+          .catch(() => {
+            this.typeMessage = 'error'
+            this.messageInfo = 'Hubo un error al guardar'
+          })
+          .finally(() => {
+            this.loading = false
+          })
+        this.loading = false
+      }
+    },
+    create () {
+      if (this.$refs.formData.validate()) {
+        this.saveData(this.currentData)
+      } else {
+        this.messageInfo = 'Error por favor revisa los campos'
+        this.dialogInfo = true
+        this.typeMessage = 'error'
+      }
+    },
+    cancelCreate () {
+      this.dialogCreate = false
+    },
+    deleteItem (item) {
+      this.dialogDelete = true
+      this.toDelete = item
+    },
+    confirmDelete () {
+      const url = this.path + this.toDelete.correo
+
+      var options = {
+        headers: { token: '' }
+      }
+      this.loading = true
+      this.$axios
+        .delete(url, options)
+        .then(async res => {
+          const data = res
+          if (data.status === 200) {
+            this.dialogDelete = false
+            this.dialogInfo = true
+            this.messageInfo = 'Eliminado Correctamente'
+            this.loadData()
+          }
+        })
+        .catch(() => {
+          this.dialogDelete = false
+          this.dialogInfo = true
+          this.messageInfo = 'Revisa que el usuario no este en algún grupo o equipo'
+        })
+        .finally(() => {
+          this.loading = false
+        })
+      this.loading = false
+    },
+    async loadData () {
+      const data = await this.getAllData()
+      if (data.status === 200) {
+        this.items = data.data
+      }
+    },
+    async getAllData () {
+      const url = this.path
+      var options = {
+        headers: { token: 'token' }
+      }
+      this.loading = true
+      const response = await this.$axios.get(url, options)
+      this.loading = false
+      return response
+    }
+  }
+}
 </script>

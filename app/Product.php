@@ -62,15 +62,15 @@ class Product extends Model
         return $query
             ->select('id', 'photo', 'name', 'description', 'price')
             ->addSelect(
-            [
+                [
                 'currency_code' => Currency::select('alpha_code')
                     ->whereColumn('products.currency_id', 'id')
                     ->limit(1),
                 'category_name' => Category::select('name')
                     ->whereColumn('products.category_id', 'id')
                     ->limit(1)
-            ]
-        );
+                ]
+            );
     }
 
     public function scopeForShow(Builder $query): Builder
