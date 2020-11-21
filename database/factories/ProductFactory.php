@@ -22,6 +22,12 @@ $factory->define(Product::class, function (Faker $faker) {
             return $currency->id;
         },
         'category_id' => factory(Category::class)->create(),
-        'created_by' => factory(User::class)
+        'created_by' => function() {
+            $user = User::inRandomOrder()->first();
+            if(!$user) {
+                $user = factory(User::class)->create();
+            }
+            return $user->id;
+        }
     ];
 });

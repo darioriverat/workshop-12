@@ -3,7 +3,6 @@
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 
 use App\Country;
-use App\Enums\CountryOptions;
 use App\Enums\OrderStatus;
 use App\Order;
 use App\Product;
@@ -13,7 +12,11 @@ use Faker\Generator as Faker;
 $factory->define(Order::class, function (Faker $faker) {
     return [
         'user_id' => function () {
-            return factory(User::class)->create()->id;
+            $user = User::inRandomOrder()->first();
+            if(!$user) {
+                $user = factory(User::class)->create();
+            }
+            return $user->id;
         },
         'product_id' => function () {
             return factory(Product::class)->create()->id;
@@ -29,6 +32,12 @@ $factory->define(Order::class, function (Faker $faker) {
 
             return $country->id;
         },
-        'created_by' => factory(User::class)
+        'created_by' => function() {
+            $user = User::inRandomOrder()->first();
+            if(!$user) {
+                $user = factory(User::class)->create();
+            }
+            return $user->id;
+        }
     ];
 });
