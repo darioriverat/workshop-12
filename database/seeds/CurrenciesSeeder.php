@@ -50,7 +50,7 @@ class CurrenciesSeeder extends Seeder
             })
             ->unique('numeric_code')
             ->each(function ($currency) {
-                Currency::create([
+                Currency::firstOrcreate([
                     'alpha_code' => $currency->get('alphabetic_code'),
                     'currency' => $currency->get('currency'),
                     'numeric_code' => $currency->get('numeric_code'),

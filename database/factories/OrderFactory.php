@@ -2,6 +2,7 @@
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 
+use App\Country;
 use App\Enums\CountryOptions;
 use App\Enums\OrderStatus;
 use App\Order;
@@ -20,6 +21,14 @@ $factory->define(Order::class, function (Faker $faker) {
         'status' => OrderStatus::CREATED,
         'quantity' => $faker->numerify('##'),
         'payment_amount' => $faker->numerify('########'),
-        'country' => CountryOptions::COLOMBIA,
+        'country_id' => function() {
+            $country = Country::inRandomOrder()->first();
+            if (!$country) {
+                $country = factory(Country::class)->create();
+            }
+
+            return $country->id;
+        },
+        'created_by' => factory(User::class)
     ];
 });

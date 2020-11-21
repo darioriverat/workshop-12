@@ -27,7 +27,6 @@
         "stechstudio/laravel-php-cs-fixer": "^2.1"
     },
     "require-dev": {
-        "barryvdh/laravel-debugbar": "^3.3",
         "facade/ignition": "^2.0",
         "friendsofphp/php-cs-fixer": "^2.16",
         "nunomaduro/collision": "^4.1"
@@ -48,7 +47,7 @@
         },
         "classmap": [
             "database/seeds",
-            "database/factories",            
+            "database/factories",
             "tests/TestCase.php"
         ]
     },

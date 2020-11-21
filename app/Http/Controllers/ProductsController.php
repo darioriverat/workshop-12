@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Category;
+use App\Currency;
 use App\Http\Requests\ValidateProducts;
 use App\Product;
 use Illuminate\Support\Facades\Storage;
@@ -16,7 +17,7 @@ class ProductsController extends Controller
      */
     public function index()
     {
-        $datos['products'] = Product::paginate(5);
+        $datos['products'] = Product::paginate();
         return view('products.index', $datos);
     }
 
@@ -27,8 +28,12 @@ class ProductsController extends Controller
      */
     public function create()
     {
-        $datos['categories'] = Category::all();
-        return view('products.create', $datos);
+
+        return view('products.create', [
+            'categories' => Category::all(),
+            'currencies' => Currency::all(),
+            'product' => new Product(),
+        ]);
     }
 
     /**

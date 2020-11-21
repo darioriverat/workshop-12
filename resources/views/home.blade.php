@@ -54,7 +54,7 @@
                                     </td>
                                     <td>{{$product->name}}</td>
                                     <td>{{$product->description}}</td>
-                                    <td>{{number_format($product->price, 2)}} {{$product->currency}}</td>
+                                    <td>{{number_format($product->price, 2)}} {{$product->currency->alpha_code}}</td>
                                     <td>{{$product->category->name}}</td>
                                     <td style="vertical-align: middle;">
                                         <div class="form-group row" style="width: max-content;">

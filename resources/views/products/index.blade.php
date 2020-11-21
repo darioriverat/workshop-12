@@ -44,7 +44,7 @@
                                 </td>
                                 <td>{{$product->name}}</td>
                                 <td>{{$product->description}}</td>
-                                <td>{{number_format($product->price, 2)}} {{$product->currency}}</td>
+                                <td>{{number_format($product->price, 2)}} {{$product->currency->alpha_code}}</td>
                                 <td style="vertical-align: middle;">
                                     <div class="form-group row" style="width: max-content;">
                                         <a href="{{route('products.edit',$product->id)}}"

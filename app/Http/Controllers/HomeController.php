@@ -15,9 +15,9 @@ class HomeController extends Controller
     public function index()
     {
         if (request('category_id')) {
-            $datos['products'] = Product::where('category_id', request('category_id'))->paginate(5);
+            $datos['products'] = Product::where('category_id', request('category_id'))->paginate();
         } else {
-            $datos['products'] = Product::paginate(5);
+            $datos['products'] = Product::paginate();
         }
         $datos['categories'] = Category::all();
         return view('home', $datos);
