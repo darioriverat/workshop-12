@@ -9,7 +9,9 @@ use Illuminate\Queue\SerializesModels;
 
 class ModelError
 {
-    use Dispatchable, InteractsWithSockets, SerializesModels;
+    use Dispatchable;
+    use InteractsWithSockets;
+    use SerializesModels;
 
     public $model;
     public $errorDescription;

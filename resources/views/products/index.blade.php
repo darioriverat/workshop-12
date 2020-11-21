@@ -25,6 +25,7 @@
                         <tr>
                             <th>@lang('products.columns.photo')</th>
                             <th>@lang('products.columns.name')</th>
+                            <th>@lang('products.columns.category')</th>
                             <th>@lang('products.columns.description')</th>
                             <th>@lang('products.columns.price')</th>
                             <th>@lang('products.columns.actions')</th>
@@ -43,8 +44,9 @@
 
                                 </td>
                                 <td>{{$product->name}}</td>
+                                <td>{{$product->category_name}}</td>
                                 <td>{{$product->description}}</td>
-                                <td>{{number_format($product->price, 2)}} {{$product->currency}}</td>
+                                <td>{{number_format($product->price, 2)}} {{$product->currency_code}}</td>
                                 <td style="vertical-align: middle;">
                                     <div class="form-group row" style="width: max-content;">
                                         <a href="{{route('products.edit',$product->id)}}"

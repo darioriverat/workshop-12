@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Category;
+use App\Helpers\Paginator;
 use App\Http\Requests\ValidateCategories;
+use Illuminate\Http\Request;
 
 class CategoriesController extends Controller
 {
@@ -12,9 +14,9 @@ class CategoriesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $datos['categories'] = Category::paginate(5);
+        $datos['categories'] = Paginator::paginate($request, Category::getCachedCategories());
         return view('categories.index', $datos);
     }
 
@@ -38,6 +40,7 @@ class CategoriesController extends Controller
     {
         $category = $request->validated();
         Category::create($category);
+        Category::flushCache();
 
         return redirect()->route('categories.index');
     }
@@ -53,6 +56,7 @@ class CategoriesController extends Controller
     {
         $category = $request->validated();
         Category::findOrFail($id)->update($category);
+        Category::flushCache();
 
         return redirect()->route('categories.index');
     }
@@ -78,6 +82,7 @@ class CategoriesController extends Controller
     public function destroy($id)
     {
         Category::findOrFail($id)->delete();
+        Category::flushCache();
 
         return redirect()->route('categories.index');
     }

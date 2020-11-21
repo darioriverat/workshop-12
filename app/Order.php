@@ -5,12 +5,22 @@ namespace App;
 use App\Events\EntityCreated;
 use App\Events\EntityUpdating;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Order extends Model
 {
     protected $table = 'orders';
 
-    protected $fillable = ['quantity', 'payment_amount', 'user_id', 'product_id', 'country', 'process_url', 'request_id', 'status'];
+    protected $fillable = [
+        'quantity',
+        'payment_amount',
+        'user_id',
+        'product_id',
+        'country',
+        'process_url',
+        'request_id',
+        'status'
+    ];
 
     protected $dispatchesEvents = [
         'created' => EntityCreated::class,
@@ -25,5 +35,10 @@ class Order extends Model
     public function product()
     {
         return $this->belongsTo(Product::class);
+    }
+
+    public function country(): BelongsTo
+    {
+        return $this->belongsTo(Country::class);
     }
 }

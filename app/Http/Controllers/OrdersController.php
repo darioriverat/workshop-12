@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Category;
+use App\Country;
+use App\Currency;
 use App\Events\GetResponsePayment;
 use App\Events\PayOrder;
 use App\Http\Requests\ValidateOrdersStore;
@@ -14,30 +17,53 @@ class OrdersController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Http\Response|\Illuminate\View\View
      */
     public function index()
     {
-        $datos['orders'] = Order::paginate(5);
+        $datos['orders'] = Order::query()
+            ->addSelect([
+                'currency_name' => Currency::select('alpha_code')
+                    ->where([
+                        'id' => function ($query) {
+                            $query->select([
+                                'product_id' => Product::select('currency_id')
+                                    ->whereColumn('orders.product_id', 'products.id')
+                                    ->limit(1)
+                            ]);
+                        }
+                    ])
+                    ->limit(1),
+                'product_photo' => Product::select('photo')
+                    ->whereColumn('orders.product_id', 'products.id')
+                    ->limit(1),
+                'product_name' => Product::select('name')
+                    ->whereColumn('orders.product_id', 'products.id')
+                    ->limit(1),
+                'country_name' => Country::select('alpha_2_code')
+                    ->whereColumn('id', 'orders.country_id')
+                    ->limit(1),
+            ])->paginate();
         return view('orders.index', $datos);
     }
 
     /**
      * Show the form for creating a new resource.
      * @param $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Http\Response|\Illuminate\View\View
      */
-    public function create($id = '')
+    public function create($id)
     {
         $product = Product::findOrFail($id);
-        return view('orders.create', compact('product'));
+        $countries = Country::getCachedCountries();
+        return view('orders.create', compact('product', 'countries'));
     }
 
     /**
      * Store a newly created resource in storage.
      *
      * @param ValidateOrdersStore $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function store(ValidateOrdersStore $request)
     {
@@ -54,7 +80,7 @@ class OrdersController extends Controller
      * Display the specified resource.
      *
      * @param $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Http\Response|\Illuminate\View\View
      */
     public function show($id)
     {
@@ -68,22 +94,20 @@ class OrdersController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param $id
-     * @return \Illuminate\Http\Response
+     * @param Order $order
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse|\Illuminate\View\View
      */
-    public function update($id)
+    public function update(Order $order)
     {
-        $order = Order::find($id);
-        $order->product = $order->product()->get()->first();
+        $order->product = $order->product->first();
         $order->user = Auth::user();
 
         $pay = event(new PayOrder($order));
 
         if ($pay) {
-            return redirect()->to(Order::findOrFail($id)->process_url);
-        } else {
-            $order = Order::findOrFail($id);
-            return view('orders.summary', compact('order'));
+            return redirect()->to($order->process_url);
         }
+
+        return view('orders.summary', compact('order'));
     }
 }

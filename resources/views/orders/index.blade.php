@@ -28,24 +28,22 @@
                                 <tr>
                                     <td>
                                         @if($order->photo)
-                                            <img src="{{ asset('storage').'/'.$order->product->photo}}" alt="" width="100">
+                                            <img src="{{ asset('storage').'/'.$order->product_photo}}" alt=""
+                                                 width="100">
                                         @else
                                             <img src="{{asset('img/no-image-icon.png')}}" alt="" width="100">
                                         @endif
-
                                     </td>
-                                    <td>{{$order->product->name}}</td>
+                                    <td>{{$order->product_name}}</td>
                                     <td>{{$order->created_at}}</td>
-                                    <td>{{number_format($order->payment_amount, 2)}} {{$order->product->currency}}</td>
+                                    <td>{{number_format($order->payment_amount, 2)}} {{$order->currency_code}}</td>
                                     <td>
                                         @if($order->status =='CREATED')@lang('status.created')
                                         @elseif($order->status =='REJECTED')@lang('status.rejected')
                                         @elseif($order->status =='PAYED')@lang('status.payed')
                                         @else @lang('states.pending')
                                         @endif
-                                        @if($order->country =='co')@lang('countries.CO')
-                                        @else @lang('countries.EC')
-                                        @endif
+                                       {{ $order->country_name }}
                                     </td>
                                     <td>
                                         <div class="form-group row" style="width: max-content;">

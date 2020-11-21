@@ -11,6 +11,7 @@ return [
         'currency' => 'Currency',
         'category' => 'Category',
         'price' => 'Price',
+        'created_by' => 'Created by',
         'notFound' => 'No records found',
     ],
 ];
