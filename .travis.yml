@@ -11,7 +11,7 @@ cache:
     - node_modules
     - vendor
 
-before_install:
+before_script:
   - cp .env.testing .env
   - mysql -e 'CREATE DATABASE IF NOT EXISTS test; USE test';
   - composer install --no-interaction
