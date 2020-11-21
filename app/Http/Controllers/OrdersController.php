@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Country;
 use App\Events\GetResponsePayment;
 use App\Events\PayOrder;
 use App\Http\Requests\ValidateOrdersStore;
@@ -18,7 +19,7 @@ class OrdersController extends Controller
      */
     public function index()
     {
-        $datos['orders'] = Order::paginate(5);
+        $datos['orders'] = Order::paginate();
         return view('orders.index', $datos);
     }
 
@@ -30,7 +31,8 @@ class OrdersController extends Controller
     public function create($id = '')
     {
         $product = Product::findOrFail($id);
-        return view('orders.create', compact('product'));
+        $countries = Country::all();
+        return view('orders.create', compact('product', 'countries'));
     }
 
     /**

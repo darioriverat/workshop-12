@@ -4,9 +4,11 @@
         <div class="form-group row">
             <div class="card">
                 @if($product->photo)
-                    <img class="card-img-top" style="width: 35%; align-self: center;" src="{{ asset('storage').'/'.$product->photo}}" alt="" width="100">
+                    <img class="card-img-top" style="width: 35%; align-self: center;"
+                         src="{{ asset('storage').'/'.$product->photo}}" alt="" width="100">
                 @else
-                    <img class="card-img-top" style="width: 35%; align-self: center;" src="{{asset('img/no-image-icon.png')}}" alt="" width="100">
+                    <img class="card-img-top" style="width: 35%; align-self: center;"
+                         src="{{asset('img/no-image-icon.png')}}" alt="" width="100">
                 @endif
                 <div class="card-body">
                     <h5 class="card-title">{{$product->name}}</h5>
@@ -21,7 +23,7 @@
                         </div>
                         <div class="col-sm-12">
                             <p class="card-text"><b>@lang('orders.columns.price')</b> :
-                                {{number_format($product->price, 2).' ' .$product->currency}}</p>
+                                {{number_format($product->price, 2).' ' .$product->currency->alpha_code}}</p>
                         </div>
                     </div>
                 </div>
@@ -35,13 +37,14 @@
             <label for="country"
                    class="col-md-2 col-form-label text-md-right">{{ __('orders.columns.paymentCountry') }}</label>
             <div class="col-md-4">
-                <select value="" name="country" id="country" class="form-control @error('country') is-invalid @enderror"
+                <select name="country" id="country" class="form-control @error('country') is-invalid @enderror"
                         required autocomplete="country" autofocus>
                     <option value="">-- @lang('actions.options.combobox.default') --</option>
-                    <option {{$product->country ?? '' =='co' ? ' selected ':''}} value="co"> @lang('countries.CO')
-                    </option>
-                    <option {{$product->country ?? ''=='ec' ? ' selected ':''}} value="ec"> @lang('countries.EC')
-                    </option>
+                    @foreach($countries as $country)
+                        <option value="{{ $country->id }}" {{ $product->country_id === $country->id ? 'selected' : '' }}>
+                            {{ $country->name }}
+                        </option>
+                    @endforeach
                 </select>
                 @error('country')
                 <span class="invalid-feedback" role="alert">

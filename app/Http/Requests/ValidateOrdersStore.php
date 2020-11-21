@@ -28,7 +28,7 @@ class ValidateOrdersStore extends FormRequest
         return [
             'quantity' => ['required', 'numeric'],
             'product_id' => ['required', 'numeric'],
-            'country' => ['required', new EnumValue(CountryOptions::class)],
+            'country' => ['required', 'exists:countries,id' ],
         ];
     }
 }
