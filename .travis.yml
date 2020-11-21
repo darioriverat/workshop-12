@@ -17,4 +17,5 @@ before_script:
   - composer install --no-interaction
 
 script:
-  - vendor/bin/phpunit
+  - composer phpcs-auto-check-project
+  - composer phpunit
