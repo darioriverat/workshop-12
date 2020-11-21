@@ -13,7 +13,7 @@ cache:
 
 before_script:
   - cp .env.testing .env
-  - mysql -e 'CREATE DATABASE IF NOT EXISTS test; USE test';
+  - sudo mysql -e 'CREATE DATABASE `test`;'
   - composer install --no-interaction
 
 script:
