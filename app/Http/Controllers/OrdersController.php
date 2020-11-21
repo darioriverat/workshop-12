@@ -58,7 +58,15 @@ class OrdersController extends Controller
      */
     public function show($id)
     {
-        $order = Order::findOrFail($id);
+        $order = Order::with(['product' => function($query){
+            $query->select('id', 'name', 'description', 'category_id');
+        }, 'product.category' => function($query) {
+            $query->select('id', 'name');
+        }])->findOrFail(
+            $id,
+            ['id', 'product_id', 'payment_amount', 'quantity', 'request_id', 'country', 'status', 'created_at']
+        );
+
         event(new GetResponsePayment($order));
 
         return view('orders.summary', compact('order'));
