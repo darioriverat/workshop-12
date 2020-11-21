@@ -55,7 +55,7 @@ class OrdersController extends Controller
     public function create($id)
     {
         $product = Product::findOrFail($id);
-        $countries = Country::all();
+        $countries = Country::getCachedCountries();
         return view('orders.create', compact('product', 'countries'));
     }
 

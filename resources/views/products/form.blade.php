@@ -75,7 +75,7 @@
             <label for="category"
                    class="col-md-4 col-form-label text-md-right">{{ __('products.columns.category') }}</label>
             <div class="col-md-6">
-                <select value="{{$product->category ?? ''}}" name="category_id" id="category"
+                <select name="category_id" id="category"
                         class="form-control @error('category_id') is-invalid @enderror" required
                         autocomplete="category_id"
                         autofocus>

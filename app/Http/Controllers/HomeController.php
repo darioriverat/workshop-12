@@ -20,7 +20,7 @@ class HomeController extends Controller
             ->forIndex()
             ->paginate();
 
-        $datos['categories'] = Category::all();
+        $datos['categories'] = Category::getCachedCategories();
         return view('home', $datos);
     }
 }

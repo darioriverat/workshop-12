@@ -78,7 +78,8 @@ class ProductsController extends Controller
     public function edit($id)
     {
         $product = Product::findOrFail($id);
-        $datos['categories'] = Category::all();
+        $datos['categories'] = Category::getCachedCategories();
+        $datos['currencies'] = Currency::getCachedCurrencies();
 
         return view('products.edit', $datos, compact('product'));
     }

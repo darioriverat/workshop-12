@@ -7,6 +7,7 @@ use App\Events\EntityDeleted;
 use App\Events\EntityUpdating;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Cache;
 
 class Category extends Model
 {
@@ -35,5 +36,17 @@ class Category extends Model
     public function products()
     {
         return $this->hasMany(Product::class);
+    }
+
+    public static function getCachedCategories()
+    {
+        return Cache::rememberForever('categories', function() {
+            return Category::select('id', 'name', 'description')->orderBy('name')->get();
+        });
+    }
+
+    public static function flushCache(): void
+    {
+        Cache::forget('categories');
     }
 }
